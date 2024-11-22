@@ -1,51 +1,73 @@
-import os
-import json
+import mysql.connector
+from mysql.connector import Error
 from typing import List, Dict
 from models.llm_client import GPTClient  # GPTClient 추가
 
 class RecommendationService:
     def __init__(self):
-        self.perfumes = None
+        self.db_config = {
+            "host": "localhost",
+            "user": "ohgiraffers",
+            "password": "ohgiraffers",
+            "database": "test_db"
+        }
         self.gpt_client = GPTClient()  # GPTClient 인스턴스 생성
 
-    def load_data(self) -> bool:
-        """향수 데이터를 로드합니다."""
+    def fetch_data_from_db(self) -> List[Dict]:
+        """데이터베이스에서 향수 데이터를 가져옵니다."""
         try:
-            if os.path.exists('data/perfumes.json'):
-                with open('data/perfumes.json', 'r', encoding='utf-8') as f:
-                    self.perfumes = json.load(f)
-                return True
-            else:
-                print("perfumes.json 파일이 존재하지 않습니다.")
-                return False
-        except Exception as e:
-            print(f"데이터 로드 중 오류 발생: {str(e)}")
-            return False
+            connection = mysql.connector.connect(**self.db_config)
+            cursor = connection.cursor(dictionary=True)
+
+            # 향수 데이터를 조회
+            query = """
+                SELECT p.id, p.name, p.content AS description, l.name AS line_name, l.color AS line_color
+                FROM spice p
+                LEFT JOIN line l ON p.line_id = l.id
+            """
+            cursor.execute(query)
+            perfumes = cursor.fetchall()
+            return perfumes
+
+        except Error as e:
+            print(f"데이터베이스 연결 오류: {e}")
+            return []
+
+        finally:
+            if cursor:
+                cursor.close()
+            if connection:
+                connection.close()
 
     def get_all_recommendations(self) -> List[Dict]:
         """모든 향수를 반환합니다."""
-        if not self.perfumes:
-            raise ValueError("향수 데이터가 로드되지 않았습니다.")
-        return self.perfumes
+        perfumes = self.fetch_data_from_db()
+        if not perfumes:
+            raise ValueError("데이터베이스에서 향수 데이터를 가져오지 못했습니다.")
+        return perfumes
 
     def filter_recommendations(self, user_input: str) -> List[Dict]:
         """사용자 입력을 기반으로 향수를 필터링합니다."""
-        if not self.perfumes:
-            raise ValueError("향수 데이터가 로드되지 않았습니다.")
+        perfumes = self.fetch_data_from_db()
+        if not perfumes:
+            raise ValueError("데이터베이스에서 향수 데이터를 가져오지 못했습니다.")
         
-        filtered_perfumes = []
-        for perfume in self.perfumes:
-            if user_input.lower() in perfume.get('description', '').lower():
-                filtered_perfumes.append(perfume)
+        filtered_perfumes = [
+            perfume for perfume in perfumes 
+            if user_input.lower() in (perfume.get('description') or '').lower()
+        ]
         return filtered_perfumes
 
     def recommend_perfumes(self, user_input: str) -> str:
         """사용자 입력에 맞는 향수를 추천합니다."""
-        if not self.perfumes:
-            raise ValueError("향수 데이터가 로드되지 않았습니다.")
+        perfumes = self.fetch_data_from_db()
+        if not perfumes:
+            raise ValueError("데이터베이스에서 향수 데이터를 가져오지 못했습니다.")
         
         # 향수 데이터 텍스트를 준비합니다.
-        perfumes_text = "\n".join([f"{perfume['name']}: {perfume['description']}" for perfume in self.perfumes])
+        perfumes_text = "\n".join([
+            f"{perfume['name']}: {perfume['description']}" for perfume in perfumes
+        ])
         
         # GPT를 이용해 향수를 추천합니다.
         prompt = self.gpt_client.create_prompt(user_input, perfumes_text)
