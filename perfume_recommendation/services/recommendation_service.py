@@ -2,14 +2,19 @@ import mysql.connector
 from mysql.connector import Error
 from typing import List, Dict
 from models.llm_client import GPTClient  # GPTClient 추가
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 class RecommendationService:
     def __init__(self):
         self.db_config = {
-            "host": "localhost",
-            "user": "ohgiraffers",
-            "password": "ohgiraffers",
-            "database": "test_db"
+            "host": os.getenv("DB_HOST"),  # 기본값은 localhost
+            "port": os.getenv("DB_PORT"),        # 기본값은 3306
+            "user": os.getenv("DB_USER"),      # 기본값은 root
+            "password": os.getenv("DB_PASSWORD"),
+            "database": os.getenv("DB_NAME")
         }
         self.gpt_client = GPTClient()  # GPTClient 인스턴스 생성
 
