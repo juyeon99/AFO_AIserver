@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
-from typing import List, Dict
+from typing import List, Dict, Optional
 from models.llm_client import GPTClient  # GPTClient 추가
 from dotenv import load_dotenv
 import os
@@ -44,38 +44,36 @@ class RecommendationService:
             if connection:
                 connection.close()
 
-    def get_all_recommendations(self) -> List[Dict]:
-        """모든 향수를 반환합니다."""
-        perfumes = self.fetch_data_from_db()
-        if not perfumes:
-            raise ValueError("데이터베이스에서 향수 데이터를 가져오지 못했습니다.")
-        return perfumes
-
-    def filter_recommendations(self, user_input: str) -> List[Dict]:
-        """사용자 입력을 기반으로 향수를 필터링합니다."""
-        perfumes = self.fetch_data_from_db()
-        if not perfumes:
-            raise ValueError("데이터베이스에서 향수 데이터를 가져오지 못했습니다.")
-        
-        filtered_perfumes = [
-            perfume for perfume in perfumes 
-            if user_input.lower() in (perfume.get('description') or '').lower()
-        ]
-        return filtered_perfumes
-
-    def recommend_perfumes(self, user_input: str) -> str:
-        """사용자 입력에 맞는 향수를 추천합니다."""
+    def recommend_perfumes(self, user_input: Optional[str] = None, image_data: Optional[bytes] = None) -> str:
+        """
+        사용자 입력(텍스트 및 이미지)을 기반으로 향수를 추천합니다.
+        - user_input: 텍스트 설명
+        - image_data: 이미지 파일 데이터
+        """
         perfumes = self.fetch_data_from_db()
         if not perfumes:
             raise ValueError("데이터베이스에서 향수 데이터를 가져오지 못했습니다.")
         
-        # 향수 데이터 텍스트를 준비합니다.
+        # 이미지 데이터를 기반으로 텍스트 추출 (이미지가 제공된 경우)
+        image_text = ""
+        if image_data:
+            image_text = self.gpt_client.process_image(image_data)  # 수정된 메서드 호출
+            print(f"이미지에서 추출된 텍스트: {image_text}")
+        
+        # 사용자 입력과 이미지 텍스트를 결합
+        combined_input = f"{user_input}\n이미지 분석 결과: {image_text}" if image_text else user_input
+
+        if not combined_input:
+            raise ValueError("사용자 입력 또는 이미지 데이터를 제공해야 합니다.")
+
+        # 향수 데이터 텍스트 준비
         perfumes_text = "\n".join([
-            f"{perfume['name']}: {perfume['description']}" for perfume in perfumes
+            f"{perfume['name']} ({perfume['brand']}): {perfume['description']}]"
+            for perfume in perfumes
         ])
         
-        # GPT를 이용해 향수를 추천합니다.
-        prompt = self.gpt_client.create_prompt(user_input, perfumes_text)
+        # GPT를 이용해 향수를 추천
+        prompt = self.gpt_client.create_prompt(combined_input, perfumes_text)
         gpt_response = self.gpt_client.get_response(prompt)
         
         return gpt_response
