@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from routes.recommendation_routes import router as recommendation_router
+from routes.recommendation_routes import router as image_recommendation_router
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
@@ -28,6 +29,7 @@ app.add_middleware(
 
 # 라우터 등록
 app.include_router(recommendation_router, prefix="/recommendations", tags=["Recommendations"])
+app.include_router(image_recommendation_router)
 
 # Uvicorn 실행을 위한 엔트리 포인트
 if __name__ == "__main__":

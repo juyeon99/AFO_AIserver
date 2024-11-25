@@ -1,29 +1,38 @@
-from fastapi import APIRouter, HTTPException, UploadFile
+from fastapi import APIRouter, HTTPException, UploadFile, Form
 from pydantic import BaseModel
-from services.recommendation_service import RecommendationService
+from services.recommendation_service import RecommendationService  
+from services.img_recommendation_service import RecommendationService
 
+# 응답 모델 정의
 class RecommendationResponse(BaseModel):
-    result: dict
+    result: str
 
 router = APIRouter()
 
 @router.post("/recommend", response_model=RecommendationResponse)
-async def recommend(user_input: str = "", image: UploadFile = None):
+async def recommend(user_input: str):
     try:
-        if not user_input and not image:
-            raise HTTPException(status_code=400, detail="user_input 또는 image가 필요합니다.")
-        
-        # image가 제공되면 파일 데이터를 읽어옴
-        image_data = await image.read() if image else None
-
-        # RecommendationService 인스턴스 생성
+        # RecommendationService 인스턴스를 사용하여 텍스트 입력에 대한 향수 추천 요청
         recommendation_service = RecommendationService()
-        
-        # 추천 로직 실행
-        result = recommendation_service.recommend_perfumes(user_input=user_input, image_data=image_data)
-        
-        # 결과 반환
+        # perfumes_text는 예시로 제공되어야 하므로 실제 데이터에 맞게 전달
+        perfumes_text = "향수 목록"  # 여기에 실제 향수 목록 데이터를 넣으세요
+        result = recommendation_service.recommend_perfumes(user_input=user_input, perfumes_text=perfumes_text)
+
         return {"result": result}
-    
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        # 예외 발생 시 500 상태 코드 반환
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")\
+            
+@router.post("/image", response_model=dict)
+async def recommend_image(user_input: str = Form(...), image: UploadFile = None):
+    """
+    텍스트와 이미지 데이터를 기반으로 향수를 추천합니다.
+    """
+    try:
+        image_data = await image.read() if image else None
+        img_recommendation_service = RecommendationService()
+        result = img_recommendation_service.recommend_perfumes(user_input=user_input, image_data=image_data)
+        return {"result": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
