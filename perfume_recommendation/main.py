@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
 
+# 환경 변수 로드
 load_dotenv()
 
 # FastAPI 애플리케이션 초기화
@@ -31,4 +32,4 @@ app.include_router(recommendation_router, prefix="/recommendations", tags=["Reco
 # Uvicorn 실행을 위한 엔트리 포인트
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host=APP_HOST , post=APP_PORT)
+    uvicorn.run(app, host=APP_HOST, port=APP_PORT)
