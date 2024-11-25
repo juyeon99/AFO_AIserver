@@ -26,10 +26,10 @@ class RecommendationService:
 
             # 향수 데이터를 조회
             query = """
-                SELECT p.id, p.name, p.content AS description, l.name AS line_name, l.color AS line_color
-                FROM spice p
-                LEFT JOIN line l ON p.line_id = l.id
+            SELECT id, name, brand, description
+            FROM perfume
             """
+
             cursor.execute(query)
             perfumes = cursor.fetchall()
             return perfumes
