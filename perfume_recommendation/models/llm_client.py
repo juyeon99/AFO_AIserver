@@ -1,10 +1,10 @@
 import os
 from dotenv import load_dotenv
-from openai import OpenAI
+from transformers import BlipProcessor, BlipForConditionalGeneration
 from langchain.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
 from typing import Optional
-import openai
+
 
 class GPTClient:
     def __init__(self):
@@ -19,25 +19,30 @@ class GPTClient:
         # 텍스트 처리용 ChatOpenAI 인스턴스 초기화 (gpt-4o-mini)
         self.text_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7, openai_api_key=api_key)
 
-        # 이미지 처리용 OpenAI GPT-4 Vision API (gpt-4-vision)
-        openai.api_key = api_key
+        # 이미지 처리용 BLIP 모델 초기화
+        self.processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-large")
+        self.model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-large")
 
-    def process_image(self, image_data: bytes) -> str:
+    def process_image(self, image_path: str) -> str:
         """
-        gpt-4-vision을 사용하여 이미지에서 텍스트를 추출하거나 분석합니다.
+        BLIP 모델을 사용하여 이미지를 분석하고 텍스트를 추출합니다.
         """
+        from PIL import Image
+
         try:
-            # 이미지 파일을 업로드하여 분석을 요청
-            response = openai.Image.create(
-                prompt="이미지 설명을 요청합니다.",
-                n=1,
-                images=[image_data]  # 이미지 데이터를 바이트 형태로 전달
-            )
+            # 이미지 파일 열기
+            image = Image.open(image_path)
 
-            # 결과 반환 (이미지에서 추출한 텍스트)
-            return response['data'][0]['text']
+            # 이미지 전처리
+            inputs = self.processor(image, return_tensors="pt")
+
+            # 이미지에서 설명 생성
+            out = self.model.generate(**inputs)
+            description = self.processor.decode(out[0], skip_special_tokens=True)
+
+            return description.strip()
         except Exception as e:
-            print(f"gpt-4-vision 이미지 처리 중 오류 발생: {str(e)}")
+            print(f"이미지 처리 중 오류 발생: {str(e)}")
             return ""  # 이미지 처리 결과가 없으면 빈 문자열 반환
 
     def create_prompt(self, user_input: str, perfumes_text: str) -> str:
@@ -76,15 +81,15 @@ class GPTClient:
             print(f"gpt-4o-mini 호출 중 오류 발생: {str(e)}")
             return "죄송합니다. 요청 처리 중 문제가 발생했습니다."
 
-    def recommend(self, user_input: str, image_data: bytes, perfumes_text: str) -> str:
+    def recommend(self, user_input: str, image_path: str, perfumes_text: str) -> str:
         """
         사용자 입력과 이미지를 기반으로 향수를 추천합니다.
         - user_input: 텍스트 입력
-        - image_data: 이미지 데이터
+        - image_path: 이미지 파일 경로
         - perfumes_text: 향수 데이터
         """
         # 이미지 데이터를 처리하여 설명 추출
-        image_explanation = self.process_image(image_data) if image_data else ""
+        image_explanation = self.process_image(image_path) if image_path else ""
 
         # 사용자 입력과 이미지 설명을 결합
         combined_input = f"{user_input}\n이미지 설명: {image_explanation}" if image_explanation else user_input
