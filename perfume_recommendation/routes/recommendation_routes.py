@@ -5,24 +5,24 @@ from services.img_recommendation_service import RecommendationService
 
 # 응답 모델 정의
 class RecommendationResponse(BaseModel):
-    result: str
+    result: str 
 
 router = APIRouter()
 
 @router.post("/recommend", response_model=RecommendationResponse)
 async def recommend(user_input: str = Body(...)):
     try:
-        # RecommendationService 인스턴스를 사용하여 텍스트 입력에 대한 향수 추천 요청
+        # 서비스 호출
         recommendation_service = RecommendationService()
-        # perfumes_text는 예시로 제공되어야 하므로 실제 데이터에 맞게 전달
-        perfumes_text = "향수 목록"  # 여기에 실제 향수 목록 데이터를 넣으세요
-        result = recommendation_service.recommend_perfumes(user_input=user_input, perfumes_text=perfumes_text)
+
+        # GPTClient를 통해 추론된 결과 가져오기
+        result = recommendation_service.recommend_perfumes(user_input)
 
         return {"result": result}
 
     except Exception as e:
-        # 예외 발생 시 500 상태 코드 반환
-        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")\
+        # 에러 처리
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
             
 @router.post("/image", response_model=dict)
 async def recommend_image(user_input: str = Form(...), image: UploadFile = None):
