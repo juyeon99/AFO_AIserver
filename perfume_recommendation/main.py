@@ -12,7 +12,7 @@ load_dotenv()
 app = FastAPI(
     title="Perfume Recommendation API",
     description="향수 추천 및 이미지 처리를 제공하는 API입니다.",
-    version="1.0.0"
+    version="1.0.1"
 )
 
 APP_HOST = os.getenv("APP_HOST")
@@ -22,7 +22,7 @@ APP_PORT = int(os.getenv("APP_PORT"))
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # 모든 도메인에서 접근 허용 (프로덕션 환경에서는 제한 필요)
-    allow_credentials=True,
+    allow_credentials=True, 
     allow_methods=["*"],
     allow_headers=["*"],
 )
