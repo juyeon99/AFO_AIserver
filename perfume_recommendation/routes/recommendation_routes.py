@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, UploadFile, Form
+from fastapi import APIRouter, HTTPException, UploadFile, Form, Body
 from pydantic import BaseModel
 from services.recommendation_service import RecommendationService  
 from services.img_recommendation_service import RecommendationService
@@ -10,7 +10,7 @@ class RecommendationResponse(BaseModel):
 router = APIRouter()
 
 @router.post("/recommend", response_model=RecommendationResponse)
-async def recommend(user_input: str):
+async def recommend(user_input: str = Body(...)):
     try:
         # RecommendationService 인스턴스를 사용하여 텍스트 입력에 대한 향수 추천 요청
         recommendation_service = RecommendationService()
