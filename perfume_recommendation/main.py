@@ -1,17 +1,18 @@
 from fastapi import FastAPI
 from routes.recommendation_routes import router as recommendation_router
-from routes.image_routes import router as image_router
+from routes.recommendation_routes import router as image_recommendation_router
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
 
+# 환경 변수 로드
 load_dotenv()
 
 # FastAPI 애플리케이션 초기화
 app = FastAPI(
     title="Perfume Recommendation API",
     description="향수 추천 및 이미지 처리를 제공하는 API입니다.",
-    version="1.0.0"
+    version="1.0.1"
 )
 
 APP_HOST = os.getenv("APP_HOST")
@@ -21,16 +22,16 @@ APP_PORT = int(os.getenv("APP_PORT"))
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # 모든 도메인에서 접근 허용 (프로덕션 환경에서는 제한 필요)
-    allow_credentials=True,
+    allow_credentials=True, 
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # 라우터 등록
 app.include_router(recommendation_router, prefix="/recommendations", tags=["Recommendations"])
-app.include_router(image_router, prefix="/images", tags=["Image Processing"])
+app.include_router(image_recommendation_router)
 
 # Uvicorn 실행을 위한 엔트리 포인트
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host=APP_HOST , post=APP_PORT)
+    uvicorn.run(app, host=APP_HOST, port=APP_PORT)
