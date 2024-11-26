@@ -25,20 +25,35 @@ class GPTClient:
         이미지 데이터를 처리하여 설명을 생성하고 필요시 요약합니다.
         """
         try:
+        # 이미지를 로드하고 정보 출력
             image = Image.open(BytesIO(image_data))
+            print(f"이미지 포맷: {image.format}")
+            print(f"이미지 크기: {image.size}")
+            print(f"이미지 모드: {image.mode}")
+
+        # 이미지 처리
             inputs = self.processor(image, return_tensors="pt")
-            # 생성 시 토큰 수 제한
-            outputs = self.model.generate(**inputs, max_new_tokens=50)  # 최대 50 토큰으로 제한
+
+        # 토큰 제한을 설정하고 설명 생성
+            max_new_tokens = 50
+            outputs = self.model.generate(**inputs, max_new_tokens=max_new_tokens)
+
+        # 생성된 토큰 수 계산
+            generated_tokens = outputs[0].size(-1)  # 생성된 텐서의 마지막 차원이 토큰 수
+            print(f"생성된 토큰 수: {generated_tokens} / 최대 허용 토큰: {max_new_tokens}")
+
+        # 설명 디코딩
             description = self.processor.decode(outputs[0], skip_special_tokens=True).strip()
 
-            # 설명 길이가 길 경우 요약
-            if len(description.split()) > 50:  # 단어 50개 초과 시 요약
+        # 설명이 길면 요약
+            if len(description.split()) > max_new_tokens:
                 description = self.summarize_description(description)
 
             return description
         except Exception as e:
             print(f"이미지 처리 중 오류 발생: {str(e)}")
             return "이미지에서 설명을 생성할 수 없습니다."
+
 
     def summarize_description(self, description: str) -> str:
         """
