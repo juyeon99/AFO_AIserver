@@ -10,9 +10,9 @@ load_dotenv()
 class RecommendationService:
     def __init__(self):
         self.db_config = {
-            "host": os.getenv("DB_HOST"),  # 기본값은 localhost
-            "port": os.getenv("DB_PORT"),        # 기본값은 3306
-            "user": os.getenv("DB_USER"),      # 기본값은 root
+            "host": os.getenv("DB_HOST"),  
+            "port": os.getenv("DB_PORT"),        
+            "user": os.getenv("DB_USER"),      
             "password": os.getenv("DB_PASSWORD"),
             "database": os.getenv("DB_NAME")
         }
@@ -26,9 +26,8 @@ class RecommendationService:
 
             # 향수 데이터를 조회
             query = """
-                SELECT p.id, p.name, p.content AS description, l.name AS line_name, l.color AS line_color
-                FROM spice p
-                LEFT JOIN line l ON p.line_id = l.id
+            SELECT id, name, brand, description
+            FROM perfume
             """
             cursor.execute(query)
             perfumes = cursor.fetchall()
@@ -57,25 +56,24 @@ class RecommendationService:
         if not perfumes:
             raise ValueError("데이터베이스에서 향수 데이터를 가져오지 못했습니다.")
         
+        # 사용자 입력을 소문자로 변환하여 필터링
         filtered_perfumes = [
             perfume for perfume in perfumes 
             if user_input.lower() in (perfume.get('description') or '').lower()
         ]
         return filtered_perfumes
 
-    def recommend_perfumes(self, user_input: str) -> str:
+    def recommend_perfumes(self, user_input: str, perfumes_text: str) -> str:
         """사용자 입력에 맞는 향수를 추천합니다."""
         perfumes = self.fetch_data_from_db()
         if not perfumes:
             raise ValueError("데이터베이스에서 향수 데이터를 가져오지 못했습니다.")
         
         # 향수 데이터 텍스트를 준비합니다.
-        perfumes_text = "\n".join([
-            f"{perfume['name']}: {perfume['description']}" for perfume in perfumes
-        ])
+        perfumes_text = "\n".join([f"{perfume['name']}: {perfume['description']}" for perfume in perfumes])
         
         # GPT를 이용해 향수를 추천합니다.
-        prompt = self.gpt_client.create_prompt(user_input, perfumes_text)
-        gpt_response = self.gpt_client.get_response(prompt)
+        prompt = self.gpt_client.create_prompt(user_input, perfumes_text)  # perfumes_text 전달
+        gpt_response = self.gpt_client.get_response(user_input, perfumes_text)  # perfumes_text 전달
         
         return gpt_response
