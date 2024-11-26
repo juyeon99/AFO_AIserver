@@ -10,9 +10,9 @@ load_dotenv()
 class RecommendationService:
     def __init__(self):
         self.db_config = {
-            "host": os.getenv("DB_HOST"),  
-            "port": os.getenv("DB_PORT"),        
-            "user": os.getenv("DB_USER"),      
+            "host": os.getenv("DB_HOST"),
+            "port": os.getenv("DB_PORT"),
+            "user": os.getenv("DB_USER"),
             "password": os.getenv("DB_PASSWORD"),
             "database": os.getenv("DB_NAME")
         }
@@ -43,37 +43,39 @@ class RecommendationService:
             if connection:
                 connection.close()
 
-    def get_all_recommendations(self) -> List[Dict]:
-        """모든 향수를 반환합니다."""
-        perfumes = self.fetch_data_from_db()
+    def recommend_perfumes(self, user_input: str) -> str:
+        """
+        사용자 입력에 맞는 향수를 추천합니다.
+        """
+    # 향수 데이터를 필터링
+        filtered_perfumes = self.filter_recommendations(user_input)
+    
+    # 필터링된 결과가 없을 경우 전체 데이터를 사용
+        perfumes = filtered_perfumes if filtered_perfumes else self.fetch_data_from_db()
         if not perfumes:
             raise ValueError("데이터베이스에서 향수 데이터를 가져오지 못했습니다.")
-        return perfumes
+    
+    # GPT-4에 전달할 텍스트 생성
+        perfumes_text = "\n".join([f"{perfume['name']}: {perfume['description']}" for perfume in perfumes])
+    
+        try:
+        # GPT-4 호출
+            gpt_response = self.gpt_client.get_response(user_input=user_input, perfumes_text=perfumes_text)
+            return gpt_response
+        except Exception as e:
+            print(f"추천 생성 중 오류 발생: {str(e)}")
+        return "추천 생성 중 오류가 발생했습니다."
 
     def filter_recommendations(self, user_input: str) -> List[Dict]:
-        """사용자 입력을 기반으로 향수를 필터링합니다."""
+        """
+        사용자 입력을 기반으로 향수를 필터링합니다.
+        """
         perfumes = self.fetch_data_from_db()
         if not perfumes:
             raise ValueError("데이터베이스에서 향수 데이터를 가져오지 못했습니다.")
-        
-        # 사용자 입력을 소문자로 변환하여 필터링
-        filtered_perfumes = [
+    
+    # 필터링된 향수 목록 반환
+        return [
             perfume for perfume in perfumes 
             if user_input.lower() in (perfume.get('description') or '').lower()
         ]
-        return filtered_perfumes
-
-    def recommend_perfumes(self, user_input: str, perfumes_text: str) -> str:
-        """사용자 입력에 맞는 향수를 추천합니다."""
-        perfumes = self.fetch_data_from_db()
-        if not perfumes:
-            raise ValueError("데이터베이스에서 향수 데이터를 가져오지 못했습니다.")
-        
-        # 향수 데이터 텍스트를 준비합니다.
-        perfumes_text = "\n".join([f"{perfume['name']}: {perfume['description']}" for perfume in perfumes])
-        
-        # GPT를 이용해 향수를 추천합니다.
-        prompt = self.gpt_client.create_prompt(user_input, perfumes_text)  # perfumes_text 전달
-        gpt_response = self.gpt_client.get_response(user_input, perfumes_text)  # perfumes_text 전달
-        
-        return gpt_response
