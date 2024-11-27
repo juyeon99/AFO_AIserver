@@ -144,3 +144,5 @@ class GPTClient:
         
         # gpt-4를 사용해 최종 추천 생성 (perfumes_text 전달)
         return self.get_response(user_input, perfumes_text)  # perfumes_text를 추가로 전달
+    
+    
