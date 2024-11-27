@@ -47,9 +47,6 @@ async def recommend_image(data: ImageRecommendationRequest):
     텍스트 또는 이미지 URL을 기반으로 향수를 추천합니다.
     """
     try:
-        image_data = await image.read() if image else None
-        img_recommendation_service = Img_RecommendationService()
-        result = img_recommendation_service.img_recommend_perfumes(user_input=user_input, image_data=image_data)
         user_input = data.user_input
         image_url = data.image_url
 
@@ -69,3 +66,4 @@ async def recommend_image(data: ImageRecommendationRequest):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
