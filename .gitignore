@@ -1,1 +1,2 @@
-perfume_recommendation/models/prompt_template.txt
+.env
+prompt_template.txt

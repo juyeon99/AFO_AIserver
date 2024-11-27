@@ -7,7 +7,7 @@ import os
 
 load_dotenv()
 
-class RecommendationService:
+class Img_RecommendationService:
     def __init__(self):
         self.db_config = {
             "host": os.getenv("DB_HOST"),
