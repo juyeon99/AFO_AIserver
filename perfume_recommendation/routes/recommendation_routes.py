@@ -30,6 +30,20 @@ class ImageRecommendationRequest(BaseModel):
 
 router = APIRouter()
 
+@router.post("/recommend", response_model=RecommendationResponse)
+async def recommend(user_input: str = Body(...)):
+    try:
+        recommendation_service = RecommendationService()
+        result = recommendation_service.recommend_perfumes(user_input)
+        
+        # result는 이미 올바른 형식 (recommendation과 image_url을 포함)으로 반환되고 있으므로
+        # 그대로 반환
+        return {"result" : result}
+
+    except Exception as e:
+        # 에러 처리
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+
 @router.post("/image", response_model=dict)
 async def recommend_image(data: ImageRecommendationRequest = Body(...)):
     """
