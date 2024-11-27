@@ -1,9 +1,9 @@
 from fastapi import FastAPI
-from routes.recommendation_routes import router as recommendation_router
-from routes.recommendation_routes import router as image_recommendation_router
+from routers import llm_router, image_processing_router, image_generation_router
 from fastapi.middleware.cors import CORSMiddleware
-import os
 from dotenv import load_dotenv
+import os
+
 
 # 환경 변수 로드
 load_dotenv()
@@ -27,9 +27,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 라우터 등록
-app.include_router(recommendation_router, prefix="/recommendations", tags=["Recommendations"])
-app.include_router(image_recommendation_router)
+app.include_router(llm_router.router, prefix="/llm", tags=["LLM"])
+app.include_router(image_processing_router.router, prefix="/image-processing", tags=["Image Processing"])
+app.include_router(image_generation_router.router, prefix="/image-generation", tags=["Image Generation"])
 
 # Uvicorn 실행을 위한 엔트리 포인트
 if __name__ == "__main__":
