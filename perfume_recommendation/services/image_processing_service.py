@@ -21,15 +21,18 @@ class ImageProcessingService:
 
     def download_image_from_url(self, image_url: str) -> bytes:
         """
-        이미지 URL에서 이미지를 다운로드하여 바이트 데이터로 반환합니다.
+        이미지 URL에서 이미지를 다운로드하여 바이트 데이터를 반환합니다.
         """
         try:
-            response = requests.get(image_url, timeout=10)
-            response.raise_for_status()
+            headers = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+                "Referer": image_url,
+            }
+            response = requests.get(image_url, headers=headers, timeout=10)
+            response.raise_for_status()  # HTTP 오류 발생 시 예외 발생
             return response.content
-        except requests.RequestException as e:
-            logger.error(f"이미지 다운로드 실패: {str(e)}")
-            raise ValueError(f"이미지 URL에서 데이터를 가져오는 데 실패했습니다: {e}")
+        except requests.exceptions.RequestException as e:
+            raise ValueError(f"이미지 다운로드 실패: {e}")
 
     def process_image(self, image_data: bytes) -> dict:
         """
