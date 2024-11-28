@@ -28,16 +28,16 @@ class ImageGenerationService:
             # Stable Diffusion API 요청
             headers = {
                 "Authorization": f"Bearer {self.stability_api_key}",
-                "Accept": "application/json"
+                "Accept": "application/json"  # JSON 응답 기대
             }
+            # Multipart/form-data 요청 데이터 구성
             data = {
-                "prompt": prompt,
-                "output_format": "jpeg"
+                "prompt": prompt  # prompt 필드 포함
             }
             response = requests.post(
                 "https://api.stability.ai/v2beta/stable-image/generate/sd3",
                 headers=headers,
-                json=data
+                data=data  # multipart 데이터 전송
             )
 
             if response.status_code == 200:
