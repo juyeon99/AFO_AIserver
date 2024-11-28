@@ -38,8 +38,7 @@ async def process_user_input(input_data: UserInput):
             return {"mode": "chat", "response": response}
 
         elif mode == "recommendation":
-            perfumes = data
-            response = llm_service.generate_recommendation_response(user_input, perfumes)
+            response = llm_service.generate_recommendation_response(user_input, data)
             return {
                 "mode": "recommendation",
                 "recommended_perfumes": response["recommendation"],
