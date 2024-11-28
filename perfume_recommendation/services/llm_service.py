@@ -49,3 +49,5 @@ class LLMService:
             }
         except Exception as e:
             raise RuntimeError(f"추천 응답 생성 오류: {e}")
+        
+    

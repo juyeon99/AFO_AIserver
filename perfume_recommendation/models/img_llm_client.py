@@ -62,3 +62,17 @@ class GPTClient:
         except Exception as e:
             logger.error(f"처리 중 오류 발생: {str(e)}")
             return {"error": str(e)}
+        
+    def get_response(self, prompt: str, context: str = "") -> str:
+        """
+        GPT 모델을 호출하여 응답을 생성합니다.
+        """
+        # GPT 모델과의 통신 로직 구현
+        # 아래는 예시
+        try:
+            # 예시: GPT API 호출
+            response = f"Generated response for prompt: {prompt} with context: {context}"
+            return response
+        except Exception as e:
+            raise RuntimeError(f"GPT 호출 실패: {str(e)}")
+
