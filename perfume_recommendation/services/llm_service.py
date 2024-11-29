@@ -1,9 +1,9 @@
-from typing import Optional, Tuple, List, Dict
+from typing import List, Dict, Tuple, Optional
+import json
+import logging
 from models.img_llm_client import GPTClient
 from services.db_service import DBService
 from services.prompt_loader import PromptLoader
-import logging
-import json
 
 logger = logging.getLogger(__name__)
 
@@ -15,15 +15,16 @@ class LLMService:
 
     def process_input(self, user_input: str) -> Tuple[str, Optional[dict]]:
         """
-        LLM을 활용해 의도를 분류하고, 추천 모드인지 대화 모드인지 결정합니다.
+        사용자 입력을 분석하여 의도를 분류하고, 추천 모드인지 대화 모드인지 결정합니다.
         """
         try:
-        # 의도 분류를 위한 간단한 프롬프트 생성
+            # 의도 분류를 위한 간단한 프롬프트 생성
             intent_prompt = (
-            f"사용자의 입력을 분석하여 의도를 분류하세요:\n"
-            f"입력: {user_input}\n"
-            f"의도: (1) 향수 추천, (2) 일반 대화"
+                f"사용자의 입력을 분석하여 의도를 분류하세요:\n"
+                f"입력: {user_input}\n"
+                f"의도: (1) 향수 추천, (2) 일반 대화"
             )
+
             # LLM 호출
             intent = self.gpt_client.generate_response(intent_prompt)
             logger.info(f"Detected intent: {intent}")
@@ -63,7 +64,8 @@ class LLMService:
 
     def generate_recommendation_response(self, user_input: str, perfumes: List[Dict]) -> dict:
         """
-        JSON 프롬프트를 기반으로 향수 추천 응답을 생성합니다.
+        JSON 프롬프트를 기반으로 향수 추천 응답을 생성하고,
+        common_feeling을 이미지 생성 프롬프트로 사용합니다.
         """
         if not perfumes:
             raise ValueError("향수 데이터가 비어 있습니다.")
@@ -93,16 +95,17 @@ class LLMService:
             # 모델의 응답을 JSON으로 파싱
             recommendation = json.loads(response_text)
 
-            common_feeling_prompt = template["common_feeling_prompt"].format(
-                recommendation=recommendation
-            )
+            # 영어로 common_feeling 생성 (자연적이고 풍경을 연상시키는 느낌 강조)
+            common_feeling_prompt = f"Describe the overall feeling of the recommended perfumes in English with a focus on nature or landscapes. {recommendation}"
             common_feeling = self.gpt_client.generate_response(common_feeling_prompt)
+
+            # `common_feeling`은 한글로 넘기고, `image_prompt`는 영어로 넘기기
+            image_generation_prompt = f"Generate an image based on the following natural or landscape feeling: {common_feeling}"
 
             return {
                 "recommendation": recommendation,
-                "common_feeling": common_feeling
+                "common_feeling": common_feeling,  # 한글 그대로 반환
+                "image_prompt": image_generation_prompt  # 영어로 반환
             }
         except Exception as e:
             raise RuntimeError(f"추천 응답 생성 오류: {e}")
-        
-    

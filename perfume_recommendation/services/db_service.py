@@ -19,7 +19,7 @@ class DBService:
         }
         self.cache_file = "perfume_cache.json"  # 캐시 파일 경로
         self.cache_timestamp_file = "cache_timestamp.txt"  # 캐시 타임스탬프 파일
-        self.cache_duration = 2592000  # 캐시 만료 시간 (1시간)
+        self.cache_duration = 2592000  
 
     def load_perfume_data_from_db(self) -> List[Dict]:
         """
