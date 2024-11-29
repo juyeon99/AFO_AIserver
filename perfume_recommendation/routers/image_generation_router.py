@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException ,  Body
 from services.image_generation_service import ImageGenerationService
 import logging
 
@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 @router.post("/generate-image")
-async def generate_image(prompt: str):
+async def generate_image(prompt: str = Body(...)):
     """
     텍스트 프롬프트를 기반으로 이미지를 생성합니다.
     """
