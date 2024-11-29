@@ -38,11 +38,15 @@ async def process_user_input(input_data: UserInput):
             return {"mode": "chat", "response": response}
 
         elif mode == "recommendation":
+            # 향수 추천 및 공통 감정 생성
             response = llm_service.generate_recommendation_response(user_input, data)
+            
+            # 반환할 데이터에 image_prompt 추가
             return {
                 "mode": "recommendation",
                 "recommended_perfumes": response["recommendation"],
-                "common_feeling": response["common_feeling"],
+                "common_feeling": response["common_feeling"],  # 영어로 생성된 common_feeling
+                "image_prompt": response["image_prompt"]  # 이미지 생성 프롬프트
             }
 
         else:
