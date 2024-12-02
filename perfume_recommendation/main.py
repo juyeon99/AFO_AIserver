@@ -3,6 +3,7 @@ from routers import llm_router, image_processing_router, image_generation_router
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+from fastapi.staticfiles import StaticFiles
 
 
 # 환경 변수 로드
@@ -26,6 +27,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# 정적 파일 디렉토리 생성
+os.makedirs("generated_images", exist_ok=True)
+
+# static 파일 서빙 설정 - 경로 수정
+app.mount("/static", StaticFiles(directory="generated_images"), name="static")
 
 app.include_router(llm_router.router, prefix="/llm", tags=["LLM"])
 app.include_router(image_processing_router.router, prefix="/image-processing", tags=["Image Processing"])
