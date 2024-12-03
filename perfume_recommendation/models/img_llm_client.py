@@ -35,9 +35,9 @@ class GPTClient:
             # 실제로 DBService를 사용할 때 가져옵니다.
             db_service = DBService({"some": "config"})
             
-            logger.info(f"Generating response for prompt: {prompt[:100]}...")
+            logger.info(f"Generating response for prompt: {prompt}...")
             response = self.text_llm.invoke(prompt).content.strip()
-            logger.info(f"Generated response: {response[:100]}...")
+            logger.info(f"Generated response: {response}...")
             return response
         except Exception as e:
             logger.error(f"GPT 응답 생성 오류: {e}")
