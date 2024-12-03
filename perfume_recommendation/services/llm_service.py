@@ -1,5 +1,5 @@
 from typing import Tuple, Optional
-import json , logging
+import json, logging
 from models.img_llm_client import GPTClient
 from services.db_service import DBService
 from services.prompt_loader import PromptLoader
@@ -46,7 +46,6 @@ class LLMService:
                     logger.info(f"Using line_id: {line_id}")
                     return "recommendation", line_id
                 else:
-                    # Extracted line name was invalid
                     logger.error(f"Invalid line name extracted: {raw_line_name}")
                     raise ValueError(f"Invalid line name: {raw_line_name}")
 
@@ -89,7 +88,6 @@ class LLMService:
             # line_id를 사용하여 해당 향 계열의 향료 목록을 데이터베이스에서 가져옵니다.
             spices = self.db_service.fetch_spices_by_line(line_id)
             if not spices:
-                # 향료 목록이 없을 경우 로그에 오류를 기록하고 예외를 발생시킵니다.
                 logger.error(f"No spices found for line_id: {line_id}")
                 raise ValueError(f"No spices available for line_id: {line_id}")
 
@@ -98,14 +96,15 @@ class LLMService:
             # 향료 목록을 사용하여 해당 향료를 포함하는 향수를 데이터베이스에서 가져옵니다.
             perfumes = self.db_service.fetch_perfumes_by_spices(spices)
             if not perfumes:
-                # 추천할 향수가 없을 경우 로그에 오류를 기록하고 예외를 발생시킵니다.
                 logger.error(f"No perfumes found for the spices: {spices}")
                 raise ValueError(f"No perfumes available for the requested spices: {spices}")
 
             # 향수 리스트를 텍스트 형식으로 변환합니다. 각 향수의 ID, 이름, 브랜드, 설명, 주요 향료, 이미지 URL을 포함합니다.
             perfumes_text = "\n".join([
                 f"- {perfume['perfume_id']} {perfume['perfume_name']} ({perfume['perfume_brand']}): {perfume['perfume_description']} "
-                f"- 주요 향료: {perfume['spice_name']} - 이미지 URL: {perfume['perfume_url']}"
+                f"- 주요 향료: {perfume['spice_name']} - 이미지 URL: {perfume['perfume_url']} "
+                f"- 이유: {perfume.get('reason', 'No specific reason provided')} "
+                f"- 상황: {perfume.get('situation', 'No specific situation provided')}"
                 for perfume in perfumes
             ])
             
@@ -118,7 +117,9 @@ class LLMService:
                     "description": perfume['perfume_description'],
                     "key_ingredients": perfume['spice_name'],
                     "url": perfume['perfume_url'],
-                    "line": line_id
+                    "line": line_id,
+                    "reason": perfume.get('reason', 'No specific reason provided'),
+                    "situation": perfume.get('situation', 'No specific situation provided')  
                 }
                 for perfume in perfumes
             ]
@@ -156,10 +157,30 @@ class LLMService:
                 "image_prompt": translated_prompt  # 번역된 영어 프롬프트 사용
             }
         except ValueError as ve:
-            # 향수 추천 중 발생한 오류를 처리하고 클라이언트에 적절한 HTTP 오류 메시지를 전달합니다.
             logger.error(f"Recommendation error: {ve}")
             raise HTTPException(status_code=400, detail=f"Recommendation error: {ve}")
         except Exception as e:
-            # 일반적인 예외가 발생한 경우 로그에 기록하고 HTTP 예외를 발생시켜 클라이언트에 오류 메시지를 전달합니다.
             logger.error(f"Unhandled recommendation generation error: {e}")
             raise HTTPException(status_code=500, detail="Failed to generate recommendation.")
+
+    def generate_image_prompt(self, user_input: str) -> str:
+        """
+        사용자 입력을 분석하여 감정이나 상황을 표현하는 이미지 프롬프트를 생성합니다.
+        """
+        try:
+            # 사용자 입력을 기반으로 감정 또는 분위기를 추출하는 프롬프트 생성
+            emotion_prompt = (
+                f"사용자의 입력을 분석하여 감정이나 분위기를 파악하세요.\n"
+                f"입력: {user_input}\n"
+                f"결과: 감정 또는 분위기를 간단하게 묘사하십시오 (예: 행복, 차분함, 슬픔 등)."
+            )
+            emotion = self.gpt_client.generate_response(emotion_prompt).strip()
+            logger.info(f"Detected emotion: {emotion}")
+
+            # 감정에 맞는 이미지 프롬프트를 생성
+            image_prompt = f"Generate an image based on the following emotion or atmosphere: {emotion}"
+
+            return image_prompt
+        except Exception as e:
+            logger.error(f"Error generating image prompt for input '{user_input}': {e}")
+            raise HTTPException(status_code=500, detail="Failed to generate image prompt.")
