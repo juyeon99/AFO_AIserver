@@ -1,4 +1,4 @@
-from typing import List, Dict, Tuple, Optional
+from typing import Tuple, Optional
 import json , logging
 from models.img_llm_client import GPTClient
 from services.db_service import DBService
@@ -80,63 +80,85 @@ class LLMService:
             raise HTTPException(status_code=500, detail="Failed to generate chat response.")
 
     def generate_recommendation_response(self, user_input: str, line_id: int) -> dict:
-            """
-            향수를 추천하고 관련 정보를 생성합니다.
-            """
-            try:
-                # line_id로 해당 계열의 spice 목록을 가져옵니다.
-                spices = self.db_service.fetch_spices_by_line(line_id)
-                if not spices:
-                    logger.error(f"No spices found for line_id: {line_id}")
-                    raise ValueError(f"No spices available for line_id: {line_id}")
+        """
+        향수를 추천하고 관련 정보를 생성합니다.
+        - 사용자의 요청과 라인 ID에 따라 관련 향수를 추천합니다.
+        - 추천된 향수 목록을 기반으로 최종 추천 응답을 생성합니다.
+        """
+        try:
+            # line_id를 사용하여 해당 향 계열의 향료 목록을 데이터베이스에서 가져옵니다.
+            spices = self.db_service.fetch_spices_by_line(line_id)
+            if not spices:
+                # 향료 목록이 없을 경우 로그에 오류를 기록하고 예외를 발생시킵니다.
+                logger.error(f"No spices found for line_id: {line_id}")
+                raise ValueError(f"No spices available for line_id: {line_id}")
 
-                logger.info(f"Processing recommendation for spices: {spices}")
+            logger.info(f"Processing recommendation for spices: {spices}")
 
-                # 향수 데이터를 가져옴
-                perfumes = self.db_service.fetch_perfumes_by_spices(spices)
-                if not perfumes:
-                    logger.error(f"No perfumes found for the spices: {spices}")
-                    raise ValueError(f"No perfumes available for the requested spices: {spices}")
+            # 향료 목록을 사용하여 해당 향료를 포함하는 향수를 데이터베이스에서 가져옵니다.
+            perfumes = self.db_service.fetch_perfumes_by_spices(spices)
+            if not perfumes:
+                # 추천할 향수가 없을 경우 로그에 오류를 기록하고 예외를 발생시킵니다.
+                logger.error(f"No perfumes found for the spices: {spices}")
+                raise ValueError(f"No perfumes available for the requested spices: {spices}")
 
-                # 향수 리스트를 텍스트로 변환
-                perfumes_text = "\n".join([
-                    f"- {perfume['perfume_name']} ({perfume['perfume_brand']}): {perfume['perfume_description']} "
-                    f"- 주요 향료: {perfume['spice_name']} - 이미지 URL: {perfume['perfume_url']}"
-                    for perfume in perfumes
-                ])
-                template = self.prompt_loader.get_prompt("recommendation")
-                rules_text = '\n'.join(template["rules"])
-                json_example = json.dumps(template["examples"][0]["response"], ensure_ascii=False, indent=2)
-
-                # 프롬프트 생성
-                final_prompt = (
-                    f"{template['description']}\n"
-                    f"Rules:\n{rules_text}\n"
-                    f"향수 목록:\n{perfumes_text}\n"
-                    f"사용자 요청: {user_input}\n"
-                    f"응답은 항상 아래 JSON 형식을 따르세요:\n{json_example}"
-                )
-
-                response_text = self.gpt_client.generate_response(final_prompt).strip()
-                recommendation = json.loads(response_text)
-
-                # 공통 느낌 생성
-                common_feeling_prompt = template["common_feeling_prompt"].format(recommendation=recommendation)
-                common_feeling = self.gpt_client.generate_response(common_feeling_prompt).strip()
-
-                # 이미지 생성 프롬프트를 영어로 변환
-                image_generation_prompt = f"Translate the following text into English for an image generation prompt: {common_feeling}"
-                translated_prompt = self.gpt_client.generate_response(image_generation_prompt).strip()
-
-                logger.info(f"Generated recommendation: {recommendation}")
-                return {
-                    "recommendation": recommendation,
-                    "common_feeling": common_feeling,
-                    "image_prompt": translated_prompt  # 번역된 영어 프롬프트 사용
+            # 향수 리스트를 텍스트 형식으로 변환합니다. 각 향수의 ID, 이름, 브랜드, 설명, 주요 향료, 이미지 URL을 포함합니다.
+            perfumes_text = "\n".join([
+                f"- {perfume['perfume_id']} {perfume['perfume_name']} ({perfume['perfume_brand']}): {perfume['perfume_description']} "
+                f"- 주요 향료: {perfume['spice_name']} - 이미지 URL: {perfume['perfume_url']}"
+                for perfume in perfumes
+            ])
+            
+            # 향수 추천 응답에 필요한 정보에 perfume_url과 id 포함
+            recommendation_data = [
+                {
+                    "id": perfume['perfume_id'],
+                    "name": perfume['perfume_name'],
+                    "brand": perfume['perfume_brand'],
+                    "description": perfume['perfume_description'],
+                    "key_ingredients": perfume['spice_name'],
+                    "url": perfume['perfume_url']
                 }
-            except ValueError as ve:
-                logger.error(f"Recommendation error: {ve}")
-                raise HTTPException(status_code=400, detail=f"Recommendation error: {ve}")
-            except Exception as e:
-                logger.error(f"Unhandled recommendation generation error: {e}")
-                raise HTTPException(status_code=500, detail="Failed to generate recommendation.")
+                for perfume in perfumes
+            ]
+
+            # 추천용 프롬프트 템플릿을 가져옵니다. 템플릿에는 설명, 규칙, 예시 등이 포함됩니다.
+            template = self.prompt_loader.get_prompt("recommendation")
+            rules_text = '\n'.join(template["rules"])
+            json_example = json.dumps(template["examples"][0]["response"], ensure_ascii=False, indent=2)
+
+            # 최종 프롬프트를 생성합니다. 설명, 규칙, 향수 목록, 사용자 요청을 포함합니다.
+            final_prompt = (
+                f"{template['description']}\n"
+                f"Rules:\n{rules_text}\n"
+                f"향수 목록:\n{perfumes_text}\n"
+                f"사용자 요청: {user_input}\n"
+                f"응답은 항상 아래 JSON 형식을 따르세요:\n{json_example}"
+            )
+
+            # GPT 모델을 사용해 추천 응답을 생성합니다. JSON 형식의 응답을 반환합니다.
+            response_text = self.gpt_client.generate_response(final_prompt).strip()
+            recommendation = json.loads(response_text)
+
+            # 추천 응답을 기반으로 공통 느낌을 생성하기 위한 프롬프트를 구성합니다.
+            common_feeling_prompt = template["common_feeling_prompt"].format(recommendation=recommendation)
+            common_feeling = self.gpt_client.generate_response(common_feeling_prompt).strip()
+
+            # 공통 느낌을 영어로 번역하여 이미지 생성 프롬프트로 사용합니다.
+            image_generation_prompt = f"Translate the following text into English for an image generation prompt: {common_feeling}"
+            translated_prompt = self.gpt_client.generate_response(image_generation_prompt).strip()
+
+            logger.info(f"Generated recommendation: {recommendation}")
+            return {
+                "recommendation": recommendation_data,  # 향수 URL 및 ID 포함
+                "common_feeling": common_feeling,
+                "image_prompt": translated_prompt  # 번역된 영어 프롬프트 사용
+            }
+        except ValueError as ve:
+            # 향수 추천 중 발생한 오류를 처리하고 클라이언트에 적절한 HTTP 오류 메시지를 전달합니다.
+            logger.error(f"Recommendation error: {ve}")
+            raise HTTPException(status_code=400, detail=f"Recommendation error: {ve}")
+        except Exception as e:
+            # 일반적인 예외가 발생한 경우 로그에 기록하고 HTTP 예외를 발생시켜 클라이언트에 오류 메시지를 전달합니다.
+            logger.error(f"Unhandled recommendation generation error: {e}")
+            raise HTTPException(status_code=500, detail="Failed to generate recommendation.")
