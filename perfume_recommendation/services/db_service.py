@@ -1,39 +1,42 @@
 import mysql.connector
 from mysql.connector import Error
 from typing import List, Dict
-from dotenv import load_dotenv
-import os
 import json
-import time
+import logging
+# Lazy Import를 사용할 것이므로 초기에는 GPTClient 임포트를 하지 않습니다.
+# from models.img_llm_client import GPTClient
+from services.prompt_loader import PromptLoader
+from fastapi import HTTPException
 
-load_dotenv()
+logger = logging.getLogger(__name__)
 
 class DBService:
-    def __init__(self):
-        self.db_config = {
-            "host": os.getenv("DB_HOST"),
-            "port": os.getenv("DB_PORT"),
-            "user": os.getenv("DB_USER"),
-            "password": os.getenv("DB_PASSWORD"),
-            "database": os.getenv("DB_NAME"),
-        }
-        self.cache_file = "perfume_cache.json"  # 캐시 파일 경로
-        self.cache_timestamp_file = "cache_timestamp.txt"  # 캐시 타임스탬프 파일
-        self.cache_duration = 2592000  
+    def __init__(self, db_config: Dict[str, str]):
+        self.db_config = db_config
 
-    def load_perfume_data_from_db(self) -> List[Dict]:
+    def some_method_that_needs_gpt_client(self):
+        # Lazy Import를 통해 순환 참조 문제 해결
+        from models.img_llm_client import GPTClient  
+        gpt_client = GPTClient(prompt_loader=PromptLoader("template_path"))
+
+    def fetch_spices_by_line(self, line_id: int) -> List[str]:
         """
-        데이터베이스에서 향수 데이터를 가져옵니다.
+        특정 line_id에 속한 향료 목록을 가져옵니다.
+        """
+        query = """
+        SELECT s.name_kr
+        FROM spice s
+        WHERE s.line_id = %s
         """
         try:
             connection = mysql.connector.connect(**self.db_config)
             cursor = connection.cursor(dictionary=True)
-            query = "SELECT id, name, brand, description FROM perfume"
-            cursor.execute(query)
-            perfumes = cursor.fetchall()
-            return perfumes
+            cursor.execute(query, (line_id,))
+            spices = [row['name_kr'] for row in cursor.fetchall()]
+            logger.info(f"Fetched spices for line_id {line_id}: {spices}")
+            return spices
         except Error as e:
-            print(f"데이터베이스 연결 오류: {e}")
+            logger.error(f"Database error while fetching spices: {e}")
             return []
         finally:
             if cursor:
@@ -41,47 +44,43 @@ class DBService:
             if connection:
                 connection.close()
 
-    def is_cache_valid(self) -> bool:
+    def fetch_perfumes_by_spices(self, spices: List[str]) -> List[Dict]:
         """
-        캐시 파일의 타임스탬프를 확인하여 캐시가 유효한지 확인합니다.
+        주어진 향료를 기준으로 향수를 가져옵니다.
         """
-        if not os.path.exists(self.cache_timestamp_file):
-            return False  # 캐시 타임스탬프 파일이 없으면 캐시가 유효하지 않음
-
-        with open(self.cache_timestamp_file, "r") as f:
-            last_timestamp = float(f.read())
-
-        current_time = time.time()
-        if current_time - last_timestamp < self.cache_duration:
-            return True  # 캐시가 유효함
-
-        return False  # 캐시가 만료됨
-
-    def load_perfume_data(self) -> List[Dict]:
+        placeholders = ', '.join(['%s'] * len(spices))
+        query = f"""
+        SELECT
+            p.id AS perfume_id,
+            p.name AS perfume_name,
+            p.brand AS perfume_brand,
+            p.description AS perfume_description,
+            MAX(pi.url) AS perfume_url,
+            GROUP_CONCAT(DISTINCT s.name_kr SEPARATOR ', ') AS spice_name,
+            COUNT(s.id) AS spice_count
+        FROM perfume p
+        LEFT JOIN perfume_image pi ON p.id = pi.perfume_id
+        LEFT JOIN base_note bn ON p.id = bn.perfume_id
+        LEFT JOIN middle_note mn ON p.id = mn.perfume_id
+        LEFT JOIN top_note tn ON p.id = tn.perfume_id
+        LEFT JOIN spice s ON FIND_IN_SET(s.name_kr, CONCAT_WS(',', bn.spices, mn.spices, tn.spices)) > 0
+        WHERE s.name_kr IN ({placeholders})
+        GROUP BY p.id
+        ORDER BY spice_count DESC
+        LIMIT 3;
         """
-        캐시 파일에서 향수 데이터를 로드합니다.
-        캐시가 유효하지 않으면 데이터베이스에서 데이터를 로드하여 캐시를 갱신합니다.
-        """
-        if self.is_cache_valid():
-            # 캐시가 유효하면 캐시된 데이터를 로드
-            with open(self.cache_file, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                print("캐시에서 향수 데이터 로드")
-                return data
-        else:
-            # 캐시가 만료되었거나 없으면 데이터베이스에서 데이터 로드
-            perfume_data = self.load_perfume_data_from_db()
-            # 데이터베이스에서 가져온 데이터를 캐시 파일에 저장
-            with open(self.cache_file, "w", encoding="utf-8") as f:
-                json.dump(perfume_data, f, ensure_ascii=False, indent=2)
-            # 캐시 타임스탬프 갱신
-            with open(self.cache_timestamp_file, "w") as timestamp_f:
-                timestamp_f.write(str(time.time()))
-            print("데이터베이스에서 향수 데이터를 로드하여 캐시 갱신")
-            return perfume_data
-
-    def fetch_perfume_data(self) -> List[Dict]:
-        """
-        향수 데이터를 반환합니다 (메모리에서 가져옵니다).
-        """
-        return self.load_perfume_data()
+        try:
+            connection = mysql.connector.connect(**self.db_config)
+            cursor = connection.cursor(dictionary=True)
+            cursor.execute(query, spices)
+            perfumes = cursor.fetchall()
+            logger.info(f"Fetched perfumes for spices {spices}: {perfumes}")
+            return perfumes
+        except Error as e:
+            logger.error(f"Database error while fetching perfumes: {e}")
+            return []
+        finally:
+            if cursor:
+                cursor.close()
+            if connection:
+                connection.close()
