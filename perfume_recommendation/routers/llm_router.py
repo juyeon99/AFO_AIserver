@@ -1,58 +1,101 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from services.llm_service import LLMService
 from services.db_service import DBService
 from services.prompt_loader import PromptLoader
 from models.img_llm_client import GPTClient
+from utils.line_mapping import LineMapping
 import os
+import logging
 
-# 라우터 인스턴스 생성
+logger = logging.getLogger(__name__)
+
+# Create router instance
 router = APIRouter()
 
-# 필요한 의존성 초기화
+# Dependency initialization
 template_path = os.path.join(os.path.dirname(__file__), "..", "models", "prompt_template.json")
+line_file_path = os.path.join(os.path.dirname(__file__), "..", "models", "line.json")
+line_mapping = LineMapping(line_file_path)
+
+# Load environment variables for API key and database config
+api_key = os.getenv("OPENAI_API_KEY")
+db_config = {
+    "host": os.getenv("DB_HOST"),
+    "port": os.getenv("DB_PORT"),
+    "user": os.getenv("DB_USER"),
+    "password": os.getenv("DB_PASSWORD"),
+    "database": os.getenv("DB_NAME"),
+}
+
+# Validate configuration
+if not api_key:
+    raise RuntimeError("OPENAI_API_KEY environment variable is not set.")
+if not all(db_config.values()):
+    raise RuntimeError("Incomplete database configuration. Please check environment variables.")
+
+# Create dependency instances
+db_service = DBService(db_config=db_config)
 prompt_loader = PromptLoader(template_path)
-gpt_client = GPTClient(template_path=template_path)
-db_service = DBService()
+gpt_client = GPTClient(prompt_loader=prompt_loader)
 
-# LLMService 인스턴스 생성
-llm_service = LLMService(gpt_client=gpt_client, db_service=db_service, prompt_loader=prompt_loader)
+# Create LLMService instance
+llm_service = LLMService(
+    gpt_client=gpt_client,
+    db_service=db_service,
+    prompt_loader=prompt_loader,
+    line_mapping=line_mapping
+)
 
-# Pydantic 모델 정의
+# Define Pydantic model
 class UserInput(BaseModel):
     user_input: str
 
+def get_llm_service() -> LLMService:
+    return llm_service
 
-# 엔드포인트 정의
 @router.post("/process-input")
-async def process_user_input(input_data: UserInput):
+async def process_user_input(input_data: UserInput, llm_service: LLMService = Depends(get_llm_service)):
     """
-    사용자 입력을 처리하여 대화 또는 향수 추천을 반환합니다.
+    Process user input and return either conversation or perfume recommendation results.
     """
     try:
         user_input = input_data.user_input
-        mode, data = llm_service.process_input(user_input)
+        mode, line_id = llm_service.process_input(user_input)
+
+        logger.info(f"Processing input with mode: {mode}, line_id: {line_id}")
 
         if mode == "chat":
             response = llm_service.generate_chat_response(user_input)
             return {"mode": "chat", "response": response}
 
         elif mode == "recommendation":
-            # 향수 추천 및 공통 감정 생성
-            response = llm_service.generate_recommendation_response(user_input, data)
-            
-            # 반환할 데이터에 image_prompt 추가
+            if line_id is None:
+                raise HTTPException(status_code=400, detail="Line ID not found for recommendation.")
+            response = llm_service.generate_recommendation_response(user_input, line_id)
+
+            # Translate image prompt to English if needed
+            image_prompt = response["image_prompt"]
+            translated_image_prompt = gpt_client.generate_response(f"Translate the following text to English:\n{image_prompt}")
+
             return {
                 "mode": "recommendation",
                 "recommended_perfumes": response["recommendation"],
-                "common_feeling": response["common_feeling"],  # 영어로 생성된 common_feeling
-                "image_prompt": response["image_prompt"]  # 이미지 생성 프롬프트
+                "common_feeling": response["common_feeling"],
+                "image_prompt": translated_image_prompt
             }
 
         else:
             raise HTTPException(status_code=400, detail="Unknown mode")
 
     except ValueError as e:
+        logger.error(f"ValueError: {str(e)}")
         raise HTTPException(status_code=400, detail=f"Input Error: {str(e)}")
+
+    except RuntimeError as e:
+        logger.error(f"RuntimeError: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Service Error: {str(e)}")
+
     except Exception as e:
+        logger.error(f"Unhandled Exception: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
