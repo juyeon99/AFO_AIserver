@@ -1,12 +1,8 @@
 import mysql.connector
 from mysql.connector import Error
 from typing import List, Dict
-import json
 import logging
-# Lazy Import를 사용할 것이므로 초기에는 GPTClient 임포트를 하지 않습니다.
-# from models.img_llm_client import GPTClient
 from services.prompt_loader import PromptLoader
-from fastapi import HTTPException
 
 logger = logging.getLogger(__name__)
 
