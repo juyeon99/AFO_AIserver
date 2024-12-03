@@ -22,7 +22,7 @@ class LineMapping:
         except Exception as e:
             logger.error(f"Error loading line mapping from file: {e}")
             raise RuntimeError(f"Error loading line mapping from file: {e}")
-
+    
     def get_line_id(self, line_name: str) -> Optional[int]:
         """
         Get the line ID for a given line name.

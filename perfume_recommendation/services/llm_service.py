@@ -117,7 +117,8 @@ class LLMService:
                     "brand": perfume['perfume_brand'],
                     "description": perfume['perfume_description'],
                     "key_ingredients": perfume['spice_name'],
-                    "url": perfume['perfume_url']
+                    "url": perfume['perfume_url'],
+                    "line": line_id
                 }
                 for perfume in perfumes
             ]
