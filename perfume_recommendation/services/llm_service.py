@@ -163,18 +163,28 @@ class LLMService:
     def generate_image_prompt(self, user_input: str) -> str:
         """
         사용자 입력을 분석하여 감정이나 상황을 표현하는 이미지 프롬프트를 생성합니다.
+        짧은 문장을 받아도 반드시 이미지 생성을 할 수 있도록 문장을 확장합니다.
         """
         try:
             emotion_prompt = (
                 f"사용자의 입력을 분석하여 감정이나 분위기를 파악하세요.\n"
                 f"입력: {user_input}\n"
-                f"결과: 감정 또는 분위기를 간단하게 묘사하십시오 (예: 행복, 차분함, 슬픔 등)."
+                f"결과: 감정 또는 분위기를 간단하게 묘사하십시오 (예: 행복, 차분함, 슬픔 등). "
+                f"이 감정에 맞는 이미지의 구체적인 디테일을 설명하십시오. "
+                f"예를 들어, '행복'이면 밝고 따뜻한 색조와 자연 풍경, 사람들의 웃음과 같은 특징을 포함하도록."
             )
             emotion = self.gpt_client.generate_response(emotion_prompt).strip()
             logger.info(f"Detected emotion: {emotion}")
 
-            image_prompt = f"Generate an image based on the following emotion or atmosphere: {emotion}"
+            # 감정과 분위기에 맞는 이미지를 구체적으로 설명하도록 확장
+            image_prompt = (
+                f"Generate an image based on the following emotion or atmosphere: {emotion}. "
+                f"Include details such as lighting, color tones, the setting, objects, and people, "
+                f"ensuring the scene visually captures the feeling described in the emotion."
+            )
+            
             return image_prompt
+
         except Exception as e:
             logger.error(f"Error generating image prompt for input '{user_input}': {e}")
             raise HTTPException(status_code=500, detail="Failed to generate image prompt.")
