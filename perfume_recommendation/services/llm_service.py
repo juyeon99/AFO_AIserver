@@ -107,7 +107,7 @@ class LLMService:
                 f"- 상황: {perfume.get('situation', 'No specific situation provided')}"
                 for perfume in perfumes
             ])
-            
+
             # 향수 추천 응답에 필요한 정보에 perfume_url과 id 포함
             recommendation_data = [
                 {
@@ -117,7 +117,7 @@ class LLMService:
                     "description": perfume['perfume_description'],
                     "key_ingredients": perfume['spice_name'],
                     "url": perfume['perfume_url'],
-                    "line": line_id,
+                    "line": line_id,  # line_name 추가
                     "reason": perfume.get('reason', 'No specific reason provided'),
                     "situation": perfume.get('situation', 'No specific situation provided')  
                 }
@@ -140,7 +140,20 @@ class LLMService:
 
             # GPT 모델을 사용해 추천 응답을 생성합니다. JSON 형식의 응답을 반환합니다.
             response_text = self.gpt_client.generate_response(final_prompt).strip()
-            recommendation = json.loads(response_text)
+            logger.info(f"Generated response: {response_text}")
+
+            # 응답이 비어 있거나 잘못된 형식일 경우 예외 처리
+            if not response_text:
+                logger.error("Received empty response from GPT model.")
+                raise HTTPException(status_code=500, detail="Received empty response from GPT model.")
+
+            # JSON 응답으로 파싱
+            try:
+                recommendation = json.loads(response_text)
+            except json.JSONDecodeError as e:
+                logger.error(f"Error decoding JSON response: {e}")
+                logger.error(f"Response Text: {response_text}")  # 응답 텍스트를 로그로 기록
+                raise HTTPException(status_code=500, detail="Failed to decode JSON response from GPT model.")
 
             # 추천 응답을 기반으로 공통 느낌을 생성하기 위한 프롬프트를 구성합니다.
             common_feeling_prompt = template["common_feeling_prompt"].format(recommendation=recommendation)
@@ -162,25 +175,3 @@ class LLMService:
         except Exception as e:
             logger.error(f"Unhandled recommendation generation error: {e}")
             raise HTTPException(status_code=500, detail="Failed to generate recommendation.")
-
-    def generate_image_prompt(self, user_input: str) -> str:
-        """
-        사용자 입력을 분석하여 감정이나 상황을 표현하는 이미지 프롬프트를 생성합니다.
-        """
-        try:
-            # 사용자 입력을 기반으로 감정 또는 분위기를 추출하는 프롬프트 생성
-            emotion_prompt = (
-                f"사용자의 입력을 분석하여 감정이나 분위기를 파악하세요.\n"
-                f"입력: {user_input}\n"
-                f"결과: 감정 또는 분위기를 간단하게 묘사하십시오 (예: 행복, 차분함, 슬픔 등)."
-            )
-            emotion = self.gpt_client.generate_response(emotion_prompt).strip()
-            logger.info(f"Detected emotion: {emotion}")
-
-            # 감정에 맞는 이미지 프롬프트를 생성
-            image_prompt = f"Generate an image based on the following emotion or atmosphere: {emotion}"
-
-            return image_prompt
-        except Exception as e:
-            logger.error(f"Error generating image prompt for input '{user_input}': {e}")
-            raise HTTPException(status_code=500, detail="Failed to generate image prompt.")
