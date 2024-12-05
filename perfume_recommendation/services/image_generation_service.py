@@ -22,14 +22,14 @@ class ImageGenerationService:
         if not self.stability_api_key:
             raise ValueError("STABILITY_API_KEY 환경 변수가 설정되지 않았습니다.")
 
-    def generate_image(self, prompt: str) -> dict:
+    def generate_image(self, imageGeneratePrompt: str) -> dict:
         try:
             headers = {
                 "Authorization": f"Bearer {self.stability_api_key}",
                 "Accept": "image/*"
             }
             files = {
-                "prompt": (None, prompt),
+                "imageGeneratePrompt": (None, imageGeneratePrompt),
                 "output_format": (None, "jpeg"),
             }
 
