@@ -11,10 +11,10 @@ class LLMImageService:
     def generate_image_description(self, user_input: str) -> str:
         try:
             image_prompt = f"Create a detailed description of an image based on the following keywords: {user_input}"
-            image_description = self.gpt_client.generate_response(image_prompt)  
-            if not image_description:
+            imageGeneratePrompt = self.gpt_client.generate_response(image_prompt)  
+            if not imageGeneratePrompt:
                 raise ValueError("Failed to generate image description.")
-            return image_description
+            return imageGeneratePrompt
         except Exception as e:
             logger.error(f"Error generating image description: {e}")
             raise HTTPException(status_code=500, detail="Failed to generate image description.")
