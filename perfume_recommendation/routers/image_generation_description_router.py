@@ -1,4 +1,3 @@
-# routers/image_generation_description_router.py
 from fastapi import APIRouter, Depends
 from services.llm_img_service import LLMImageService
 from models.img_llm_client import GPTClient

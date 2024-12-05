@@ -58,98 +58,6 @@ class LLMService:
             logger.error(f"Error processing input '{user_input}': {e}")
             raise HTTPException(status_code=500, detail="Failed to classify user intent.")
 
-    def generate_recommendation_response(self, user_input: str, line_id: int) -> dict:
-        try:
-            logger.info(f"Processing recommendation for user input: {user_input}, line_id: {line_id}")
-
-            # Fetch spices for the given line_id
-            spices = self.db_service.fetch_spices_by_line(line_id)
-            if not spices:
-                logger.error(f"No spices found for line_id {line_id}.")
-                raise ValueError("No spices found for the given fragrance line.")
-
-            logger.info(f"Fetched spices for line_id {line_id}: {spices}")
-
-            # Fetch perfumes using the spices
-            perfumes = self.db_service.fetch_perfumes_by_spices(spices)
-            if not perfumes:
-                logger.error(f"No perfumes found for spices: {spices}")
-                raise ValueError("No perfumes found for the given spices.")
-
-            logger.info(f"Fetched perfumes for spices {spices}: {perfumes}")
-
-            # Prepare perfumes text for GPT prompt
-            perfumes_text = "\n".join([
-                f"{idx + 1}. {perfume['perfume_id']} ({perfume['perfume_brand']}): {perfume['perfume_description']}"
-                for idx, perfume in enumerate(perfumes)
-            ])
-            logger.info(f"Prepared perfumes text for GPT prompt:\n{perfumes_text}")
-
-            # Load prompt template and generate final GPT prompt
-            template = self.prompt_loader.get_prompt("recommendation")
-            final_prompt = (
-                f"{template['description']}\n"
-                f"Perfumes:\n{perfumes_text}\n"
-                f"Return the result as a JSON object with a 'recommendations' key. "
-                f"The 'recommendations' key must be a list of objects, each containing 'reason' and 'situation'."
-            )
-            logger.info(f"Generated GPT prompt:\n{final_prompt}")
-
-            # Generate response from GPT
-            response_text = self.gpt_client.generate_response(final_prompt).strip()
-            if not response_text:
-                logger.error("GPT response is empty.")
-                raise ValueError("Received an empty response from GPT.")
-
-            # Extract JSON structure from GPT response
-            json_start = response_text.find('{')
-            json_end = response_text.rfind('}') + 1
-            if json_start == -1 or json_end <= json_start:
-                logger.error(f"Invalid JSON structure in GPT response: {response_text}")
-                raise ValueError("Invalid JSON structure in GPT response.")
-
-            gpt_response = json.loads(response_text[json_start:json_end])
-
-            # Validate 'recommendations' key
-            if "recommendations" not in gpt_response:
-                logger.warning(f"'recommendations' key missing in GPT response: {gpt_response}")
-                gpt_response["recommendations"] = [
-                    {"reason": "Default reason: Unable to generate detailed recommendations.",
-                    "situation": "Default situation: Suitable for general occasions."}
-                ]
-
-            # Generate recommendations
-            recommendations = [
-                {
-                    "name": f"{perfume['perfume_id']} ({perfume['perfume_brand']})",
-                    "reason": gpt_entry.get("reason", "No specific reason provided"),
-                    "situation": gpt_entry.get("situation", "No specific situation provided")
-                }
-                for perfume, gpt_entry in zip(perfumes, gpt_response["recommendations"])
-            ]
-            logger.info(f"Final recommendations: {recommendations}")
-
-            # Generate common feeling
-            common_feeling_prompt = template["common_feeling_prompt"].format(recommendation=recommendations)
-            common_feeling = self.gpt_client.generate_response(common_feeling_prompt).strip()
-
-            # Generate image prompt
-            image_generation_prompt = f"Translate the following text into English for an image generation prompt: {common_feeling}"
-            image_prompt = self.gpt_client.generate_response(image_generation_prompt).strip()
-
-            # Return structured response
-            return {
-                "recommendations": recommendations,
-                "common_feeling": common_feeling,
-                "image_prompt": image_prompt,
-            }
-        except ValueError as e:
-            logger.error(f"ValueError in recommendation generation: {e}")
-            raise HTTPException(status_code=400, detail=str(e))
-        except Exception as e:
-            logger.error(f"Unhandled error in generate_recommendation_response: {e}")
-            raise HTTPException(status_code=500, detail="Failed to generate recommendations.")
-
     def generate_chat_response(self, user_input: str) -> str:
         """
         JSON 프롬프트를 기반으로 대화 응답을 생성합니다.
@@ -256,17 +164,10 @@ class LLMService:
             # GPT 클라이언트를 사용하여 응답 생성
             common_feeling = self.gpt_client.generate_response(common_feeling_prompt).strip()
 
-            # GPT에게 이미지 생성 요청을 위한 프롬프트 생성
-            image_prompt = f"Create a detailed description of an image based on the following keywords: {user_input}"
-
-            # GPT에게 이미지 생성을 위한 텍스트 요청
-            image_description = self.gpt_client.generate_response(image_prompt).strip()
-
             # Return structured response with image description from GPT
             return {
                 "recommendations": recommendations,
-                "common_feeling": common_feeling,
-                "image_prompt": image_description,
+                "content": common_feeling,
                 "line_id": line_id
             }
         except ValueError as e:

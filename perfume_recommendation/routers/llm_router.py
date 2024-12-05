@@ -63,7 +63,7 @@ async def process_user_input(input_data: UserInput, llm_service: LLMService = De
         user_input = input_data.user_input
         mode, line_id = llm_service.process_input(user_input)
 
-        logger.info(f"Processing user input: mode={mode}, line_id={line_id}, input={user_input}")
+        logger.info(f"Processing user input: mode={mode}, input={user_input}")
 
         if mode == "chat":
             response = llm_service.generate_chat_response(user_input)
@@ -79,15 +79,13 @@ async def process_user_input(input_data: UserInput, llm_service: LLMService = De
 
             # Extract and format response fields
             recommendations = response.get("recommendations", [])
-            common_feeling = response.get("common_feeling", "No common feeling generated.")
-            image_prompt = response.get("image_prompt", "No image prompt generated.")
+            content = response.get("content", "No common feeling generated.")
             line_id = response.get("line_id", "No line_id generated")
 
             return {
                 "mode": "recommendation",
                 "recommendations": recommendations,
-                "common_feeling": common_feeling,
-                "image_prompt": image_prompt,
+                "content": content,
                 "line_id": line_id
             }
 
