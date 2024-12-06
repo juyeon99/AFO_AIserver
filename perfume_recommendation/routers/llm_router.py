@@ -13,11 +13,16 @@ logger = logging.getLogger(__name__)
 # Create router instance
 router = APIRouter()
 
+
 # Dependency initialization function
 def get_llm_service() -> LLMService:
     try:
-        template_path = os.path.join(os.path.dirname(__file__), "..", "models", "prompt_template.json")
-        line_file_path = os.path.join(os.path.dirname(__file__), "..", "models", "line.json")
+        template_path = os.path.join(
+            os.path.dirname(__file__), "..", "models", "prompt_template.json"
+        )
+        line_file_path = os.path.join(
+            os.path.dirname(__file__), "..", "models", "line.json"
+        )
 
         # Load environment variables
         api_key = os.getenv("OPENAI_API_KEY")
@@ -32,7 +37,9 @@ def get_llm_service() -> LLMService:
             "database": os.getenv("DB_NAME"),
         }
         if not all(db_config.values()):
-            raise RuntimeError("Incomplete database configuration. Please check environment variables.")
+            raise RuntimeError(
+                "Incomplete database configuration. Please check environment variables."
+            )
 
         # Create instances
         line_mapping = LineMapping(line_file_path)
@@ -44,18 +51,22 @@ def get_llm_service() -> LLMService:
             gpt_client=gpt_client,
             db_service=db_service,
             prompt_loader=prompt_loader,
-            line_mapping=line_mapping
+            line_mapping=line_mapping,
         )
     except Exception as e:
         logger.error(f"Failed to initialize dependencies: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to initialize services.")
 
+
 # Pydantic model for input validation
 class UserInput(BaseModel):
     user_input: str
 
+
 @router.post("/process-input")
-async def process_user_input(input_data: UserInput, llm_service: LLMService = Depends(get_llm_service)):
+async def process_user_input(
+    input_data: UserInput, llm_service: LLMService = Depends(get_llm_service)
+):
     """
     Process user input and return either conversation or perfume recommendation results.
     """
@@ -67,12 +78,14 @@ async def process_user_input(input_data: UserInput, llm_service: LLMService = De
 
         if mode == "chat":
             response = llm_service.generate_chat_response(user_input)
-            return {"mode": "chat", "response": response}
+            return {"mode": "chat", "content": response}
 
         elif mode == "recommendation":
             if not line_id:
                 logger.error("Line ID not found for recommendation.")
-                raise HTTPException(status_code=400, detail="Line ID not found for recommendation.")
+                raise HTTPException(
+                    status_code=400, detail="Line ID not found for recommendation."
+                )
 
             # Generate recommendation response
             response = llm_service.generate_recommendation_response(user_input, line_id)
@@ -86,7 +99,7 @@ async def process_user_input(input_data: UserInput, llm_service: LLMService = De
                 "mode": "recommendation",
                 "recommendations": recommendations,
                 "content": content,
-                "line_id": line_id
+                "lineId": line_id,
             }
 
         else:
