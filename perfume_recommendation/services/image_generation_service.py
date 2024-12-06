@@ -12,6 +12,7 @@ logging.basicConfig(level=logging.INFO)
 # 환경 변수 로드
 load_dotenv()
 
+
 class ImageGenerationService:
     def __init__(self):
         self.stability_api_key = os.getenv("STABILITY_API_KEY")
@@ -26,36 +27,38 @@ class ImageGenerationService:
         try:
             headers = {
                 "Authorization": f"Bearer {self.stability_api_key}",
-                "Accept": "image/*"
+                "Accept": "image/*",
             }
             files = {
-                "imageGeneratePrompt": (None, imageGeneratePrompt),
+                "prompt": (None, imageGeneratePrompt),
                 "output_format": (None, "jpeg"),
             }
 
             response = requests.post(
                 "https://api.stability.ai/v2beta/stable-image/generate/sd3",
                 headers=headers,
-                files=files
+                files=files,
             )
 
             if response.status_code == 200:
-                output_filename = f"generated_image_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpeg"
-                
+                output_filename = (
+                    f"generated_image_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpeg"
+                )
+
                 # 파일 저장 경로
                 output_path = Path(self.image_folder) / output_filename
-                
+
                 # 이미지 저장
                 with open(output_path, "wb") as file:
                     file.write(response.content)
 
                 # URL 경로 생성 - /static/ 다음에 바로 파일명이 오도록 수정
                 relative_url = f"/static/{output_filename}"
-                
+
                 logger.info(f"이미지가 성공적으로 생성되었습니다: {output_path}")
                 return {
                     "output_path": relative_url,
-                    "absolute_path": str(output_path.resolve())
+                    "absolute_path": str(output_path.resolve()),
                 }
             else:
                 try:

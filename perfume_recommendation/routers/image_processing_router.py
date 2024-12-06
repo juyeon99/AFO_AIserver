@@ -4,6 +4,7 @@ from services.image_processing_service import ImageProcessingService
 router = APIRouter()
 image_processing_service = ImageProcessingService()
 
+
 @router.post("/process-image")
 async def process_image(file: UploadFile = File(...)):
     """
@@ -15,7 +16,7 @@ async def process_image(file: UploadFile = File(...)):
 
         # 이미지 처리
         result = image_processing_service.process_image(image_data)
-        return {"message": "이미지 처리 성공", "result": result}
+        return {"imageProcessResult": result["feeling"]}
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
