@@ -10,7 +10,7 @@ class LLMImageService:
 
     def generate_image_description(self, user_input: str) -> str:
         try:
-            image_prompt = f"Create a detailed description of an image based on the following keywords: {user_input}"
+            image_prompt = f"Please write a detailed description of the image based on the following keywords: {user_input} Please make sure that your answers are in English. You do not need to explain what the user's keywords are when you answer."
             imageGeneratePrompt = self.gpt_client.generate_response(image_prompt)  
             if not imageGeneratePrompt:
                 raise ValueError("Failed to generate image description.")
