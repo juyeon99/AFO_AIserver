@@ -3,6 +3,8 @@ from mysql.connector import Error
 from typing import List, Dict
 import logging
 from services.prompt_loader import PromptLoader
+import json , os
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -15,11 +17,16 @@ class DBService:
         from models.img_llm_client import GPTClient  
         gpt_client = GPTClient(prompt_loader=PromptLoader("template_path"))
 
-    def fetch_spices_by_line(self, line_id: int) -> List[str]:
+    def fetch_spices_by_line(self, line_name: str) -> List[str]:
         """
-        특정 line_id에 속한 향료 목록을 가져옵니다.
+        특정 line_name에 속한 향료 목록을 가져옵니다.
         """
-        query = """
+        line_query = """
+        SELECT id
+        FROM line
+        WHERE name = %s
+        """
+        spice_query = """
         SELECT s.name_kr
         FROM spice s
         WHERE s.line_id = %s
@@ -27,9 +34,19 @@ class DBService:
         try:
             connection = mysql.connector.connect(**self.db_config)
             cursor = connection.cursor(dictionary=True)
-            cursor.execute(query, (line_id,))
+            
+            # Fetch line_id from line table
+            cursor.execute(line_query, (line_name,))
+            line_result = cursor.fetchone()
+            if not line_result:
+                logger.error(f"No line found for line_name: {line_name}")
+                return []
+            line_id = line_result['id']
+            
+            # Fetch spices using line_id
+            cursor.execute(spice_query, (line_id,))
             spices = [row['name_kr'] for row in cursor.fetchall()]
-            logger.info(f"Fetched spices for line_id {line_id}: {spices}")
+            logger.info(f"Fetched spices for line_name {line_name} (line_id {line_id}): {spices}")
             return spices
         except Error as e:
             logger.error(f"Database error while fetching spices: {e}")
@@ -80,3 +97,38 @@ class DBService:
                 cursor.close()
             if connection:
                 connection.close()
+
+    def fetch_perfumes_by_user_input(self, user_input: str, max_results: int = 3):
+        """
+        사용자 입력을 기반으로 필터링된 향수 목록을 반환하며, 최대 결과 수를 제한합니다.
+        """
+        # Load the perfume cache
+        base_path = os.path.abspath(os.path.dirname(__file__))
+        cache_path = os.path.join(base_path, "..", "perfume_cache.json")
+
+        if not os.path.exists(cache_path):
+            raise RuntimeError(f"Perfume cache file not found: {cache_path}")
+
+        with open(cache_path, "r", encoding="utf-8") as file:
+            perfumes = json.load(file)
+
+        # Preprocess user input
+        user_input = user_input.strip().lower()
+
+        # Use regular expressions to filter perfumes based on user input
+        filtered_perfumes = [
+            perfume for perfume in perfumes
+            if re.search(user_input, perfume["brand"].lower()) or re.search(user_input, perfume["name"].lower())
+        ]
+
+        # Log filtered perfumes
+        logger.info(f"Filtered perfumes (before limiting results): {filtered_perfumes}")
+
+        # Return limited results
+        limited_results = filtered_perfumes[:max_results]
+        logger.info(f"Filtered perfumes (limited to {max_results}): {limited_results}")
+
+        if not limited_results:
+            raise ValueError(f"No perfumes found for the given user input: {user_input}")
+
+        return limited_results

@@ -1,0 +1,14 @@
+.env
+perfume_recommendation/__pycache__/main.cpython-312.pyc
+perfume_recommendation/models/__pycache__/img_llm_client.cpython-312.pyc
+perfume_recommendation/routers/__pycache__/image_generation_description_router.cpython-312.pyc
+perfume_recommendation/routers/__pycache__/image_generation_router.cpython-312.pyc
+perfume_recommendation/routers/__pycache__/image_processing_router.cpython-312.pyc
+perfume_recommendation/routers/__pycache__/llm_router.cpython-312.pyc
+perfume_recommendation/services/__pycache__/db_service.cpython-312.pyc
+perfume_recommendation/services/__pycache__/image_generation_service.cpython-312.pyc
+perfume_recommendation/services/__pycache__/image_processing_service.cpython-312.pyc
+perfume_recommendation/services/__pycache__/llm_img_service.cpython-312.pyc
+perfume_recommendation/services/__pycache__/llm_service.cpython-312.pyc
+perfume_recommendation/services/__pycache__/prompt_loader.cpython-312.pyc
+perfume_recommendation/utils/__pycache__/line_mapping.cpython-312.pyc
