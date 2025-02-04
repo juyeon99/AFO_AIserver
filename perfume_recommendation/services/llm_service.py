@@ -64,24 +64,24 @@ class LLMService:
         try:
             logger.info(f"Processing recommendation for user input: {user_input}")
 
-            # 향수 데이터 가져오기
+            # ✅ 향수 데이터 가져오기
             perfumes = self.db_service.fetch_product()
             if not perfumes:
                 logger.error("No perfumes found")
                 raise ValueError("No perfumes found in database")
 
-            # 향수 정보를 GPT 프롬프트로 변환
+            # ✅ 향수 정보를 GPT 프롬프트로 변환
             products_text = "\n".join([
-                f"{idx + 1}. {product.get('name_kr', 'Unknown Name')} ({product.get('brand', 'Unknown Brand')}): {product.get('content', 'No description available')}"
-                for idx, product in enumerate(perfumes)
+                f"{product.get('id')}. {product.get('name_kr', 'Unknown Name')} ({product.get('brand', 'Unknown Brand')}): {product.get('content', 'No description available')}"
+                for product in perfumes
             ])
 
-            # GPT 프롬프트 템플릿 로드
+            # ✅ GPT 프롬프트 템플릿 로드
             template = self.prompt_loader.get_prompt("recommendation")
             if not template or 'description' not in template:
                 raise ValueError("Invalid recommendation prompt template")
 
-            # GPT 프롬프트 생성
+            # ✅ GPT 프롬프트 생성
             final_prompt = (
                 f"{template['description']}\n"
                 f"Products:\n{products_text}\n"
@@ -95,14 +95,13 @@ class LLMService:
                 "Ensure the response is a properly formatted JSON object."
             )
 
-            # GPT 응답 생성 및 파싱
+            # ✅ GPT 응답 생성 및 파싱
             response_text = self.gpt_client.generate_response(final_prompt)
             if not response_text:
                 raise ValueError("Empty GPT response")
 
-            # JSON 구조 추출
+            # ✅ JSON 구조 추출
             try:
-                # Find the first '{' and last '}'
                 start_idx = response_text.find('{')
                 end_idx = response_text.rfind('}')
                 
@@ -117,36 +116,29 @@ class LLMService:
                 logger.error(f"JSON error: {e}")
                 # Fallback response
                 gpt_response = {
-                    "recommendations": [
-                        {
-                            "reason": "향수 추천 이유를 생성하지 못했습니다.",
-                            "situation": "상황별 추천을 생성하지 못했습니다."
-                        }
-                    ],
+                    "recommendations": [],
                     "content": "향수들의 공통적인 특징을 분석할 수 없습니다."
                 }
 
-            # 응답 검증 및 기본값 설정
-            if 'recommendations' not in gpt_response:
-                gpt_response['recommendations'] = []
-            if 'content' not in gpt_response:
-                gpt_response['content'] = "향수들의 공통적인 특징을 분석할 수 없습니다."
+            # ✅ 응답 검증 및 기본값 설정
+            gpt_response.setdefault('recommendations', [])
+            gpt_response.setdefault('content', "향수들의 공통적인 특징을 분석할 수 없습니다.")
 
-            # 최종 응답 생성
+            # ✅ 최종 응답 생성
             recommendations = [
                 {
                     "id": str(perfumes[idx]['id']),
                     "reason": rec.get('reason', "No reason provided"),
                     "situation": rec.get('situation', "No situation provided")
                 }
-                for idx, rec in enumerate(gpt_response['recommendations'][:3])
+                for idx, rec in enumerate(gpt_response.get('recommendations', [])[:3])
                 if idx < len(perfumes)
             ]
 
             return {
                 "recommendations": recommendations,
                 "content": gpt_response['content'],
-                "line_id": perfumes[0].get('line_id', 1)  # Default line_id
+                "line_id": perfumes[0].get('line_id', None) if perfumes else None
             }
 
         except Exception as e:

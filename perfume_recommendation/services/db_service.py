@@ -1,6 +1,6 @@
 import pymysql
 import logging
-from typing import List, Dict
+from typing import List, Dict , Optional
 from services.prompt_loader import PromptLoader
 
 logger = logging.getLogger(__name__)
@@ -54,28 +54,34 @@ class DBService:
             logger.error(f"🚨 데이터베이스 오류 발생: {e}")
             return []
 
-    def fetch_product(self) -> List[Dict]:
-
-        query = """
-        SELECT * FROM product 
-        LIMIT 3;
+    def fetch_product(self, brand_filter: Optional[str] = None) -> List[Dict]:
         """
+        브랜드 필터를 적용하여 향수를 조회하는 함수.
+        """
+        query = """
+        SELECT 
+            p.id, p.name_kr, p.name_en, p.brand, p.grade,
+            p.main_accord, p.size_option, p.content,
+            p.ingredients, p.category_id, p.time_stamp
+        FROM product p
+        """
+        params = []
+
+        if brand_filter:
+            query += " WHERE p.brand LIKE %s"
+            params.append(f"%{brand_filter}%")
+
+        query += " LIMIT 3;"
 
         try:
             with self.connection.cursor() as cursor:
-                cursor.execute(query)  # ✅ 향료 조건 없이 전체 향수 조회
+                cursor.execute(query, params)
                 products = cursor.fetchall()
                 logger.info(f"✅ 향수 데이터 조회 성공: {products}")
                 return products
         except pymysql.MySQLError as e:
             logger.error(f"🚨 데이터베이스 오류 발생: {e}")
             return []
-
-    def close_connection(self):
-        """ DB 연결 닫기 """
-        if self.connection:
-            self.connection.close()
-            logger.info("🔌 데이터베이스 연결 닫힘")
 
 
     # def fetch_product_by_user_input(self, user_input: str, max_results: int = 3):
