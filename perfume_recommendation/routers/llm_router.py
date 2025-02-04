@@ -19,7 +19,7 @@ def get_llm_service() -> LLMService:
     try:
         # 경로 설정
         base_path = os.path.abspath(os.path.dirname(__file__))
-        template_path = os.path.join(base_path, "..", "models", "prompt_template.json")
+        template_path = os.path.join(base_path,"..","models","chat_prompt_template.json")
 
         # 파일 확인
         if not os.path.exists(template_path):
@@ -32,7 +32,7 @@ def get_llm_service() -> LLMService:
 
         db_config = {
             "host": os.getenv("DB_HOST"),
-            "port": os.getenv("DB_PORT"),
+            "port": int(os.getenv("DB_PORT")),
             "user": os.getenv("DB_USER"),
             "password": os.getenv("DB_PASSWORD"),
             "database": os.getenv("DB_NAME"),

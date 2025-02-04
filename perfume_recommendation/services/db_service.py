@@ -1,134 +1,114 @@
-import mysql.connector
-from mysql.connector import Error
-from typing import List, Dict
+import pymysql
 import logging
+from typing import List, Dict
 from services.prompt_loader import PromptLoader
-import json , os
-import re
 
 logger = logging.getLogger(__name__)
 
 class DBService:
     def __init__(self, db_config: Dict[str, str]):
         self.db_config = db_config
+        self.connection = self.connect_to_db()  # ✅ 초기 연결 설정
 
-    def some_method_that_needs_gpt_client(self):
-        # Lazy Import를 통해 순환 참조 문제 해결
-        from models.img_llm_client import GPTClient  
-        gpt_client = GPTClient(prompt_loader=PromptLoader("template_path"))
+    def connect_to_db(self):
+        try:
+            connection = pymysql.connect(
+                host=self.db_config["host"],
+                port=int(self.db_config["port"]),
+                user=self.db_config["user"],
+                password=self.db_config["password"],
+                database=self.db_config["database"],
+                charset="utf8mb4",
+                cursorclass=pymysql.cursors.DictCursor
+            )
+            logger.info("✅ 데이터베이스 연결 성공!")
+            return connection
+        except pymysql.MySQLError as e:
+            logger.error(f"🚨 데이터베이스 연결 오류: {e}")
+            return None
 
     def fetch_spices_by_line(self, line_name: str) -> List[str]:
         """
         특정 line_name에 속한 향료 목록을 가져옵니다.
         """
         line_query = """
-        SELECT id
-        FROM line
-        WHERE name = %s
+        SELECT id FROM line WHERE name = %s
         """
         spice_query = """
-        SELECT s.name_kr
-        FROM spice s
-        WHERE s.line_id = %s
+        SELECT s.name_kr FROM spice s WHERE s.line_id = %s
         """
         try:
-            connection = mysql.connector.connect(**self.db_config)
-            cursor = connection.cursor(dictionary=True)
-            
-            # Fetch line_id from line table
-            cursor.execute(line_query, (line_name,))
-            line_result = cursor.fetchone()
-            if not line_result:
-                logger.error(f"No line found for line_name: {line_name}")
-                return []
-            line_id = line_result['id']
-            
-            # Fetch spices using line_id
-            cursor.execute(spice_query, (line_id,))
-            spices = [row['name_kr'] for row in cursor.fetchall()]
-            logger.info(f"Fetched spices for line_name {line_name} (line_id {line_id}): {spices}")
-            return spices
-        except Error as e:
-            logger.error(f"Database error while fetching spices: {e}")
-            return []
-        finally:
-            if cursor:
-                cursor.close()
-            if connection:
-                connection.close()
+            with self.connection.cursor() as cursor:
+                cursor.execute(line_query, (line_name,))
+                line_result = cursor.fetchone()
+                if not line_result:
+                    logger.error(f"No line found for line_name: {line_name}")
+                    return []
+                line_id = line_result['id']
 
-    def fetch_perfumes_by_spices(self, spices: List[str]) -> List[Dict]:
-        """
-        주어진 향료를 기준으로 향수를 가져옵니다.
-        """
-        placeholders = ', '.join(['%s'] * len(spices))
-        query = f"""
-        SELECT
-            p.id AS perfume_id,
-            p.name AS perfume_name,
-            p.brand AS perfume_brand,
-            p.description AS perfume_description,
-            MAX(pi.url) AS perfume_url,
-            GROUP_CONCAT(DISTINCT s.name_kr SEPARATOR ', ') AS spice_name,
-            COUNT(s.id) AS spice_count
-        FROM perfume p
-        LEFT JOIN perfume_image pi ON p.id = pi.perfume_id
-        LEFT JOIN base_note bn ON p.id = bn.perfume_id
-        LEFT JOIN middle_note mn ON p.id = mn.perfume_id
-        LEFT JOIN top_note tn ON p.id = tn.perfume_id
-        LEFT JOIN spice s ON FIND_IN_SET(s.name_kr, CONCAT_WS(',', bn.spices, mn.spices, tn.spices)) > 0
-        WHERE s.name_kr IN ({placeholders})
-        GROUP BY p.id
-        ORDER BY spice_count DESC
+                cursor.execute(spice_query, (line_id,))
+                spices = [row['name_kr'] for row in cursor.fetchall()]
+                logger.info(f"✅ 향료 데이터 조회 성공: {spices}")
+                return spices
+        except pymysql.MySQLError as e:
+            logger.error(f"🚨 데이터베이스 오류 발생: {e}")
+            return []
+
+    def fetch_product(self) -> List[Dict]:
+
+        query = """
+        SELECT * FROM product 
         LIMIT 3;
         """
+
         try:
-            connection = mysql.connector.connect(**self.db_config)
-            cursor = connection.cursor(dictionary=True)
-            cursor.execute(query, spices)
-            perfumes = cursor.fetchall()
-            logger.info(f"Fetched perfumes for spices {spices}: {perfumes}")
-            return perfumes
-        except Error as e:
-            logger.error(f"Database error while fetching perfumes: {e}")
+            with self.connection.cursor() as cursor:
+                cursor.execute(query)  # ✅ 향료 조건 없이 전체 향수 조회
+                products = cursor.fetchall()
+                logger.info(f"✅ 향수 데이터 조회 성공: {products}")
+                return products
+        except pymysql.MySQLError as e:
+            logger.error(f"🚨 데이터베이스 오류 발생: {e}")
             return []
-        finally:
-            if cursor:
-                cursor.close()
-            if connection:
-                connection.close()
 
-    def fetch_perfumes_by_user_input(self, user_input: str, max_results: int = 3):
-        """
-        사용자 입력을 기반으로 필터링된 향수 목록을 반환하며, 최대 결과 수를 제한합니다.
-        """
-        # Load the perfume cache
-        base_path = os.path.abspath(os.path.dirname(__file__))
-        cache_path = os.path.join(base_path, "..", "perfume_cache.json")
+    def close_connection(self):
+        """ DB 연결 닫기 """
+        if self.connection:
+            self.connection.close()
+            logger.info("🔌 데이터베이스 연결 닫힘")
 
-        if not os.path.exists(cache_path):
-            raise RuntimeError(f"Perfume cache file not found: {cache_path}")
 
-        with open(cache_path, "r", encoding="utf-8") as file:
-            perfumes = json.load(file)
+    # def fetch_product_by_user_input(self, user_input: str, max_results: int = 3):
+    #     """
+    #     사용자 입력을 기반으로 필터링된 향수 목록을 반환하며, 최대 결과 수를 제한합니다.
+    #     """
+    #     # Load the perfume cache
+    #     base_path = os.path.abspath(os.path.dirname(__file__))
+    #     cache_path = os.path.join(base_path, "..", "data", "perfume_cache.json")
 
-        # Preprocess user input
-        user_input = user_input.strip().lower()
+    #     if not os.path.exists(cache_path):
+    #         raise RuntimeError(f"Perfume cache file not found: {cache_path}")
 
-        # Use regular expressions to filter perfumes based on user input
-        filtered_perfumes = [
-            perfume for perfume in perfumes
-            if re.search(user_input, perfume["brand"].lower()) or re.search(user_input, perfume["name"].lower())
-        ]
+    #     with open(cache_path, "r", encoding="utf-8") as file:
+    #         product = json.load(file)
 
-        # Log filtered perfumes
-        logger.info(f"Filtered perfumes (before limiting results): {filtered_perfumes}")
+    #     # Preprocess user input
+    #     user_input = user_input.strip().lower()
 
-        # Return limited results
-        limited_results = filtered_perfumes[:max_results]
-        logger.info(f"Filtered perfumes (limited to {max_results}): {limited_results}")
+    #     # Use regular expressions to filter product based on user input
+    #     filtered_product = [
+    #         perfume for perfume in product
+    #         if re.search(user_input, perfume["brand"].lower()) or re.search(user_input, perfume["name"].lower())
+    #     ]
 
-        if not limited_results:
-            raise ValueError(f"No perfumes found for the given user input: {user_input}")
+    #     # Log filtered product
+    #     logger.info(f"Filtered product (before limiting results): {filtered_product}")
 
-        return limited_results
+    #     # Return limited results
+    #     limited_results = filtered_product[:max_results]
+    #     logger.info(f"Filtered product (limited to {max_results}): {limited_results}")
+
+    #     if not limited_results:
+    #         raise ValueError(f"No product found for the given user input: {user_input}")
+
+    #     return limited_results

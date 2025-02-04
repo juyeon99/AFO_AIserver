@@ -10,7 +10,7 @@ class ImageDescriptionRequest(BaseModel):
     user_input: str
 
 # 템플릿 경로 설정
-template_path = os.path.join(os.path.dirname(__file__), "..", "models", "prompt_template.json")
+template_path = os.path.join(os.path.dirname(__file__), "..", "models", "chat_prompt_template.json")
 prompt_loader = PromptLoader(template_path)
 
 # FastAPI 라우터 설정

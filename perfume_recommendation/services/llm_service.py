@@ -1,6 +1,6 @@
 import json
 import logging
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 from models.img_llm_client import GPTClient
 from services.db_service import DBService
 from services.prompt_loader import PromptLoader
@@ -14,24 +14,6 @@ class LLMService:
         self.db_service = db_service
         self.prompt_loader = prompt_loader
 
-    def generate_chat_response(self, user_input: str) -> str:
-        """
-        Generate a chat response using GPT for general conversation.
-        """
-        try:
-            # Load a chat prompt template
-            template = self.prompt_loader.get_prompt("chat")
-            prompt = f"{template['description']}\nUser Input: {user_input}"
-            
-            # Generate GPT response
-            response = self.gpt_client.generate_response(prompt).strip()
-            if not response:
-                raise ValueError("GPT response is empty.")
-            return response
-        except Exception as e:
-            logger.error(f"Error in generate_chat_response: {e}")
-            raise RuntimeError("Failed to generate chat response.")
-    
     def process_input(self, user_input: str) -> Tuple[str, Optional[int]]:
         """
         사용자 입력을 분석하여 의도를 분류합니다.
@@ -39,11 +21,12 @@ class LLMService:
         try:
             logger.info(f"Received user input: {user_input}")  # 입력 로그
 
-            # 의도 분류
+            # 의도 분류 프롬프트
             intent_prompt = (
                 f"입력: {user_input}\n"
                 f"의도: (1) 향수 추천, (2) 일반 대화"
             )
+
             intent = self.gpt_client.generate_response(intent_prompt).strip()
             logger.info(f"Generated intent prompt: {intent_prompt}")  # 프롬프트 출력
             logger.info(f"Detected intent: {intent}")  # 의도 감지 결과
@@ -57,92 +40,115 @@ class LLMService:
             logger.error(f"Error processing input '{user_input}': {e}")
             raise HTTPException(status_code=500, detail="Failed to classify user intent.")
 
+    def generate_chat_response(self, user_input: str) -> str:
+        """
+        Generate a chat response using GPT for general conversation.
+        """
+        try:
+            template = self.prompt_loader.get_prompt("chat")
+            prompt = f"{template['description']}\nUser Input: {user_input}"
+            response = self.gpt_client.generate_response(prompt).strip()
+            
+            if not response:
+                raise ValueError("GPT response is empty.")
+                
+            return response
+        except Exception as e:
+            logger.error(f"Error in generate_chat_response: {e}")
+            raise RuntimeError("Failed to generate chat response.")
+
     def generate_recommendation_response(self, user_input: str) -> dict:
+        """
+        향수를 추천하는 함수
+        """
         try:
             logger.info(f"Processing recommendation for user input: {user_input}")
 
-            # Validate inputs
-            if not user_input:
-                raise ValueError("User input is missing or invalid.")
-
-            # Fetch perfumes based on user input
-            perfumes = self.db_service.fetch_perfumes_by_user_input(user_input)
+            # 향수 데이터 가져오기
+            perfumes = self.db_service.fetch_product()
             if not perfumes:
-                logger.error(f"No perfumes found for user input: {user_input}")
-                raise ValueError("No perfumes found for the given user input.")
+                logger.error("No perfumes found")
+                raise ValueError("No perfumes found in database")
 
-            logger.info(f"Fetched perfumes for user input {user_input}: {perfumes}")
-
-            # 고정된 line_id 설정
-            line_id = 1
-            logger.info(f"Using fixed line_id: {line_id}")
-
-            # Fetch spices for the fixed line_id
-            spices = self.db_service.fetch_spices_by_line(line_id)
-            if not spices:
-                logger.error(f"No spices found for line_id: {line_id}")
-                raise ValueError("No spices found for the given line_id.")
-
-            # Prepare perfumes text for GPT prompt
-            perfumes_text = "\n".join([
-                f"{idx + 1}. {perfume['id']} ({perfume['brand']}): {perfume['description']}"
-                for idx, perfume in enumerate(perfumes)
+            # 향수 정보를 GPT 프롬프트로 변환
+            products_text = "\n".join([
+                f"{idx + 1}. {product.get('name_kr', 'Unknown Name')} ({product.get('brand', 'Unknown Brand')}): {product.get('content', 'No description available')}"
+                for idx, product in enumerate(perfumes)
             ])
-            logger.info(f"Prepared perfumes text for GPT prompt:\n{perfumes_text}")
 
-            # Load prompt template and generate final GPT prompt
+            # GPT 프롬프트 템플릿 로드
             template = self.prompt_loader.get_prompt("recommendation")
+            if not template or 'description' not in template:
+                raise ValueError("Invalid recommendation prompt template")
+
+            # GPT 프롬프트 생성
             final_prompt = (
                 f"{template['description']}\n"
-                f"Perfumes:\n{perfumes_text}\n"
-                f"Return the result as a JSON object with a 'recommendations' key. "
-                f"The 'recommendations' key must be a list of objects, each containing 'reason' and 'situation'."
+                f"Products:\n{products_text}\n"
+                "You must respond with a valid JSON object containing:\n"
+                "{\n"
+                '  "recommendations": [\n'
+                '    {"reason": "...", "situation": "..."}\n'
+                "  ],\n"
+                '  "content": "summary of common feeling"\n'
+                "}\n"
+                "Ensure the response is a properly formatted JSON object."
             )
-            logger.info(f"Generated GPT prompt:\n{final_prompt}")
 
-            # Generate response from GPT for perfume recommendations
-            response_text = self.gpt_client.generate_response(final_prompt).strip()
+            # GPT 응답 생성 및 파싱
+            response_text = self.gpt_client.generate_response(final_prompt)
             if not response_text:
-                logger.error("GPT response is empty.")
-                raise ValueError("Received an empty response from GPT.")
+                raise ValueError("Empty GPT response")
 
-            # Extract JSON structure from GPT response
-            json_start = response_text.find('{')
-            json_end = response_text.rfind('}') + 1
-            if json_start == -1 or json_end <= json_start:
-                logger.error(f"Invalid JSON structure in GPT response: {response_text}")
-                raise ValueError("Invalid JSON structure in GPT response.")
+            # JSON 구조 추출
+            try:
+                # Find the first '{' and last '}'
+                start_idx = response_text.find('{')
+                end_idx = response_text.rfind('}')
+                
+                if start_idx == -1 or end_idx == -1:
+                    raise ValueError("No valid JSON structure found in response")
+                    
+                json_str = response_text[start_idx:end_idx + 1]
+                gpt_response = json.loads(json_str)
+                
+            except json.JSONDecodeError as e:
+                logger.error(f"Failed to parse JSON: {response_text}")
+                logger.error(f"JSON error: {e}")
+                # Fallback response
+                gpt_response = {
+                    "recommendations": [
+                        {
+                            "reason": "향수 추천 이유를 생성하지 못했습니다.",
+                            "situation": "상황별 추천을 생성하지 못했습니다."
+                        }
+                    ],
+                    "content": "향수들의 공통적인 특징을 분석할 수 없습니다."
+                }
 
-            gpt_response = json.loads(response_text[json_start:json_end])
+            # 응답 검증 및 기본값 설정
+            if 'recommendations' not in gpt_response:
+                gpt_response['recommendations'] = []
+            if 'content' not in gpt_response:
+                gpt_response['content'] = "향수들의 공통적인 특징을 분석할 수 없습니다."
 
-            # Validate 'recommendations' key
-            if "recommendations" not in gpt_response:
-                logger.warning(f"'recommendations' key missing in GPT response: {gpt_response}")
-                gpt_response["recommendations"] = [
-                    {"reason": "Default reason: Unable to generate detailed recommendations.",
-                    "situation": "Default situation: Suitable for general occasions."}
-                ]
-
-            # Generate recommendations
+            # 최종 응답 생성
             recommendations = [
                 {
-                    "id": f"{perfume['id']}",
-                    "reason": gpt_entry.get("reason", "No specific reason provided"),
-                    "situation": gpt_entry.get("situation", "No specific situation provided")
+                    "id": str(perfumes[idx]['id']),
+                    "reason": rec.get('reason', "No reason provided"),
+                    "situation": rec.get('situation', "No situation provided")
                 }
-                for perfume, gpt_entry in zip(perfumes, gpt_response["recommendations"])
+                for idx, rec in enumerate(gpt_response['recommendations'][:3])
+                if idx < len(perfumes)
             ]
-            logger.info(f"Final recommendations: {recommendations}")
 
-            # Return structured response with fixed line_id
             return {
                 "recommendations": recommendations,
-                "content": gpt_response.get("content", "No content provided"),
-                "line_id": line_id
+                "content": gpt_response['content'],
+                "line_id": perfumes[0].get('line_id', 1)  # Default line_id
             }
-        except ValueError as e:
-            logger.error(f"ValueError in recommendation generation: {e}")
-            raise HTTPException(status_code=400, detail=str(e))
+
         except Exception as e:
-            logger.error(f"Unhandled error in generate_recommendation_response: {e}")
-            raise HTTPException(status_code=500, detail="Failed to generate recommendations.")
+            logger.error(f"Recommendation generation error: {e}")
+            raise HTTPException(status_code=500, detail="Failed to generate recommendations")
