@@ -31,6 +31,25 @@ class DBService:
             logger.error(f"🚨 데이터베이스 연결 오류: {e}")
             return None
 
+    # def fetch_line_data(self) -> List[Dict]:
+    #     """
+    #     line 테이블의 모든 데이터를 조회하여 반환.
+        
+    #     Returns:
+    #         List[Dict]: line 테이블의 데이터를 포함한 리스트
+    #     """
+    #     query = "SELECT * FROM line;"
+    #     try:
+    #         with self.connection.cursor() as cursor:
+    #             cursor.execute(query)
+    #             lines = cursor.fetchall()
+
+    #         logger.info(f"✅ line 테이블 데이터 {len(lines)}개 조회 완료")
+    #         return lines
+    #     except pymysql.MySQLError as e:
+    #         logger.error(f"🚨 데이터베이스 오류 발생: {e}")
+    #         return []
+    
     def cache_perfume_data(self, force: bool = False) -> None:
         """
         DB의 향수 데이터를 JSON 파일로 캐싱. `force=True`일 경우 강제로 재생성.
