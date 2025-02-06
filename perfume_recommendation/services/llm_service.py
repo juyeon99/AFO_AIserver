@@ -83,6 +83,37 @@ class LLMService:
             logger.error(f"❌ 키워드 추출 오류: {e}")
             raise ValueError(f"🚨 키워드 추출 실패: {str(e)}")
 
+    def generate_chat_response(self, user_input: str) -> str:
+        """일반 대화 응답을 생성하는 함수"""
+        try:
+            logger.info(f"💬 대화 응답 생성 시작 - 입력: {user_input}")
+
+            # 1. 프롬프트 생성
+            chat_prompt = (
+                "당신은 향수 전문가입니다. 다음 요청에 친절하고 전문적으로 답변해주세요.\n"
+                "단, 향수 추천은 하지 말고 일반적인 정보만 제공하세요.\n\n"
+                f"사용자: {user_input}"
+            )
+            logger.debug(f"📝 생성된 프롬프트:\n{chat_prompt}")
+
+            # 2. GPT 응답 요청
+            logger.info("🤖 GPT 응답 요청")
+            response = self.gpt_client.generate_response(chat_prompt)
+            
+            if not response:
+                logger.error("❌ GPT 응답이 비어있음")
+                raise ValueError("응답 생성 실패")
+
+            logger.info("✅ 응답 생성 완료")
+            return response.strip()
+
+        except Exception as e:
+            logger.error(f"❌ 대화 응답 생성 오류: {e}")
+            raise HTTPException(
+                status_code=500,
+                detail=f"대화 응답 생성 실패: {str(e)}"
+        )
+
     def generate_recommendation_response(self, user_input: str) -> dict:
         """사용자 요청 기반 향수 추천"""
         try:
