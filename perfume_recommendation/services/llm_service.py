@@ -115,7 +115,7 @@ class LLMService:
         )
 
     def generate_recommendation_response(self, user_input: str) -> dict:
-        """사용자 요청 기반 향수 추천"""
+        """사용자 요청 기반 향수 추천 (브랜드 필터링 포함)"""
         try:
             logger.info(f"Processing recommendation for user input: {user_input}")
 
@@ -124,25 +124,36 @@ class LLMService:
             if not all_perfumes:
                 raise HTTPException(status_code=404, detail="추천 가능한 향수를 찾을 수 없습니다")
 
-            # 2. Extract keywords
+            # 2. Extract keywords (브랜드 포함)
             keywords = self.extract_keywords_from_input(user_input)
             logger.info(f"Extracted keywords: {keywords}")
 
-            # 3. Filter perfumes (keywords 기반 필터링)
+            # 3. 브랜드 키워드 추출
+            brand_keywords = [kw for kw in keywords.split(" / ") if kw in [p["brand"] for p in all_perfumes]]
+            logger.info(f"📌 추출된 브랜드 키워드: {brand_keywords}")
+
+            # 4. 향수 필터링 (향과 브랜드)
             filtered_perfumes = [
                 p for p in all_perfumes
                 if any(keyword.lower() in p.get('main_accord', '').lower() or 
                     keyword.lower() in p.get('brand', '').lower() for keyword in keywords.split(" / "))
             ]
+
+            # 5. 브랜드 필터 적용
+            if brand_keywords:
+                filtered_perfumes = [p for p in filtered_perfumes if p["brand"] in brand_keywords]
+                logger.info(f"📌 브랜드 필터 적용 후 남은 향수 개수: {len(filtered_perfumes)}")
+
             if not filtered_perfumes:
                 raise HTTPException(status_code=404, detail="사용자 요청에 맞는 향수를 찾을 수 없습니다")
 
-            # 4. GPT 프롬프트 생성
+            # 6. GPT 추천 요청을 위한 제품 텍스트 생성
             products_text = "\n".join([
                 f"{p['id']}. {p['name_kr']} ({p['brand']}): {p.get('main_accord', '향 정보 없음')}"
                 for p in filtered_perfumes[:150]  # 최대 3개 추천
             ])
 
+            # 7. GPT 요청
             template = self.prompt_loader.get_prompt("recommendation")
             names_prompt = (
                 f"{template['description']}\n"
@@ -172,26 +183,26 @@ class LLMService:
                 '    }\n'
                 '  ]\n'
                 '}\n'
-                'content: "추천 이유와 사용 상황과 향수들의 공통적인 느낌 함께 적어주세요."\n'
+                'content: "깨끗한 리넨의 산뜻함, 신선한 자연의 청량감, 그리고 부드러운 따뜻함이 조화롭게 어우러진 세련되고 감각적인 향입니다.."\n'
                 'line_id: 14\n'
                 "```"
             )
 
-            # 5. Get GPT response and parse JSON
             response_text = self.gpt_client.generate_response(names_prompt)
             logger.debug(f"Raw GPT response: {response_text}")
 
+            # 8. JSON 파싱
             try:
                 if '```json' in response_text:
                     response_text = response_text.split('```json')[1].split('```')[0].strip()
 
                 gpt_response = json.loads(response_text)
 
-                # 6. 추천 향수 ID 매칭
+                # 9. 추천 향수 ID 매칭
                 recommendations = []
                 for rec in gpt_response.get("recommendations", []):
                     matched_perfume = next((p for p in filtered_perfumes if p['name_kr'] == rec["name"]), None)
-                    
+
                     if matched_perfume:
                         recommendations.append({
                             "id": matched_perfume["id"],
@@ -201,13 +212,12 @@ class LLMService:
                             "situation": rec.get("situation", "사용 상황 없음")
                         })
 
-                # 7. 만약 추천된 향수가 데이터에 없으면 빈 값 반환
                 if not recommendations:
                     raise ValueError("추천된 향수가 데이터에서 찾을 수 없습니다.")
 
-                # 추천 결과에서 공통 계열 ID 찾기
+                # 10. 공통 line_id 찾기
                 line_id = self.get_common_line_id(recommendations)
-                
+
                 return {
                     'recommendations': recommendations,
                     'content': gpt_response.get('content', '추천 분석 실패'),
