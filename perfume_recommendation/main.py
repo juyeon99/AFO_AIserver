@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import llm_router, image_processing_router, image_generation_router , image_generation_description_router
+from routers import llm_router, image_processing_router, image_generation_router , image_generation_description_router, diffuser_router
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
@@ -38,6 +38,7 @@ app.include_router(llm_router.router, prefix="/llm", tags=["LLM"])
 app.include_router(image_processing_router.router, prefix="/image-processing", tags=["Image Processing"])
 app.include_router(image_generation_router.router, prefix="/image-generation", tags=["Image Generation"])
 app.include_router(image_generation_description_router.router, prefix="/llm" , tags=["LLM-Image-Description"])
+app.include_router(diffuser_router.router, prefix="/diffuser", tags=["Diffuser"])
 
 # Uvicorn 실행을 위한 엔트리 포인트
 if __name__ == "__main__":

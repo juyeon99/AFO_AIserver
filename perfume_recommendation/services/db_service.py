@@ -7,8 +7,11 @@ from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
+
 class DBService:
-    def __init__(self, db_config: Dict[str, str], cache_path: str = "perfume_cache.json"):
+    def __init__(
+        self, db_config: Dict[str, str], cache_path: str = "perfume_cache.json"
+    ):
         self.db_config = db_config
         self.connection = self.connect_to_db()
         self.cache_path = Path(cache_path)
@@ -23,7 +26,7 @@ class DBService:
                 password=self.db_config["password"],
                 database=self.db_config["database"],
                 charset="utf8mb4",
-                cursorclass=pymysql.cursors.DictCursor
+                cursorclass=pymysql.cursors.DictCursor,
             )
             logger.info("✅ 데이터베이스 연결 성공!")
             return connection
@@ -34,7 +37,7 @@ class DBService:
     # def fetch_line_data(self) -> List[Dict]:
     #     """
     #     line 테이블의 모든 데이터를 조회하여 반환.
-        
+
     #     Returns:
     #         List[Dict]: line 테이블의 데이터를 포함한 리스트
     #     """
@@ -49,7 +52,7 @@ class DBService:
     #     except pymysql.MySQLError as e:
     #         logger.error(f"🚨 데이터베이스 오류 발생: {e}")
     #         return []
-    
+
     def cache_perfume_data(self, force: bool = False) -> None:
         """
         DB의 향수 데이터를 JSON 파일로 캐싱. `force=True`일 경우 강제로 재생성.
@@ -100,6 +103,50 @@ class DBService:
         logger.info("강제 캐싱 생성 요청을 받았습니다.")
         self.cache_perfume_data(force=True)
         logger.info("✅ 강제 캐싱 생성 완료.")
+
+
+    def load_cached_product_data(self):
+        """디퓨저 상품 데이터를 데이터베이스에서 가져옵니다."""
+        try:
+            query = """
+                SELECT 
+                    p.id, 
+                    p.brand, 
+                    p.name_kr, 
+                    p.size_option as volume,
+                    GROUP_CONCAT(
+                        CONCAT(
+                            n.note_type, ': ', s.name_kr
+                        ) ORDER BY 
+                            CASE n.note_type 
+                                WHEN 'TOP' THEN 1
+                                WHEN 'MIDDLE' THEN 2
+                                WHEN 'BASE' THEN 3
+                                WHEN 'SINGLE' THEN 4
+                            END
+                    ) as notes
+                FROM product p
+                LEFT JOIN note n ON p.id = n.product_id
+                LEFT JOIN spice s ON n.spice_id = s.id
+                WHERE p.category_id = 2
+                
+                GROUP BY p.id, p.brand, p.name_kr, p.size_option;
+            """
+            
+            with self.connection.cursor() as cursor:
+                cursor.execute(query)
+                result = cursor.fetchall()
+
+            if not result:
+                logger.warning("디퓨저 상품을 찾을 수 없습니다.")
+                return []
+
+            return result
+
+        except Exception as e:
+            logger.error(f"상품 데이터 로드 실패: {e}")
+            raise
+
 
 # 캐싱 생성 기능 실행
 if __name__ == "__main__":
