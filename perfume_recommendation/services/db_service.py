@@ -1,14 +1,18 @@
-import pymysql
 import logging
-from typing import List, Dict , Optional
-from services.prompt_loader import PromptLoader
+import json
+import pymysql
+from typing import List, Dict, Optional
+from pathlib import Path
+from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
 class DBService:
-    def __init__(self, db_config: Dict[str, str]):
+    def __init__(self, db_config: Dict[str, str], cache_path: str = "perfume_cache.json"):
         self.db_config = db_config
-        self.connection = self.connect_to_db()  # ✅ 초기 연결 설정
+        self.connection = self.connect_to_db()
+        self.cache_path = Path(cache_path)
+        self.cache_expiration = timedelta(days=1)  # 캐싱 만료 시간 (1일)
 
     def connect_to_db(self):
         try:
@@ -27,94 +31,92 @@ class DBService:
             logger.error(f"🚨 데이터베이스 연결 오류: {e}")
             return None
 
-    def fetch_spices_by_line(self, line_name: str) -> List[str]:
-        """
-        특정 line_name에 속한 향료 목록을 가져옵니다.
-        """
-        line_query = """
-        SELECT id FROM line WHERE name = %s
-        """
-        spice_query = """
-        SELECT s.name_kr FROM spice s WHERE s.line_id = %s
-        """
-        try:
-            with self.connection.cursor() as cursor:
-                cursor.execute(line_query, (line_name,))
-                line_result = cursor.fetchone()
-                if not line_result:
-                    logger.error(f"No line found for line_name: {line_name}")
-                    return []
-                line_id = line_result['id']
+    # def fetch_line_data(self) -> List[Dict]:
+    #     """
+    #     line 테이블의 모든 데이터를 조회하여 반환.
+        
+    #     Returns:
+    #         List[Dict]: line 테이블의 데이터를 포함한 리스트
+    #     """
+    #     query = "SELECT * FROM line;"
+    #     try:
+    #         with self.connection.cursor() as cursor:
+    #             cursor.execute(query)
+    #             lines = cursor.fetchall()
 
-                cursor.execute(spice_query, (line_id,))
-                spices = [row['name_kr'] for row in cursor.fetchall()]
-                logger.info(f"✅ 향료 데이터 조회 성공: {spices}")
-                return spices
-        except pymysql.MySQLError as e:
-            logger.error(f"🚨 데이터베이스 오류 발생: {e}")
-            return []
+    #         logger.info(f"✅ line 테이블 데이터 {len(lines)}개 조회 완료")
+    #         return lines
+    #     except pymysql.MySQLError as e:
+    #         logger.error(f"🚨 데이터베이스 오류 발생: {e}")
+    #         return []
+    
+    def cache_perfume_data(self, force: bool = False) -> None:
+        """
+        DB의 향수 데이터를 JSON 파일로 캐싱. `force=True`일 경우 강제로 재생성.
+        """
+        if self.cache_path.exists() and not force:
+            # 캐싱 파일이 유효하면 갱신하지 않음
+            file_mod_time = datetime.fromtimestamp(self.cache_path.stat().st_mtime)
+            if datetime.now() - file_mod_time < self.cache_expiration:
+                logger.info(f"캐싱 파일이 최신 상태입니다: {self.cache_path}")
+                return
 
-    def fetch_product(self, brand_filter: Optional[str] = None) -> List[Dict]:
-        """
-        브랜드 필터를 적용하여 향수를 조회하는 함수.
-        """
         query = """
         SELECT 
-            p.id, p.name_kr, p.name_en, p.brand, p.grade,
-            p.main_accord, p.size_option, p.content,
-            p.ingredients, p.category_id, p.time_stamp
+            p.id, p.name_kr, p.name_en, p.brand, p.main_accord, p.category_id
         FROM product p
         """
-        params = []
-
-        if brand_filter:
-            query += " WHERE p.brand LIKE %s"
-            params.append(f"%{brand_filter}%")
-
-        query += " LIMIT 3;"
-
         try:
             with self.connection.cursor() as cursor:
-                cursor.execute(query, params)
+                cursor.execute(query)
                 products = cursor.fetchall()
-                logger.info(f"✅ 향수 데이터 조회 성공: {products}")
-                return products
+
+                # 캐싱 파일 저장
+                with open(self.cache_path, "w", encoding="utf-8") as f:
+                    json.dump(products, f, ensure_ascii=False, indent=4)
+
+                logger.info(f"✅ 향수 데이터를 JSON으로 캐싱 완료: {self.cache_path}")
         except pymysql.MySQLError as e:
             logger.error(f"🚨 데이터베이스 오류 발생: {e}")
-            return []
 
+    def load_cached_perfume_data(self) -> List[Dict]:
+        """
+        캐싱된 데이터를 로드. 캐싱 파일이 없으면 새로 생성.
+        """
+        if not self.cache_path.exists():
+            logger.info("캐싱 파일이 존재하지 않아 새로 생성합니다.")
+            self.cache_perfume_data()
 
-    # def fetch_product_by_user_input(self, user_input: str, max_results: int = 3):
-    #     """
-    #     사용자 입력을 기반으로 필터링된 향수 목록을 반환하며, 최대 결과 수를 제한합니다.
-    #     """
-    #     # Load the perfume cache
-    #     base_path = os.path.abspath(os.path.dirname(__file__))
-    #     cache_path = os.path.join(base_path, "..", "data", "perfume_cache.json")
+        with open(self.cache_path, "r", encoding="utf-8") as f:
+            products = json.load(f)
 
-    #     if not os.path.exists(cache_path):
-    #         raise RuntimeError(f"Perfume cache file not found: {cache_path}")
+        logger.info(f"✅ 캐싱된 향수 데이터 {len(products)}개 로드")
+        return products
 
-    #     with open(cache_path, "r", encoding="utf-8") as file:
-    #         product = json.load(file)
+    def force_generate_cache(self) -> None:
+        """
+        강제로 JSON 캐싱 파일을 생성하는 메서드.
+        """
+        logger.info("강제 캐싱 생성 요청을 받았습니다.")
+        self.cache_perfume_data(force=True)
+        logger.info("✅ 강제 캐싱 생성 완료.")
 
-    #     # Preprocess user input
-    #     user_input = user_input.strip().lower()
+# 캐싱 생성 기능 실행
+if __name__ == "__main__":
+    import os
 
-    #     # Use regular expressions to filter product based on user input
-    #     filtered_product = [
-    #         perfume for perfume in product
-    #         if re.search(user_input, perfume["brand"].lower()) or re.search(user_input, perfume["name"].lower())
-    #     ]
+    # DB 설정
+    db_config = {
+        "host": os.getenv("DB_HOST"),
+        "port": os.getenv("DB_PORT"),
+        "user": os.getenv("DB_USER"),
+        "password": os.getenv("DB_PASSWORD"),
+        "database": os.getenv("DB_NAME"),
+    }
 
-    #     # Log filtered product
-    #     logger.info(f"Filtered product (before limiting results): {filtered_product}")
+    # DB 서비스 초기화
+    db_service = DBService(db_config=db_config)
 
-    #     # Return limited results
-    #     limited_results = filtered_product[:max_results]
-    #     logger.info(f"Filtered product (limited to {max_results}): {limited_results}")
-
-    #     if not limited_results:
-    #         raise ValueError(f"No product found for the given user input: {user_input}")
-
-    #     return limited_results
+    # 강제 캐싱 생성 실행
+    db_service.force_generate_cache()
+    print("향수 데이터 강제 캐싱 완료!")
