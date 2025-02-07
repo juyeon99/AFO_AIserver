@@ -9,8 +9,31 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+# from dotenv import find_dotenv, load_dotenv
+# import os
+
+# # .env 파일 위치 확인
+# env_path = find_dotenv()
+# print(f"Found .env at: {env_path}")
+
+# # .env 파일 내용 확인
+# with open(env_path, 'r', encoding='utf-8') as f:
+#     print("=== .env 파일 내용 ===")
+#     print(f.read())
+
+# # 기존 환경 변수 값들 확인
+# print("\n=== 현재 환경 변수 값 ===")
+# for key, value in os.environ.items():
+#     if 'DB_' in key:
+#         print(f"{key}: {value}")
+
+# # 환경 변수 강제 재설정
+# load_dotenv(override=True)
+
 def get_diffuser_service() -> DiffuserRecommendationService:
     try:
+        
+        
         db_config = {
             "host": os.getenv("DB_HOST"),
             "port": int(os.getenv("DB_PORT")),
@@ -18,6 +41,13 @@ def get_diffuser_service() -> DiffuserRecommendationService:
             "password": os.getenv("DB_PASSWORD"),
             "database": os.getenv("DB_NAME"),
         }
+        
+        # 설정값 로깅
+        logger.debug(f"DB HOST: {db_config['host']}")
+        logger.debug(f"DB PORT: {db_config['port']}")
+        logger.debug(f"DB USER: {db_config['user']}")
+        logger.debug(f"DB NAME: {db_config['database']}")
+        
         if not all(db_config.values()):
             raise RuntimeError("데이터베이스 설정이 불완전합니다.")
 

@@ -127,46 +127,64 @@ class DBService:
         logger.info("✅ 강제 캐싱 생성 완료.")
 
 
-    def load_cached_product_data(self):
-        """디퓨저 상품 데이터를 데이터베이스에서 가져옵니다."""
+    def get_spices_by_names(self, note_names: List[str]) -> List[Dict]:
+        """미리 정의된 향료들의 ID를 가져옵니다."""
         try:
-            query = """
-                SELECT 
-                    p.id, 
-                    p.brand, 
-                    p.name_kr, 
-                    p.size_option as volume,
-                    GROUP_CONCAT(
-                        CONCAT(
-                            n.note_type, ': ', s.name_kr
-                        ) ORDER BY 
-                            CASE n.note_type 
-                                WHEN 'TOP' THEN 1
-                                WHEN 'MIDDLE' THEN 2
-                                WHEN 'BASE' THEN 3
-                                WHEN 'SINGLE' THEN 4
-                            END
-                    ) as notes
-                FROM product p
-                LEFT JOIN note n ON p.id = n.product_id
-                LEFT JOIN spice s ON n.spice_id = s.id
-                WHERE p.category_id = 2
-                
-                GROUP BY p.id, p.brand, p.name_kr, p.size_option;
+            notes_str = ", ".join([f"'{note}'" for note in note_names])
+            query = f"""
+                SELECT id, name_kr 
+                FROM spice 
+                WHERE name_kr IN ({notes_str});
             """
             
             with self.connection.cursor() as cursor:
                 cursor.execute(query)
                 result = cursor.fetchall()
+                logger.info(f"✅ 카테고리 향료: {note_names}")
+                logger.info(f"✅ 찾은 향료 정보: {result}")
+                return result
+                
+        except pymysql.MySQLError as e:
+            logger.error(f"🚨 향료 데이터 로드 실패: {e}")
+            raise
 
-            if not result:
-                logger.warning("디퓨저 상품을 찾을 수 없습니다.")
-                return []
-
-            return result
-
-        except Exception as e:
-            logger.error(f"상품 데이터 로드 실패: {e}")
+    def get_diffusers_by_spice_ids(self, spice_ids: List[int]) -> List[Dict]:
+        """해당 향료들이 포함된 디퓨저를 찾습니다."""
+        try:
+            spice_ids_str = ",".join(map(str, spice_ids))
+            query = f"""
+                SELECT DISTINCT
+                    p.id, 
+                    p.brand, 
+                    p.name_kr, 
+                    p.size_option as volume,
+                    COUNT(DISTINCT n.spice_id) as matching_count
+                FROM product p
+                JOIN note n ON p.id = n.product_id
+                WHERE p.category_id = 2
+                AND n.spice_id IN ({spice_ids_str})
+                AND p.name_kr NOT LIKE '%카 디퓨저%'
+                GROUP BY p.id, p.brand, p.name_kr, p.size_option
+                ORDER BY matching_count DESC;
+            """
+            
+            with self.connection.cursor() as cursor:
+                cursor.execute(query)
+                all_diffusers = cursor.fetchall()
+                logger.info(f"✅ 전체 매칭되는 디퓨저 {len(all_diffusers)}개를 찾았습니다.")
+                
+                if len(all_diffusers) > 2:
+                    # 랜덤하게 2개 선택
+                    import random
+                    result = random.sample(all_diffusers, 2)
+                else:
+                    result = all_diffusers
+                    
+                logger.info(f"✅ 선택된 디퓨저: {[d['name_kr'] for d in result]}")
+                return result
+                
+        except pymysql.MySQLError as e:
+            logger.error(f"🚨 디퓨저 데이터 로드 실패: {e}")
             raise
 
 

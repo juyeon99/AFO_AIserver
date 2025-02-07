@@ -11,94 +11,78 @@ class DiffuserRecommendationService:
     def __init__(self, gpt_client: GPTClient, db_service: DBService) -> None:
         self.gpt_client = gpt_client
         self.db_service = db_service
-        self.DIFFUSER_CATEGORY_ID = 2  # 디퓨저 카테고리 ID
-
-    async def get_diffuser_data(self):
-        """디퓨저 데이터만 가져오기"""
-        try:
-            # category_id로 디퓨저만 필터링하여 가져오기
-            all_products = self.db_service.load_cached_product_data()
-            diffusers = [
-                product for product in all_products 
-                if product.get('category_id') == self.DIFFUSER_CATEGORY_ID
-            ]
-            return diffusers
-        except Exception as e:
-            logger.error(f"디퓨저 데이터 로드 실패: {str(e)}")
-            raise ValueError("디퓨저 데이터를 가져올 수 없습니다")
+        self.DIFFUSER_CATEGORY_ID = 2
+        
+        # 카테고리별 추천 향료 미리 정의
+        self.category_notes = {
+            "수면 & 회복": ["베티버","클라리 세이지", "라벤더", "일랑일랑", "바닐라", "캐모마일"],
+            "집중 & 마인드풀니스": ["로즈마리", "레몬", "페퍼민트", "유칼립투스"],
+            "활력 & 에너지": ["베르가못", "자몽", "레몬그라스", "오렌지"],
+            "평온 & 스트레스 해소": ["라벤더", "베르가못", "제라늄", "일랑일랑"],
+            "기쁨 & 긍정": ["텐저린", "오렌지", "바닐라", "자스민", "베르가못"],
+            "리프레시 & 클린 에어": ["사이프러스", "레몬", "유칼립투스", "파인", "티트리","라반딘"]
+        }
 
     async def recommend_diffusers(self, category: str) -> Dict:
         """카테고리에 맞는 디퓨저 추천"""
         try:
             logger.info(f"Generating recommendation for: {category}")
             
-            # 1. 디퓨저 데이터만 로드
-            diffusers = await self.get_diffuser_data()
-            if not diffusers:
-                raise ValueError("추천 가능한 디퓨저를 찾을 수 없습니다")
-
-            # 2. GPT 프롬프트 생성
-            diffuser_info = "\n".join([
-                f"{d['id']}. {d['name']} ({d['brand']}) - 노트: {d['notes']}"
-                for d in diffusers[:20]
-            ])
-
-            prompt = f"""
-당신은 디퓨저 전문가입니다. 사용자의 상황에 가장 적합한 디퓨저 2개를 추천해주세요.
-
-상황: {category}
-
-사용 가능한 디퓨저 목록:
-{diffuser_info}
-
-다음 형식의 JSON으로만 응답해주세요:
-{{
-    "recommendations": [
-        {{
-            "id": "디퓨저 ID",
-            "name": "디퓨저 이름",
-            "brand": "브랜드명"
-        }},
-        {{
-            "id": "디퓨저 ID",
-            "name": "디퓨저 이름",
-            "brand": "브랜드명"
-        }}
-    ],
-    "usage_routine": "이 상황에 맞는 디퓨저 사용 루틴 제안 (50자 이내)"
-}}"""
-
-            # 3. GPT 응답 생성
-            response = self.gpt_client.generate_response(prompt)
+            if category not in self.category_notes:
+                raise ValueError("유효하지 않은 카테고리입니다")
             
-            try:
-                # JSON 파싱
-                if '```json' in response:
-                    response = response.split('```json')[1].split('```')[0]
-                gpt_result = json.loads(response.strip())
+            # 1. 해당 카테고리의 향료로 디퓨저 검색
+            recommended_notes = self.category_notes[category]
+            spices = self.db_service.get_spices_by_names(recommended_notes)
+            
+            if not spices:
+                raise ValueError("추천할 수 있는 향료가 없습니다")
 
-                # 4. 디퓨저 정보 매핑
-                recommendations = []
-                for rec in gpt_result['recommendations']:
-                    diffuser = next(
-                        (d for d in diffusers if str(d['id']) == str(rec['id'])),
-                        None
-                    )
-                    if diffuser:
-                        recommendations.append({
-                            'name': f"{diffuser['name']} {diffuser.get('volume', '200ml')}",
-                            'brand': diffuser['brand']
-                        })
+            # 2. 해당 향료들을 포함하는 디퓨저 찾기
+            spice_ids = [spice['id'] for spice in spices]
+            diffusers = self.db_service.get_diffusers_by_spice_ids(spice_ids)
+            
+            if not diffusers:
+                raise ValueError("추천할 수 있는 디퓨저가 없습니다")
+            
+            # 3. GPT로 사용 루틴 생성
+            prompt = f"""
+            당신은 디퓨저 전문가입니다. 다음 상황에 가장 적합한 간단한 사용 루틴을 제안해주세요.
 
-                # 5. 최종 응답 반환
-                return {
-                    'recommendations': recommendations,
-                    'usage_routine': gpt_result['usage_routine']
+            상황: {category}
+
+            아래와 같은 간단한 사용 루틴 형식으로 작성해주세요:
+            - 수면 & 회복: "조용한 시간에 디퓨저를 켜고 명상이나 깊은 호흡과 함께 내면의 평화를 찾아보세요."
+            - 집중 & 마인드풀니스: "학습이나 업무 시작 전에 디퓨저를 켜고 맑은 정신으로 일에 집중해보세요."
+            - 활력 & 에너지: "아침에 기상하여 디퓨저를 켜고 활기찬 하루를 시작해보세요."
+            - 평온 & 스트레스 해소: "스트레스가 쌓인 순간, 디퓨저를 켜고 깊은 호흡과 함께 마음의 안정을 찾아보세요."
+            - 기쁨 & 긍정: "디퓨저의 밝은 향기와 함께 하루의 긍정적인 순간들을 떠올려보세요."
+            - 리프레시 & 클린 에어: "환기 후 디퓨저를 켜서 상쾌하고 깨끗한 공기로 공간을 채워보세요."
+
+            다음 형식의 JSON으로만 응답해주세요:
+            {{
+                "usage_routine": "100자 이내로 사용 루틴만 작성해주세요. 향료 설명은 제외하고 언제, 어떻게 사용하면 좋은지 구체적으로 설명해주세요."
+            }}"""
+
+            # GPT 응답 받기
+            response = await self.gpt_client.generate_response(prompt)
+            if '```json' in response:
+                response = response.split('```json')[1].split('```')[0]
+            gpt_result = json.loads(response.strip())
+
+            # 4. 최종 응답 구성
+            recommendations = [
+                {
+                    'name': f"{diffuser['name_kr']} {diffuser.get('volume', '200ml')}",
+                    'brand': diffuser['brand']
                 }
+                for diffuser in diffusers[:2]
+            ]
 
-            except json.JSONDecodeError as e:
-                logger.error(f"GPT 응답 파싱 실패: {e}")
-                raise ValueError("추천 생성 중 오류가 발생했습니다")
+            return {
+                'recommendations': recommendations,
+                'usage_routine': gpt_result['usage_routine']
+            }
 
         except Exception as e:
             logger.error(f"추천 생성 실패: {str(e)}")
