@@ -24,6 +24,11 @@ class LLMService:
             # 의도 분류 프롬프트
             intent_prompt = (
                 f"입력: {user_input}\n"
+                f"다음 사용자의 의도를 분류하세요.\n\n"
+                f"일반적인 키워드라고 볼 수 없는 향수추천은 (2) 일반 대화로 분류해야합니다.\n\n"
+                f"예시) user_input = 나 오늘 기분이 너무 우울해 그래서 이런 기분을 떨쳐낼 수 있는 플로럴계열의 향수를 추천해줘 (1) 향수 추천 \n"
+                f"예시) user_input = 향수를 추천받고싶은데 뭐 좋은거있어? (2) 일반 대화\n"
+                f"예시) user_input = 향수를 추천해주세요. 라면 (2) 일반 대화로 분류하여야 합니다.\n\n"
                 f"의도: (1) 향수 추천, (2) 일반 대화"
             )
 
@@ -39,24 +44,31 @@ class LLMService:
             logger.error(f"Error processing input '{user_input}': {e}")
             raise HTTPException(status_code=500, detail="Failed to classify user intent.")
 
-    def extract_keywords_from_input(self, user_input: str) -> str:
-        """사용자 입력에서 키워드를 추출하는 함수"""
+    def extract_keywords_from_input(self, user_input: str) -> dict:
+        """사용자 입력에서 키워드를 추출하고 브랜드명을 표준화하는 함수"""
         try:
-            # 1. 프롬프트 생성
-            logger.info("🔍 키워드 추출 시작")
+            logger.info("🔍 키워드 및 브랜드명 추출 시작")
+            
+            # 1. GPT 프롬프트 생성
             keywords_prompt = (
-                "다음은 향수 추천 요청입니다. 이 요청에서 주요 키워드를 추출하세요. "
-                "키워드는 시트러스, 플로럴, 우디, 머스크, 스파이시, 구르망과 같은 향 노트나 샤넬, 디올과 같은 브랜드일 수 있습니다.\n\n"
-                "또한 남자다운, 여성스러운 등과 같은 요청은 적합한 향 노트로 변환하여 반환하세요.\n\n"
-                f"요청: {user_input}\n\n"
-                "추출된 키워드를 JSON 형식으로 반환하세요. 반드시 아래 형식을 따르세요:\n"
+                "다음은 향수 추천 요청입니다. 이 요청에서 주요 키워드를 추출하고 브랜드명을 표준화하세요.\n"
+                "브랜드명은 공식 표기법을 사용해야 합니다. 예: 딥디크 → 딥티크, Juliette Has a Gun → 줄리엣 헤즈 어 건\n"
+                "브랜드명은 공식 표기법을 사용해야 합니다. 예: 르라보 → 르 라보, LABORATORIO OLFATTIVO → 라보라토리오 올파티보\n"
+                "키워드는 시트러스, 플로럴, 우디, 머스크, 스파이시, 구르망과 같은 향 노트나 브랜드명일 수 있습니다.\n"
+                "- keywords: 시트러스 / 아쿠아틱 / 머스크 형식으로 계열만 나오도록합니다.\n"
+                "- brands: [딥티크, 샤넬] 형식으로 브랜드명을 나열합니다.\n\n"
+                f"사용자 입력: {user_input}\n\n"
+                "추출된 데이터를 JSON 형식으로 반환하세요:\n"
                 "```json\n"
-                "{ \"keywords\": \"시트러스 / 아쿠아틱 / 그린\" }\n"
-                "```\n"
+                "{\n"
+                '  "keywords": "시트러스 / 아쿠아틱",\n'
+                '  "brands": ["딥티크", "샤넬"]\n'
+                "}\n"
+                "```"
             )
 
             # 2. GPT 호출
-            logger.info("🤖 GPT 키워드 추출 요청")
+            logger.info("🤖 GPT 키워드 및 브랜드 정제 요청")
             response_text = self.gpt_client.generate_response(keywords_prompt).strip()
             logger.debug(f"📝 GPT 원본 응답:\n{response_text}")
 
@@ -67,12 +79,18 @@ class LLMService:
 
                 parsed_response = json.loads(response_text)
                 keywords_str = parsed_response.get('keywords', '').strip()
+                brands_list = parsed_response.get('brands', [])
 
                 if not keywords_str:
                     raise ValueError("🚨 'keywords' 필드를 찾을 수 없습니다.")
 
                 logger.info(f"✅ 추출된 키워드: {keywords_str}")
-                return keywords_str
+                logger.info(f"✅ 정제된 브랜드명: {brands_list}")
+
+                return {
+                    "keywords": keywords_str,
+                    "brands": brands_list
+                }
 
             except json.JSONDecodeError as e:
                 logger.error(f"❌ JSON 파싱 오류: {e}")
@@ -89,9 +107,13 @@ class LLMService:
             logger.info(f"💬 대화 응답 생성 시작 - 입력: {user_input}")
 
             # 1. 프롬프트 생성
+            template = self.prompt_loader.get_prompt("chat")
             chat_prompt = (
+                f"{template['description']}\n"
+                f"{template['rules']}\n"
+                f"{template['example_prompt']}\n"
                 "당신은 향수 전문가입니다. 다음 요청에 친절하고 전문적으로 답변해주세요.\n"
-                "단, 향수 추천은 하지 말고 일반적인 정보만 제공하세요.\n\n"
+                "단, 향수 추천은 하지만 일반적인 정보만 제공하세요.\n\n"
                 f"사용자: {user_input}"
             )
             logger.debug(f"📝 생성된 프롬프트:\n{chat_prompt}")
@@ -115,7 +137,7 @@ class LLMService:
         )
 
     def generate_recommendation_response(self, user_input: str) -> dict:
-        """사용자 요청 기반 향수 추천 (브랜드 필터링 포함)"""
+        """사용자 요청 기반 향수 추천 (정제된 브랜드 필터링 포함)"""
         try:
             logger.info(f"Processing recommendation for user input: {user_input}")
 
@@ -124,22 +146,22 @@ class LLMService:
             if not all_perfumes:
                 raise HTTPException(status_code=404, detail="추천 가능한 향수를 찾을 수 없습니다")
 
-            # 2. Extract keywords (브랜드 포함)
-            keywords = self.extract_keywords_from_input(user_input)
-            logger.info(f"Extracted keywords: {keywords}")
+            # 2. Extract keywords and standardize brand names
+            extracted_data = self.extract_keywords_from_input(user_input)
+            keywords = extracted_data["keywords"]
+            brand_keywords = extracted_data["brands"]
+            
+            logger.info(f"📌 최종 추출된 키워드: {keywords}")
+            logger.info(f"📌 브랜드 필터링 적용 대상: {brand_keywords}")
 
-            # 3. 브랜드 키워드 추출
-            brand_keywords = [kw for kw in keywords.split(" / ") if kw in [p["brand"] for p in all_perfumes]]
-            logger.info(f"📌 추출된 브랜드 키워드: {brand_keywords}")
-
-            # 4. 향수 필터링 (향과 브랜드)
+            # 3. 향수 필터링 (향과 브랜드)
             filtered_perfumes = [
                 p for p in all_perfumes
                 if any(keyword.lower() in p.get('main_accord', '').lower() or 
                     keyword.lower() in p.get('brand', '').lower() for keyword in keywords.split(" / "))
             ]
 
-            # 5. 브랜드 필터 적용
+            # 4. 브랜드 필터 적용 (정제된 브랜드명 기반)
             if brand_keywords:
                 filtered_perfumes = [p for p in filtered_perfumes if p["brand"] in brand_keywords]
                 logger.info(f"📌 브랜드 필터 적용 후 남은 향수 개수: {len(filtered_perfumes)}")
@@ -147,16 +169,17 @@ class LLMService:
             if not filtered_perfumes:
                 raise HTTPException(status_code=404, detail="사용자 요청에 맞는 향수를 찾을 수 없습니다")
 
-            # 6. GPT 추천 요청을 위한 제품 텍스트 생성
+            # 5. GPT 요청을 위한 제품 텍스트 생성
             products_text = "\n".join([
                 f"{p['id']}. {p['name_kr']} ({p['brand']}): {p.get('main_accord', '향 정보 없음')}"
-                for p in filtered_perfumes[:150]  # 최대 3개 추천
+                for p in filtered_perfumes[:150]
             ])
 
-            # 7. GPT 요청
+            # 6. GPT 추천 요청
             template = self.prompt_loader.get_prompt("recommendation")
             names_prompt = (
                 f"{template['description']}\n"
+                f"{template['rules']}"
                 f"사용자 요청: {user_input}\n"
                 f"추출된 키워드: {products_text}\n"
                 f"향수의 브랜드 이름은 들어가지 않은 이름만 최대 3개 추천해주세요.\n\n"
@@ -191,14 +214,14 @@ class LLMService:
             response_text = self.gpt_client.generate_response(names_prompt)
             logger.debug(f"Raw GPT response: {response_text}")
 
-            # 8. JSON 파싱
+            # 7. JSON 파싱
             try:
                 if '```json' in response_text:
                     response_text = response_text.split('```json')[1].split('```')[0].strip()
 
                 gpt_response = json.loads(response_text)
 
-                # 9. 추천 향수 ID 매칭
+                # 8. 추천 향수 ID 매칭
                 recommendations = []
                 for rec in gpt_response.get("recommendations", []):
                     matched_perfume = next((p for p in filtered_perfumes if p['name_kr'] == rec["name"]), None)
@@ -215,13 +238,13 @@ class LLMService:
                 if not recommendations:
                     raise ValueError("추천된 향수가 데이터에서 찾을 수 없습니다.")
 
-                # 10. 공통 line_id 찾기
+                # 9. 공통 line_id 찾기
                 line_id = self.get_common_line_id(recommendations)
 
                 return {
                     'recommendations': recommendations,
                     'content': gpt_response.get('content', '추천 분석 실패'),
-                    'line_id': line_id  # 동적으로 계산된 line_id 사용
+                    'line_id': line_id
                 }
 
             except json.JSONDecodeError as e:
@@ -230,10 +253,10 @@ class LLMService:
                 raise ValueError("JSON 파싱 실패")
 
         except ValueError as ve:
-            logger.error(f"추천 생성 오류: {ve}")
+            logger.error(f"1추천 생성 오류: {ve}")
             raise HTTPException(status_code=400, detail=str(ve))
         except Exception as e:
-            logger.error(f"추천 생성 오류: {str(e)}")
+            logger.error(f"2추천 생성 오류: {str(e)}")
             raise HTTPException(status_code=500, detail="추천 생성 실패")
 
     def get_common_line_id(self, recommendations: list) -> int:
