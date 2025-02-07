@@ -55,14 +55,9 @@ class DBService:
 
     def cache_perfume_data(self, force: bool = False) -> None:
         """
-        DB의 향수 데이터를 JSON 파일로 캐싱. `force=True`일 경우 강제로 재생성.
+        DB의 향수 데이터를 JSON 파일로 캐싱. `force=True` 또는 변경 사항이 있을 경우 갱신.
         """
-        if self.cache_path.exists() and not force:
-            # 캐싱 파일이 유효하면 갱신하지 않음
-            file_mod_time = datetime.fromtimestamp(self.cache_path.stat().st_mtime)
-            if datetime.now() - file_mod_time < self.cache_expiration:
-                logger.info(f"캐싱 파일이 최신 상태입니다: {self.cache_path}")
-                return
+        existing_products = self.load_cached_perfume_data(check_only=True)
 
         query = """
         SELECT 
@@ -72,21 +67,29 @@ class DBService:
         try:
             with self.connection.cursor() as cursor:
                 cursor.execute(query)
-                products = cursor.fetchall()
+                new_products = cursor.fetchall()
 
-                # 캐싱 파일 저장
-                with open(self.cache_path, "w", encoding="utf-8") as f:
-                    json.dump(products, f, ensure_ascii=False, indent=4)
+            # 데이터 변경 여부 확인
+            if not force and self.is_cache_up_to_date(existing_products, new_products):
+                logger.info(f"✅ 캐싱 데이터가 최신 상태입니다: {self.cache_path}")
+                return
 
-                logger.info(f"✅ 향수 데이터를 JSON으로 캐싱 완료: {self.cache_path}")
+            # 캐싱 파일 저장
+            with open(self.cache_path, "w", encoding="utf-8") as f:
+                json.dump(new_products, f, ensure_ascii=False, indent=4)
+
+            logger.info(f"✅ 향수 데이터를 JSON으로 캐싱 완료: {self.cache_path}")
+
         except pymysql.MySQLError as e:
             logger.error(f"🚨 데이터베이스 오류 발생: {e}")
 
-    def load_cached_perfume_data(self) -> List[Dict]:
+    def load_cached_perfume_data(self, check_only: bool = False) -> List[Dict]:
         """
-        캐싱된 데이터를 로드. 캐싱 파일이 없으면 새로 생성.
+        캐싱된 데이터를 로드. 캐싱 파일이 없으면 check_only=False일 때 새로 생성.
         """
         if not self.cache_path.exists():
+            if check_only:
+                return []
             logger.info("캐싱 파일이 존재하지 않아 새로 생성합니다.")
             self.cache_perfume_data()
 
@@ -95,6 +98,25 @@ class DBService:
 
         logger.info(f"✅ 캐싱된 향수 데이터 {len(products)}개 로드")
         return products
+
+    def is_cache_up_to_date(self, existing_products: List[Dict], new_products: List[Dict]) -> bool:
+        """
+        기존 캐싱 데이터와 새로 가져온 DB 데이터를 비교하여 변경 사항이 있는지 확인.
+        """
+        existing_dict = {item['id']: item for item in existing_products}
+        new_dict = {item['id']: item for item in new_products}
+
+        # 새로운 ID가 추가되었거나 기존 데이터가 변경되었는지 확인
+        if set(existing_dict.keys()) != set(new_dict.keys()):
+            logger.info("🔄 새로운 향수 데이터가 추가됨. 캐싱을 갱신합니다.")
+            return False
+
+        for key in new_dict.keys():
+            if existing_dict[key] != new_dict[key]:  # 데이터 변경 확인
+                logger.info("🔄 기존 향수 데이터가 변경됨. 캐싱을 갱신합니다.")
+                return False
+
+        return True
 
     def force_generate_cache(self) -> None:
         """
