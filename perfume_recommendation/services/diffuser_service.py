@@ -14,7 +14,7 @@ class DiffuserRecommendationService:
         self.DIFFUSER_CATEGORY_ID = 2
         
         # 카테고리별 추천 향료 미리 정의
-        self.category_notes = {
+        self.user_input_notes = {
             "수면 & 회복": ["베티버","클라리 세이지", "라벤더", "일랑일랑", "바닐라", "캐모마일"],
             "집중 & 마인드풀니스": ["로즈마리", "레몬", "페퍼민트", "유칼립투스"],
             "활력 & 에너지": ["베르가못", "자몽", "레몬그라스", "오렌지"],
@@ -23,16 +23,16 @@ class DiffuserRecommendationService:
             "리프레시 & 클린 에어": ["사이프러스", "레몬", "유칼립투스", "파인", "티트리","라반딘"]
         }
 
-    async def recommend_diffusers(self, category: str) -> Dict:
+    async def recommend_diffusers(self, user_input: str) -> Dict:
         """카테고리에 맞는 디퓨저 추천"""
         try:
-            logger.info(f"Generating recommendation for: {category}")
+            logger.info(f"Generating recommendation for: {user_input}")
             
-            if category not in self.category_notes:
+            if user_input not in self.user_input_notes:
                 raise ValueError("유효하지 않은 카테고리입니다")
             
             # 1. 해당 카테고리의 향료로 디퓨저 검색
-            recommended_notes = self.category_notes[category]
+            recommended_notes = self.user_input_notes[user_input]
             spices = self.db_service.get_spices_by_names(recommended_notes)
             
             if not spices:
@@ -49,7 +49,7 @@ class DiffuserRecommendationService:
             prompt = f"""
             당신은 디퓨저 전문가입니다. 다음 상황에 가장 적합한 간단한 사용 루틴을 제안해주세요.
 
-            상황: {category}
+            상황: {user_input}
 
             아래와 같은 간단한 사용 루틴 형식으로 작성해주세요:
             - 수면 & 회복: "조용한 시간에 디퓨저를 켜고 명상이나 깊은 호흡과 함께 내면의 평화를 찾아보세요."
