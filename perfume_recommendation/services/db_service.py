@@ -34,25 +34,94 @@ class DBService:
             logger.error(f"🚨 데이터베이스 연결 오류: {e}")
             return None
 
-    # def fetch_line_data(self) -> List[Dict]:
-    #     """
-    #     line 테이블의 모든 데이터를 조회하여 반환.
+    def fetch_brands(self) -> List[str]:
+        """DB에서 브랜드 목록을 가져옵니다."""
+        query = "SELECT DISTINCT brand FROM product;"
+        try:
+            with self.connection.cursor() as cursor:
+                cursor.execute(query)
+                brands = [row["brand"] for row in cursor.fetchall()]
+            
+            logger.info(f"✅ 총 {len(brands)}개의 브랜드 조회 완료")
+            return brands
+        except pymysql.MySQLError as e:
+            logger.error(f"🚨 브랜드 데이터 로드 실패: {e}")
+            return []
+    
+    def fetch_spices_by_line(self, line_id: int) -> List[Dict]:
+        """특정 계열(line_id)에 속하는 향료(spice) 목록 조회"""
+        try:
+            query = """
+                SELECT id, name_kr 
+                FROM spice 
+                WHERE line_id = %s;
+            """
+            
+            with self.connection.cursor() as cursor:
+                cursor.execute(query, (line_id,))
+                spices = cursor.fetchall()
+            
+            if not spices:
+                logger.warning(f"⚠️ 해당 계열 ID({line_id})에 속하는 향료가 없습니다.")
+                return []
 
-    #     Returns:
-    #         List[Dict]: line 테이블의 데이터를 포함한 리스트
-    #     """
-    #     query = "SELECT * FROM line;"
-    #     try:
-    #         with self.connection.cursor() as cursor:
-    #             cursor.execute(query)
-    #             lines = cursor.fetchall()
+            logger.info(f"✅ 계열 ID({line_id})에 해당하는 향료 {len(spices)}개 조회 완료")
+            return spices
 
-    #         logger.info(f"✅ line 테이블 데이터 {len(lines)}개 조회 완료")
-    #         return lines
-    #     except pymysql.MySQLError as e:
-    #         logger.error(f"🚨 데이터베이스 오류 발생: {e}")
-    #         return []
+        except pymysql.MySQLError as e:
+            logger.error(f"🚨 향료 데이터 로드 실패: {e}")
+            return []
 
+    def fetch_line_data(self) -> List[Dict]:
+        """
+        line 테이블의 모든 데이터를 조회하여 반환.
+
+        Returns:
+            List[Dict]: line 테이블의 데이터를 포함한 리스트
+        """
+        query = "SELECT * FROM line;"
+        try:
+            with self.connection.cursor() as cursor:
+                cursor.execute(query)
+                lines = cursor.fetchall()
+
+            logger.info(f"✅ line 테이블 데이터 {len(lines)}개 조회 완료")
+            return lines
+        except pymysql.MySQLError as e:
+            logger.error(f"🚨 데이터베이스 오류 발생: {e}")
+            return []
+    
+    def get_perfumes_by_middel_notes(self, spice_ids: List[int]) -> List[Dict]:
+        """MIDDLE 타입의 노트를 포함한 향수를 검색"""
+        try:
+            spice_ids_str = ",".join(map(str, spice_ids))
+            query = f"""
+                SELECT DISTINCT
+                    p.id, 
+                    p.brand, 
+                    p.name_kr, 
+                    p.size_option as volume,
+                    COUNT(DISTINCT n.spice_id) as matching_count
+                FROM product p
+                JOIN note n ON p.id = n.product_id
+                WHERE p.category_id = 1
+                AND n.spice_id IN ({spice_ids_str})
+                AND n.note_type = 'MIDDLE'
+                GROUP BY p.id, p.brand, p.name_kr, p.size_option
+                ORDER BY matching_count DESC;
+            """
+
+            with self.connection.cursor() as cursor:
+                cursor.execute(query)
+                perfumes = cursor.fetchall()
+                logger.info(f"✅ 전체 매칭되는 향수 {len(perfumes)}개를 찾았습니다.")
+
+                return perfumes
+
+        except pymysql.MySQLError as e:
+            logger.error(f"🚨 향수 데이터 로드 실패: {e}")
+            raise
+    
     def cache_perfume_data(self, force: bool = False) -> None:
         """
         DB의 향수 데이터를 JSON 파일로 캐싱. `force=True` 또는 변경 사항이 있을 경우 갱신.
