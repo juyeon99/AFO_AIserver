@@ -58,23 +58,20 @@ async def process_input(input_data: dict, llm_service: LLMService = Depends(get_
     """
     try:
         user_input = input_data["user_input"]
-        mode, _ = llm_service.process_input(user_input)
+        mode, response = llm_service.process_input(user_input)
 
         logger.info(f"사용자 입력 처리: mode={mode}, input={user_input}")
 
         if mode == "chat":
-            response = llm_service.generate_chat_response(user_input)
             return {"mode": "chat", "content": response}
 
         elif mode == "recommendation":
-            # 추천 결과 생성
-            response = llm_service.generate_recommendation_response(user_input)
             recommendations = response.get("recommendations", [])
             content = response.get("content", "공통 감정 생성 실패")
             line_id = response.get("line_id", "line_id 생성 실패")
 
             return {
-                "mode": "recommendation",
+                "mode": "recommendation", 
                 "recommendations": recommendations,
                 "content": content,
                 "lineId": line_id,
@@ -89,12 +86,3 @@ async def process_input(input_data: dict, llm_service: LLMService = Depends(get_
     except Exception as e:
         logger.error(f"Unhandled exception: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
-
-# FastAPI 앱에 라우터 추가
-app.include_router(router)
-
-# 애플리케이션 실행
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(app, host="APP_HOST", port="APP_PORT")
