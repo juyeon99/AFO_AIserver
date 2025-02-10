@@ -7,8 +7,11 @@ from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
+
 class DBService:
-    def __init__(self, db_config: Dict[str, str], cache_path: str = "perfume_cache.json"):
+    def __init__(
+        self, db_config: Dict[str, str], cache_path: str = "perfume_cache.json"
+    ):
         self.db_config = db_config
         self.connection = self.connect_to_db()
         self.cache_path = Path(cache_path)
@@ -23,7 +26,7 @@ class DBService:
                 password=self.db_config["password"],
                 database=self.db_config["database"],
                 charset="utf8mb4",
-                cursorclass=pymysql.cursors.DictCursor
+                cursorclass=pymysql.cursors.DictCursor,
             )
             logger.info("✅ 데이터베이스 연결 성공!")
             return connection
@@ -34,7 +37,7 @@ class DBService:
     # def fetch_line_data(self) -> List[Dict]:
     #     """
     #     line 테이블의 모든 데이터를 조회하여 반환.
-        
+
     #     Returns:
     #         List[Dict]: line 테이블의 데이터를 포함한 리스트
     #     """
@@ -49,7 +52,7 @@ class DBService:
     #     except pymysql.MySQLError as e:
     #         logger.error(f"🚨 데이터베이스 오류 발생: {e}")
     #         return []
-    
+
     def cache_perfume_data(self, force: bool = False) -> None:
         """
         DB의 향수 데이터를 JSON 파일로 캐싱. `force=True` 또는 변경 사항이 있을 경우 갱신.
@@ -122,6 +125,68 @@ class DBService:
         logger.info("강제 캐싱 생성 요청을 받았습니다.")
         self.cache_perfume_data(force=True)
         logger.info("✅ 강제 캐싱 생성 완료.")
+
+
+    def get_spices_by_names(self, note_names: List[str]) -> List[Dict]:
+        """미리 정의된 향료들의 ID를 가져옵니다."""
+        try:
+            notes_str = ", ".join([f"'{note}'" for note in note_names])
+            query = f"""
+                SELECT id, name_kr 
+                FROM spice 
+                WHERE name_kr IN ({notes_str});
+            """
+            
+            with self.connection.cursor() as cursor:
+                cursor.execute(query)
+                result = cursor.fetchall()
+                logger.info(f"✅ 카테고리 향료: {note_names}")
+                logger.info(f"✅ 찾은 향료 정보: {result}")
+                return result
+                
+        except pymysql.MySQLError as e:
+            logger.error(f"🚨 향료 데이터 로드 실패: {e}")
+            raise
+
+    def get_diffusers_by_spice_ids(self, spice_ids: List[int]) -> List[Dict]:
+        """해당 향료들이 포함된 디퓨저를 찾습니다."""
+        try:
+            spice_ids_str = ",".join(map(str, spice_ids))
+            query = f"""
+                SELECT DISTINCT
+                    p.id, 
+                    p.brand, 
+                    p.name_kr, 
+                    p.size_option as volume,
+                    COUNT(DISTINCT n.spice_id) as matching_count
+                FROM product p
+                JOIN note n ON p.id = n.product_id
+                WHERE p.category_id = 2
+                AND n.spice_id IN ({spice_ids_str})
+                AND p.name_kr NOT LIKE '%카 디퓨저%'
+                GROUP BY p.id, p.brand, p.name_kr, p.size_option
+                ORDER BY matching_count DESC;
+            """
+            
+            with self.connection.cursor() as cursor:
+                cursor.execute(query)
+                all_diffusers = cursor.fetchall()
+                logger.info(f"✅ 전체 매칭되는 디퓨저 {len(all_diffusers)}개를 찾았습니다.")
+                
+                if len(all_diffusers) > 2:
+                    # 랜덤하게 2개 선택
+                    import random
+                    result = random.sample(all_diffusers, 2)
+                else:
+                    result = all_diffusers
+                    
+                logger.info(f"✅ 선택된 디퓨저: {[d['name_kr'] for d in result]}")
+                return result
+                
+        except pymysql.MySQLError as e:
+            logger.error(f"🚨 디퓨저 데이터 로드 실패: {e}")
+            raise
+
 
 # 캐싱 생성 기능 실행
 if __name__ == "__main__":
