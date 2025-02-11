@@ -1,8 +1,11 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from fastapi import FastAPI
-from routers import llm_router, image_processing_router, image_generation_router, image_generation_description_router, diffuser_router, similar
+from perfume_recommendation.routers import llm_router, image_processing_router, image_generation_router, image_generation_description_router, diffuser_router, similar
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
-import os
 from fastapi.staticfiles import StaticFiles
 
 

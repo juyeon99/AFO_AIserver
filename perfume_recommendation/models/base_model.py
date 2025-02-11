@@ -26,7 +26,6 @@ class Note(Base):
     time_stamp = Column(DateTime)
     product_id = Column(Integer, ForeignKey("product.id"))
     spice_id = Column(Integer)
-    perfume_id = Column(Integer)
 
 class Spice(Base):
     __tablename__ = "spice"

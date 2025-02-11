@@ -1,3 +1,6 @@
 .env
 __pycache__/
 *.pyc
+embedding_cache/
+generated_images/
+*.jpeg

@@ -6,8 +6,7 @@ from pathlib import Path
 from datetime import datetime, timedelta
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-# 절대 경로로 수정
-from ..models.base_model import Base, Product, Note, Spice, ProductImage, Similar, SimilarText, SimilarImage
+from perfume_recommendation.models.base_model import Base, Product, Note, Spice, ProductImage, Similar, SimilarText, SimilarImage
 
 logger = logging.getLogger(__name__)
 

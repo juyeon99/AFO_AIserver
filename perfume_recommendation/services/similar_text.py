@@ -3,7 +3,8 @@ from sentence_transformers import SentenceTransformer
 from functools import lru_cache
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-from .db_service import Product, Note, Spice
+from .db_service import Product, Note
+from perfume_recommendation.embedding_utils import save_text_embedding, load_text_embedding  # ✅ 캐시 추가
 
 # ✅ 텍스트 모델 설정
 TEXT_MODEL_TYPE = "mpnet"
@@ -15,9 +16,21 @@ TEXT_MODEL_CONFIG = {
 text_model = SentenceTransformer(TEXT_MODEL_CONFIG[TEXT_MODEL_TYPE])
 
 
-@lru_cache(maxsize=1000)
 def get_similar_text_embedding(text: str):
-    return text_model.encode(text)
+    """텍스트 임베딩을 캐시에서 불러오거나, 새로 계산"""
+
+    # ✅ 먼저 캐시에서 불러오기 시도
+    cached_embedding = load_text_embedding(text)
+    if cached_embedding is not None:
+        print(f"✅ 캐시에서 텍스트 임베딩 불러옴: {text}")  # 🚀 디버깅 메시지 추가
+        return cached_embedding  # 캐시가 있으면 바로 반환
+
+    # 캐시에 없으면 새로 계산
+    embedding = text_model.encode(text)
+
+    # ✅ 새로 계산된 임베딩을 저장 (JSON 캐싱)
+    save_text_embedding(text, embedding)
+    return embedding
 
 
 def find_similar_texts(product_id: int, db: Session, top_n: int = 5):

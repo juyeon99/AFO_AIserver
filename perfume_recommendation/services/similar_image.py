@@ -8,6 +8,8 @@ from functools import lru_cache
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from .db_service import Product, ProductImage
+from perfume_recommendation.embedding_utils import save_embedding, load_embedding  # ✅ 캐시 불러오기 추가
+
 
 # ✅ 이미지 모델 설정
 IMAGE_MODEL_TYPE = "vit"
@@ -27,10 +29,15 @@ transform = transforms.Compose(
     ]
 )
 
-
-@lru_cache(maxsize=100)
 def get_similar_image_embedding(image_url: str):
-    """이미지 벡터 추출"""
+    """이미지 임베딩을 캐시에서 불러오거나, 새로 계산"""
+    
+    # ✅ 먼저 캐시에서 불러오기 시도
+    cached_embedding = load_embedding(image_url)
+    if cached_embedding is not None:
+        print(f"✅ 캐시에서 임베딩 불러옴: {image_url}")
+        return cached_embedding  # 캐시가 있으면 바로 반환
+
     try:
         response = requests.get(image_url, stream=True)
         response.raise_for_status()
@@ -42,10 +49,14 @@ def get_similar_image_embedding(image_url: str):
             if isinstance(embedding, tuple):
                 embedding = embedding[0]
 
-        return embedding.numpy().flatten()
+        embedding = embedding.numpy().flatten()
+
+        # ✅ 새로 계산된 임베딩을 저장 (JSON 캐싱)
+        save_embedding(image_url, embedding)
+        return embedding
+
     except Exception:
         return None
-
 
 def find_similar_images(product_id: int, db: Session, top_n: int = 5):
     """이미지 기반 유사 향수 검색"""
