@@ -10,7 +10,13 @@ class LLMImageService:
 
     def generate_image_description(self, user_input: str) -> str:
         try:
-            image_prompt = f"Please write a detailed description of the image based on the following keywords: {user_input} Please make sure that your answers are in English. You do not need to explain what the user's keywords are when you answer."
+            image_prompt = f"""Describe the essence of the scene based on the following keywords: {user_input}. 
+            Focus solely on the scents, atmosphere, and emotions evoked by the image. 
+            Describe the way the air feels, the intensity of the fragrance, and how different notes blend together. 
+            Capture the mood and emotional depth without referring to any physical objects or visual elements. 
+            Use expressive and immersive language to create a sensory-rich experience. Your response should be in English. 
+            Avoid mentioning any perfume bottles, containers, or tangible items—only describe the feeling and scent itself.
+            """
             imageGeneratePrompt = self.gpt_client.generate_response(image_prompt)  
             if not imageGeneratePrompt:
                 raise ValueError("Failed to generate image description.")

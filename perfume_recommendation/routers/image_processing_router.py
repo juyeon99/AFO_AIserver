@@ -8,7 +8,7 @@ image_processing_service = ImageProcessingService()
 @router.post("/process-image")
 async def process_image(file: UploadFile = File(...)):
     """
-    업로드된 이미지를 처리하여 설명과 느낌을 반환합니다.
+    업로드된 이미지를 처리하여 설명과 감정을 반환합니다.
     """
     try:
         # 업로드된 파일의 데이터 읽기
@@ -16,7 +16,17 @@ async def process_image(file: UploadFile = File(...)):
 
         # 이미지 처리
         result = image_processing_service.process_image(image_data)
-        return {"imageProcessResult": result["feeling"]}
+
+        # 반환값 확인
+        if "description" not in result or "feeling" not in result:
+            raise HTTPException(status_code=500, detail="🚨 'description' 또는 'feeling' 키가 존재하지 않습니다.")
+
+        # 설명 + 감정 정보 반환
+        return {
+            "description": result["description"],
+            "feeling": result["feeling"]
+        }
+
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
