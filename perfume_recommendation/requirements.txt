@@ -1,0 +1,36 @@
+# FastAPI 및 웹 서버
+fastapi
+uvicorn
+
+# 데이터 처리 및 머신러닝
+pandas
+numpy
+scikit-learn
+torch
+transformers
+sentence-transformers
+
+# 이미지 및 HTTP 요청 처리
+Pillow
+requests
+
+# 데이터베이스 ORM
+SQLAlchemy
+
+# 환경 변수 및 파일 처리
+python-multipart
+python-dotenv
+aiofiles
+
+# 테스트 및 개발 도구
+jupyter
+pytest
+pytest-asyncio
+pytest-cov
+
+# 코드 스타일 및 품질 관리
+black
+isort
+flake8
+
+# pip install -r requirements.txt

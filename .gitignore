@@ -2,5 +2,6 @@
 __pycache__/
 *.pyc
 embedding_cache/
-generated_images/
-*.jpeg
+perfume_recommendation/generated_images/*.jpeg
+perfume_recommendation/generated_images/*.jpg
+cache_timestamp.txt
