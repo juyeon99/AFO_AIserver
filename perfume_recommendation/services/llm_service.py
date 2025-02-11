@@ -2,7 +2,7 @@ import json
 import logging
 from typing import Optional, Tuple
 from models.img_llm_client import GPTClient
-from services.db_service import DBService
+from .db_service import DBService
 from services.prompt_loader import PromptLoader
 from fastapi import HTTPException
 

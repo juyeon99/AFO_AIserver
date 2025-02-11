@@ -4,9 +4,23 @@ import pymysql
 from typing import List, Dict, Optional
 from pathlib import Path
 from datetime import datetime, timedelta
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from perfume_recommendation.models.base_model import Base, Product, Note, Spice, ProductImage, Similar, SimilarText, SimilarImage
 
 logger = logging.getLogger(__name__)
 
+# SQLAlchemy 설정
+DATABASE_URL = "mysql+pymysql://banghyang:banghyang@192.168.0.182:3306/banghyang"
+engine = create_engine(DATABASE_URL, pool_recycle=3600)
+SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 class DBService:
     def __init__(
@@ -16,6 +30,11 @@ class DBService:
         self.connection = self.connect_to_db()
         self.cache_path = Path(cache_path)
         self.cache_expiration = timedelta(days=1)  # 캐싱 만료 시간 (1일)
+        self.session = SessionLocal()
+
+    def __del__(self):
+        if hasattr(self, 'session'):
+            self.session.close()
 
     def connect_to_db(self):
         try:
@@ -257,6 +276,38 @@ class DBService:
         except pymysql.MySQLError as e:
             logger.error(f"🚨 디퓨저 데이터 로드 실패: {e}")
             raise
+
+    # ORM을 사용하는 새로운 메서드들
+    def get_product_by_id(self, product_id: int):
+        """SQLAlchemy를 사용하여 제품 정보를 조회합니다."""
+        try:
+            return self.session.query(Product).filter(Product.id == product_id).first()
+        except Exception as e:
+            logger.error(f"🚨 제품 조회 실패: {e}")
+            return None
+
+    def get_similar_products_by_text(self, product_id: int) -> List[Dict]:
+        """텍스트 기반 유사도로 비슷한 제품을 조회합니다."""
+        try:
+            similar_products = (
+                self.session.query(
+                    Product.id,
+                    Product.brand,
+                    Product.name_kr,
+                    Product.size_option.label('volume'),
+                    SimilarText.similarity_score
+                )
+                .join(SimilarText, Product.id == SimilarText.similar_product_id)
+                .filter(SimilarText.product_id == product_id)
+                .order_by(SimilarText.similarity_score.desc())
+                .limit(5)
+                .all()
+            )
+            logger.info(f"✅ 텍스트 기반 유사 제품 {len(similar_products)}개 조회 완료")
+            return [dict(zip(['id', 'brand', 'name_kr', 'volume', 'similarity_score'], p)) for p in similar_products]
+        except Exception as e:
+            logger.error(f"🚨 텍스트 기반 유사 제품 조회 실패: {e}")
+            return []
 
 
 # 캐싱 생성 기능 실행
