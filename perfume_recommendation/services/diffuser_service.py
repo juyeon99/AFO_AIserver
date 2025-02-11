@@ -73,6 +73,7 @@ class DiffuserRecommendationService:
             # 4. 최종 응답 구성
             recommendations = [
                 {
+                    'product_id': diffuser['id'],
                     'name': f"{diffuser['name_kr']} {diffuser.get('volume', '200ml')}",
                     'brand': diffuser['brand']
                 }
