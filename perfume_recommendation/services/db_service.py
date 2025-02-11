@@ -248,8 +248,10 @@ class DBService:
                     result = random.sample(all_diffusers, 2)
                 else:
                     result = all_diffusers
-                    
-                logger.info(f"✅ 선택된 디퓨저: {[d['name_kr'] for d in result]}")
+                
+                # 디퓨저 이름과 product_id를 함께 로깅
+                selected_diffusers = [f"{d['name_kr']} (ID: {d['id']})" for d in result]
+                logger.info(f"✅ 선택된 디퓨저: {selected_diffusers}")
                 return result
                 
         except pymysql.MySQLError as e:
