@@ -58,7 +58,7 @@ class PerfumeService:
         self.graph.add_node("fashion_recommendation_generator", self.fashion_recommendation_generator)
         self.graph.add_node("chat_handler", self.chat_handler)
         self.graph.add_node("error_handler", self.error_handler)
-        self.graph.add_node("end", lambda x: x)  # Add end node
+        self.graph.add_node("end", lambda x: x)  
 
         # Define routing function
         def route_based_on_intent(state: PerfumeState) -> str:
@@ -205,66 +205,47 @@ class PerfumeService:
                     content = response.get("content", "")
                     line_id = response.get("line_id")
 
-                    # 추천 결과 검증 및 가공
-                    if recommendations and isinstance(recommendations, list):
-                        valid_recommendations = []
+                    logger.info("✅ LLM 추천 생성 완료")
 
-                        for rec in recommendations:
-                            if isinstance(rec, dict) and "name" in rec:
-                                processed_rec = {
-                                    "id": rec.get("id"),
-                                    "name": rec["name"],
-                                    "brand": rec.get("brand", ""),
-                                    "reason": rec.get("reason", ""),
-                                    "situation": rec.get("situation", "")
-                                }
-                                valid_recommendations.append(processed_rec)
-
-                        if valid_recommendations:
-                            logger.info(f"✅ LLM 추천 생성 완료: {len(valid_recommendations)}개 추천됨")
-
-                            # ✅ 최종 응답 형식 수정
-                            state["recommendations"] = valid_recommendations
-                            state["response"] = {
-                                "status": "success",
-                                "mode": "recommendation",  # mode 추가
-                                "content": content,  # content 유지
-                                "recommendations": valid_recommendations,  # 중복 제거 후 유지
-                                "line_id": line_id
-                            }
-                            state["next_node"] = "end"
-                            return state
-
-                logger.error("❌ 유효하지 않은 추천 결과 형식")
-                raise ValueError("추천 결과 형식이 유효하지 않습니다")
+                    # ✅ 최상위 recommendations 제거, response와 image_path만 유지
+                    state["response"] = {
+                        "status": "success",
+                        "mode": "recommendation",
+                        "recommendation": recommendations,
+                        "content": content,
+                        "line_id": line_id
+                    }
+                    state["image_path"] = None  # 이미지 생성 기능 제거
+                    state["next_node"] = "end"
+                    return state
 
             except Exception as e:
                 logger.error(f"❌ LLM 추천 생성 실패: {e}")
 
-            # DB 기반 추천으로 폴백
-            if state.get("spices"):
-                try:
+            # DB 기반 추천 시도
+            try:
+                if state.get("spices"):
                     spice_ids = [spice["id"] for spice in state["spices"]]
                     filtered_perfumes = self.db_service.get_perfumes_by_middel_notes(spice_ids)
 
-                    if filtered_perfumes and len(filtered_perfumes) > 0:
-                        selected_perfumes = filtered_perfumes[:3]
-                        logger.info(f"✅ DB 기반 추천 완료: {len(selected_perfumes)}개 찾음")
+                    if filtered_perfumes:
+                        logger.info(f"✅ DB 기반 추천 완료: {len(filtered_perfumes)}개 찾음")
 
-                        state["recommendations"] = selected_perfumes
                         state["response"] = {
                             "status": "success",
-                            "mode": "recommendation",  # mode 추가
+                            "mode": "recommendation",
+                            "recommendation": recommendations,
                             "content": "향료 기반으로 추천된 향수입니다.",
-                            "recommendations": selected_perfumes,
                             "line_id": state.get("line_id", 1)
                         }
+                        state["image_path"] = None
                         state["next_node"] = "end"
                         return state
 
-                except Exception as e:
-                    logger.error(f"❌ DB 기반 추천 실패: {e}")
+            except Exception as e:
+                logger.error(f"❌ DB 기반 추천 실패: {e}")
 
+            # 모든 추천 방식 실패 시
             raise ValueError("적절한 향수를 찾을 수 없습니다")
 
         except Exception as e:
@@ -276,52 +257,54 @@ class PerfumeService:
     def fashion_recommendation_generator(self, state: PerfumeState) -> PerfumeState:
         """패션 기반 향수 추천 생성"""
         try:
-            logger.info("🔄 향수 추천 시작")
+            logger.info("🔄 패션 기반 향수 추천 시작")
             
             # LLM 서비스를 통한 직접 추천 생성
             try:
                 response = self.llm_service.fashion_based_generate_recommendation_response(state["user_input"])
-                
+
                 if response and isinstance(response, dict):
                     recommendations = response.get("recommendations", [])
                     content = response.get("content", "")
                     line_id = response.get("line_id")
-                    
-                    if recommendations and len(recommendations) > 0:
-                        logger.info(f"✅ LLM 추천 생성 완료: {len(recommendations)}개 추천됨")
-                        state["recommendations"] = recommendations
-                        state["response"] = {
-                            "status": "success",
-                            "content": content,
-                            "recommendations": recommendations,
-                            "line_id": line_id
-                        }
-                        state["next_node"] = "end"
-                        return state
-                        
+
+                    logger.info("✅ LLM 추천 생성 완료")
+
+                    # ✅ 최상위 recommendations 제거, response와 image_path만 유지
+                    state["response"] = {
+                        "status": "success",
+                        "mode": "recommendation",
+                        "recommendation": recommendations,
+                        "content": content,
+                        "line_id": line_id
+                    }
+                    state["image_path"] = None  # 이미지 생성 기능 제거
+                    state["next_node"] = "end"
+                    return state
+
             except Exception as e:
                 logger.error(f"❌ LLM 추천 생성 실패: {e}")
-                
+
             # DB 기반 추천 시도
             try:
                 if state.get("spices"):
                     spice_ids = [spice["id"] for spice in state["spices"]]
                     filtered_perfumes = self.db_service.get_perfumes_by_middel_notes(spice_ids)
-                    
-                    if filtered_perfumes and len(filtered_perfumes) > 0:
-                        selected_perfumes = filtered_perfumes[:3]
-                        logger.info(f"✅ DB 기반 추천 완료: {len(selected_perfumes)}개 찾음")
-                        
-                        state["recommendations"] = selected_perfumes
+
+                    if filtered_perfumes:
+                        logger.info(f"✅ DB 기반 추천 완료: {len(filtered_perfumes)}개 찾음")
+
                         state["response"] = {
                             "status": "success",
+                            "mode": "recommendation",
+                            "recommendation": recommendations,
                             "content": "향료 기반으로 추천된 향수입니다.",
-                            "recommendations": selected_perfumes,
                             "line_id": state.get("line_id", 1)
                         }
+                        state["image_path"] = None
                         state["next_node"] = "end"
                         return state
-                        
+
             except Exception as e:
                 logger.error(f"❌ DB 기반 추천 실패: {e}")
 
@@ -363,7 +346,7 @@ class PerfumeService:
     def image_generator(self, state: PerfumeState) -> PerfumeState:
         """추천된 향수 기반으로 이미지 생성"""
         try:
-            # 추천 결과 확인
+            # 추천 결과 검증
             recommendations = state.get("recommendations", [])
             if not recommendations:
                 logger.warning("⚠️ 추천 결과가 없어 이미지를 생성할 수 없습니다")
@@ -372,38 +355,71 @@ class PerfumeService:
                 return state
 
             # 이미지 프롬프트 생성
-            prompt_elements = []
-            for rec in recommendations[:3]:  # 최대 3개 향수만 사용
-                if "reason" in rec:
-                    prompt_elements.append(rec["reason"])
-                if "situation" in rec:
-                    prompt_elements.append(rec["situation"])
+            prompt_parts = []
 
+            # 향수 이름과 브랜드 정보 추가
+            perfume_info = [f"{rec.get('name', '')} by {rec.get('brand', '')}" for rec in recommendations[:3]]
+            if perfume_info:
+                prompt_parts.append("Luxury perfume bottles of " + ", ".join(perfume_info))
+
+            # 향수 특징과 상황 정보 추가
+            for rec in recommendations[:3]:
+                if rec.get("reason"):
+                    prompt_parts.append(rec["reason"])
+                if rec.get("situation"):
+                    atmosphere = rec["situation"].split(',')[0]  # 첫 번째 상황만 사용
+                    prompt_parts.append(atmosphere)
+
+            # 이미지 프롬프트 구성
             image_prompt = (
-                "Create a luxurious perfume advertisement featuring: "
-                f"{' '.join(prompt_elements)}. "
-                "Use elegant composition and soft lighting. "
-                "Style: high-end perfume photography."
+                "Create a professional perfume advertisement featuring:\n"
+                f"{'. '.join(prompt_parts)}.\n"
+                "Requirements:\n"
+                "- Elegant and luxurious composition\n"
+                "- Soft, diffused lighting\n"
+                "- High-end product photography style\n"
+                "- Crystal clear perfume bottles\n"
+                "- Premium background with subtle textures\n"
+                "- Professional color grading\n"
             )
 
-            logger.info(f"📸 이미지 생성 시작 - 프롬프트: {image_prompt[:100]}...")
-            
-            # 이미지 생성
-            image_result = self.image_service.generate_image(image_prompt)
-            if image_result:
-                state["image_path"] = image_result.get("output_path")
-                logger.info(f"✅ 이미지 생성 완료: {state['image_path']}")
-            else:
+            logger.info(f"📸 이미지 생성 시작\n프롬프트: {image_prompt}")
+
+            # 이미지 생성 및 검증
+            try:
+                image_result = self.image_service.generate_image(image_prompt)
+
+                if not image_result:
+                    raise ValueError("❌ 이미지 생성 결과가 비어있습니다")
+
+                if not isinstance(image_result, dict):
+                    raise ValueError(f"❌ 잘못된 이미지 결과 형식: {type(image_result)}")
+
+                output_path = image_result.get("output_path")
+                if not output_path:
+                    raise ValueError("❌ 이미지 경로가 없습니다")
+
+                # ✅ `state["image_path"]`에 정상적으로 경로 설정
+                state["image_path"] = output_path
+                logger.info(f"✅ 이미지 생성 완료: {output_path}")
+
+                # ✅ response에 image_path 추가
+                if isinstance(state.get("response"), dict):
+                    state["response"]["image_path"] = output_path
+                else:
+                    state["response"] = {"image_path": output_path}
+
+            except Exception as img_err:
+                logger.error(f"🚨 이미지 생성 실패: {img_err}")
                 state["image_path"] = None
-                logger.warning("⚠️ 이미지 생성 결과가 없습니다")
 
             state["next_node"] = "end"
             return state
 
         except Exception as e:
-            logger.error(f"🚨 이미지 생성 실패: {e}")
-            state["image_path"] = None
-            state["next_node"] = "end"
+            logger.error(f"❌ 이미지 생성 오류: {e}")
+            state["error"] = str(e)
+            state["next_node"] = "error_handler"
             return state
 
     def chat_handler(self, state: PerfumeState) -> PerfumeState:
@@ -427,7 +443,7 @@ class PerfumeService:
                 state["image_description"] = "No image description available."
                 return state
 
-            logger.info(f"🖼 이미지 설명 생성 시작 - 이미지 경로: {state['image_path']}")
+            logger.info(f"이미지 설명 생성 시작 - 이미지 경로: {state['image_path']}")
             state["image_description"] = self.llm_img_service.generate_image_description(state["image_path"])
 
         except Exception as e:
