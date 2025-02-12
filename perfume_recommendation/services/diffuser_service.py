@@ -53,7 +53,7 @@ class DiffuserRecommendationService:
         자스민, 사이프러스, 파인, 티트리, 라반딘
 
         JSON 형식으로 응답:
-        {{"selected_notes": 선택한 향료 목록}}
+        {{"selected_notes": ["향료1", "향료2", "향료3", "향료4"]}}
         """
         
         try:
@@ -118,7 +118,7 @@ class DiffuserRecommendationService:
             # 5. 최종 응답 구성
             recommendations = [
                 {
-                    'productId': diffuser['id'],
+                    'product_id': diffuser['id'],
                     'name': f"{diffuser['name_kr']} {diffuser.get('volume', '200ml')}",
                     'brand': diffuser['brand'],
                     'content': diffuser['content']
@@ -128,8 +128,8 @@ class DiffuserRecommendationService:
 
             return {
                 'recommendations': recommendations,
-                'usageRoutine': usage_routine,
-                'therapyTitle': THERAPY_TITLES[user_input]
+                'usage_routine': usage_routine,
+                'therapy_title': THERAPY_TITLES[user_input]
             }
 
         except Exception as e:
