@@ -246,13 +246,14 @@ class DBService:
                     p.brand, 
                     p.name_kr, 
                     p.size_option as volume,
+                    p.content,  # content 필드 추가
                     COUNT(DISTINCT n.spice_id) as matching_count
                 FROM product p
                 JOIN note n ON p.id = n.product_id
                 WHERE p.category_id = 2
                 AND n.spice_id IN ({spice_ids_str})
                 AND p.name_kr NOT LIKE '%카 디퓨저%'
-                GROUP BY p.id, p.brand, p.name_kr, p.size_option
+                GROUP BY p.id, p.brand, p.name_kr, p.size_option, p.content  # content도 GROUP BY에 추가
                 ORDER BY matching_count DESC;
             """
             
