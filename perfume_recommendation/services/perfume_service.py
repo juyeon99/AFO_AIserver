@@ -195,55 +195,76 @@ class PerfumeService:
         """향수 추천 생성"""
         try:
             logger.info("🔄 향수 추천 시작")
-            
+
             # LLM 서비스를 통한 직접 추천 생성
             try:
                 response = self.llm_service.generate_recommendation_response(state["user_input"])
-                
+
                 if response and isinstance(response, dict):
                     recommendations = response.get("recommendations", [])
                     content = response.get("content", "")
                     line_id = response.get("line_id")
-                    
-                    if recommendations and len(recommendations) > 0:
-                        logger.info(f"✅ LLM 추천 생성 완료: {len(recommendations)}개 추천됨")
-                        state["recommendations"] = recommendations
-                        state["response"] = {
-                            "status": "success",
-                            "content": content,
-                            "recommendations": recommendations,
-                            "line_id": line_id
-                        }
-                        state["next_node"] = "end"
-                        return state
-                        
+
+                    # 추천 결과 검증 및 가공
+                    if recommendations and isinstance(recommendations, list):
+                        valid_recommendations = []
+
+                        for rec in recommendations:
+                            if isinstance(rec, dict) and "name" in rec:
+                                processed_rec = {
+                                    "id": rec.get("id"),
+                                    "name": rec["name"],
+                                    "brand": rec.get("brand", ""),
+                                    "reason": rec.get("reason", ""),
+                                    "situation": rec.get("situation", "")
+                                }
+                                valid_recommendations.append(processed_rec)
+
+                        if valid_recommendations:
+                            logger.info(f"✅ LLM 추천 생성 완료: {len(valid_recommendations)}개 추천됨")
+
+                            # ✅ 최종 응답 형식 수정
+                            state["recommendations"] = valid_recommendations
+                            state["response"] = {
+                                "status": "success",
+                                "mode": "recommendation",  # mode 추가
+                                "content": content,  # content 유지
+                                "recommendations": valid_recommendations,  # 중복 제거 후 유지
+                                "line_id": line_id
+                            }
+                            state["next_node"] = "end"
+                            return state
+
+                logger.error("❌ 유효하지 않은 추천 결과 형식")
+                raise ValueError("추천 결과 형식이 유효하지 않습니다")
+
             except Exception as e:
                 logger.error(f"❌ LLM 추천 생성 실패: {e}")
-                
-            # DB 기반 추천 시도
-            try:
-                if state.get("spices"):
+
+            # DB 기반 추천으로 폴백
+            if state.get("spices"):
+                try:
                     spice_ids = [spice["id"] for spice in state["spices"]]
                     filtered_perfumes = self.db_service.get_perfumes_by_middel_notes(spice_ids)
-                    
+
                     if filtered_perfumes and len(filtered_perfumes) > 0:
                         selected_perfumes = filtered_perfumes[:3]
                         logger.info(f"✅ DB 기반 추천 완료: {len(selected_perfumes)}개 찾음")
-                        
+
                         state["recommendations"] = selected_perfumes
                         state["response"] = {
                             "status": "success",
+                            "mode": "recommendation",  # mode 추가
                             "content": "향료 기반으로 추천된 향수입니다.",
                             "recommendations": selected_perfumes,
                             "line_id": state.get("line_id", 1)
                         }
                         state["next_node"] = "end"
                         return state
-                        
-            except Exception as e:
-                logger.error(f"❌ DB 기반 추천 실패: {e}")
 
-            # 모든 추천 방식 실패 시
+                except Exception as e:
+                    logger.error(f"❌ DB 기반 추천 실패: {e}")
+
             raise ValueError("적절한 향수를 찾을 수 없습니다")
 
         except Exception as e:
