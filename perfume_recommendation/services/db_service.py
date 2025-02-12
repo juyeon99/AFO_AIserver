@@ -1,6 +1,7 @@
 import logging
 import json
 import pymysql
+import random
 from typing import List, Dict, Optional
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -216,20 +217,31 @@ class DBService:
 
 
     def get_spices_by_names(self, note_names: List[str]) -> List[Dict]:
-        """미리 정의된 향료들의 ID를 가져옵니다."""
+        """향료 이름으로 ID를 가져옵니다."""
         try:
-            notes_str = ", ".join([f"'{note}'" for note in note_names])
+            # LIKE 검색을 위한 패턴 생성
+            patterns = [f"name_kr LIKE '%{note.strip()}%'" for note in note_names] # 한글 이름으로 검색
+            where_clause = " OR ".join(patterns) # OR 조건으로 연결
+            
             query = f"""
-                SELECT id, name_kr 
+                SELECT id, name_kr
                 FROM spice 
-                WHERE name_kr IN ({notes_str});
+                WHERE {where_clause}
+                ORDER BY 
+                    CASE 
+                        WHEN name_kr IN ({', '.join([f"'{note.strip()}'" for note in note_names])}) THEN 0 
+                        ELSE 1 
+                    END,
+                    name_kr;
             """
             
             with self.connection.cursor() as cursor:
-                cursor.execute(query)
-                result = cursor.fetchall()
-                logger.info(f"✅ 카테고리 향료: {note_names}")
-                logger.info(f"✅ 찾은 향료 정보: {result}")
+                cursor.execute(query) # 쿼리 실행
+                result = cursor.fetchall() # 결과를 리스트로 반환
+                
+                logger.info(f"✅ 요청된 향료: {note_names}")
+                logger.info(f"✅ 매칭된 향료: {[r['name_kr'] for r in result]}")
+                
                 return result
                 
         except pymysql.MySQLError as e:
@@ -237,47 +249,64 @@ class DBService:
             raise
 
     def get_diffusers_by_spice_ids(self, spice_ids: List[int]) -> List[Dict]:
-        """해당 향료들이 포함된 디퓨저를 찾습니다."""
+        """해당 향료가 하나라도 포함된 디퓨저들 중에서 랜덤하게 2개를 선택합니다."""
         try:
             spice_ids_str = ",".join(map(str, spice_ids))
-            query = f"""
-                SELECT DISTINCT
-                    p.id, 
-                    p.brand, 
-                    p.name_kr, 
-                    p.size_option as volume,
-                    p.content,  # content 필드 추가
-                    COUNT(DISTINCT n.spice_id) as matching_count
+            
+            # 먼저 전체 매칭되는 디퓨저 수를 확인
+            count_query = f"""
+                SELECT COUNT(DISTINCT p.id) as total_count
                 FROM product p
                 JOIN note n ON p.id = n.product_id
                 WHERE p.category_id = 2
                 AND n.spice_id IN ({spice_ids_str})
                 AND p.name_kr NOT LIKE '%카 디퓨저%'
-                GROUP BY p.id, p.brand, p.name_kr, p.size_option, p.content  # content도 GROUP BY에 추가
-                ORDER BY matching_count DESC;
+            """
+            
+            # 그 다음 랜덤하게 2개 선택
+            main_query = f"""
+                SELECT DISTINCT
+                    p.id, 
+                    p.brand, 
+                    p.name_kr, 
+                    p.size_option as volume,
+                    p.content,
+                    COUNT(DISTINCT n.spice_id) as matching_count,
+                    GROUP_CONCAT(DISTINCT s.name_kr) as included_notes
+                FROM product p
+                JOIN note n ON p.id = n.product_id
+                JOIN spice s ON n.spice_id = s.id
+                WHERE p.category_id = 2
+                AND n.spice_id IN ({spice_ids_str})
+                AND p.name_kr NOT LIKE '%카 디퓨저%'
+                GROUP BY p.id, p.brand, p.name_kr, p.size_option, p.content
+                ORDER BY RAND()
+                LIMIT 2
             """
             
             with self.connection.cursor() as cursor:
-                cursor.execute(query)
-                all_diffusers = cursor.fetchall()
-                logger.info(f"✅ 전체 매칭되는 디퓨저 {len(all_diffusers)}개를 찾았습니다.")
+                # 전체 개수 확인
+                cursor.execute(count_query)
+                total_count = cursor.fetchone()['total_count']
+                logger.info(f"✅ 전체 매칭되는 디퓨저: {total_count}개")
                 
-                if len(all_diffusers) > 2:
-                    # 랜덤하게 2개 선택
-                    import random
-                    result = random.sample(all_diffusers, 2)
-                else:
-                    result = all_diffusers
+                # 랜덤 선택
+                cursor.execute(main_query)
+                result = cursor.fetchall()
                 
-                # 디퓨저 이름과 product_id를 함께 로깅
-                selected_diffusers = [f"{d['name_kr']} (ID: {d['id']})" for d in result]
-                logger.info(f"✅ 선택된 디퓨저: {selected_diffusers}")
+                # 선택된 디퓨저 로깅
+                for diffuser in result:
+                    logger.info(
+                        f"✅ 선택됨: {diffuser['name_kr']} (ID: {diffuser['id']}) - "
+                        f"포함 향료: {diffuser['included_notes']}"
+                    )
+                
                 return result
                 
         except pymysql.MySQLError as e:
             logger.error(f"🚨 디퓨저 데이터 로드 실패: {e}")
             raise
-
+        
     # ORM을 사용하는 새로운 메서드들
     def get_product_by_id(self, product_id: int):
         """SQLAlchemy를 사용하여 제품 정보를 조회합니다."""
