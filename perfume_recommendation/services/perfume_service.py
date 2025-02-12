@@ -84,10 +84,10 @@ class PerfumeService:
 
         # Add regular edges
         self.graph.add_edge("input_processor", "process_input")
-        self.graph.add_edge("recommendation_generator", "end")  # Terminal node
-        self.graph.add_edge("fashion_recommendation_generator", "end")  # Terminal node
-        self.graph.add_edge("error_handler", "end")  # Terminal node
-        self.graph.add_edge("chat_handler", "end")  # Terminal node
+        self.graph.add_edge("recommendation_generator", "end")  
+        self.graph.add_edge("fashion_recommendation_generator", "end")  
+        self.graph.add_edge("error_handler", "end")  
+        self.graph.add_edge("chat_handler", "end")  
 
     def process_input(self, state: PerfumeState) -> PerfumeState:
         """사용자 입력을 분석하여 의도를 분류"""
@@ -207,7 +207,6 @@ class PerfumeService:
 
                     logger.info("✅ LLM 추천 생성 완료")
 
-                    # ✅ 최상위 recommendations 제거, response와 image_path만 유지
                     state["response"] = {
                         "status": "success",
                         "mode": "recommendation",
@@ -215,7 +214,20 @@ class PerfumeService:
                         "content": content,
                         "line_id": line_id
                     }
-                    state["image_path"] = None  # 이미지 생성 기능 제거
+
+                    # 이미지 생성 시도
+                    try:
+                        image_state = self.image_generator(state)
+                        state["image_path"] = image_state.get("image_path")
+                        if state["image_path"]:
+                            logger.info(f"✅ 이미지 생성 성공: {state['image_path']}")
+                            state["response"]["image_path"] = state["image_path"]
+                        else:
+                            logger.warning("⚠️ 이미지 생성 실패")
+                    except Exception as img_err:
+                        logger.error(f"❌ 이미지 생성 오류: {img_err}")
+                        state["image_path"] = None
+
                     state["next_node"] = "end"
                     return state
 
@@ -234,11 +246,24 @@ class PerfumeService:
                         state["response"] = {
                             "status": "success",
                             "mode": "recommendation",
-                            "recommendation": recommendations,
+                            "recommendation": filtered_perfumes,
                             "content": "향료 기반으로 추천된 향수입니다.",
                             "line_id": state.get("line_id", 1)
                         }
-                        state["image_path"] = None
+
+                        # 이미지 생성 시도
+                        try:
+                            image_state = self.image_generator(state)
+                            state["image_path"] = image_state.get("image_path")
+                            if state["image_path"]:
+                                logger.info(f"✅ 이미지 생성 성공: {state['image_path']}")
+                                state["response"]["image_path"] = state["image_path"]
+                            else:
+                                logger.warning("⚠️ 이미지 생성 실패")
+                        except Exception as img_err:
+                            logger.error(f"❌ 이미지 생성 오류: {img_err}")
+                            state["image_path"] = None
+
                         state["next_node"] = "end"
                         return state
 
@@ -346,11 +371,12 @@ class PerfumeService:
     def image_generator(self, state: PerfumeState) -> PerfumeState:
         """추천된 향수 기반으로 이미지 생성"""
         try:
-            # 추천 결과 검증
-            recommendations = state.get("recommendations", [])
+            response = state.get("response") or {}
+            recommendations = response.get("recommendations") or []  
+
             if not recommendations:
-                logger.warning("⚠️ 추천 결과가 없어 이미지를 생성할 수 없습니다")
-                state["image_path"] = None
+                logger.warning("⚠️ response 객체 내 추천 결과가 없어 이미지를 생성할 수 없습니다")
+                state["response"]["image_path"] = None
                 state["next_node"] = "end"
                 return state
 
@@ -385,7 +411,10 @@ class PerfumeService:
 
             logger.info(f"📸 이미지 생성 시작\n프롬프트: {image_prompt}")
 
-            # 이미지 생성 및 검증
+            # ✅ 이미지 저장 경로 지정 (generated_images 폴더)
+            save_directory = "generated_images"
+            os.makedirs(save_directory, exist_ok=True)  # 폴더가 없으면 생성
+
             try:
                 image_result = self.image_service.generate_image(image_prompt)
 
@@ -395,23 +424,23 @@ class PerfumeService:
                 if not isinstance(image_result, dict):
                     raise ValueError(f"❌ 잘못된 이미지 결과 형식: {type(image_result)}")
 
-                output_path = image_result.get("output_path")
-                if not output_path:
+                raw_output_path = image_result.get("output_path")
+                if not raw_output_path:
                     raise ValueError("❌ 이미지 경로가 없습니다")
 
-                # ✅ `state["image_path"]`에 정상적으로 경로 설정
-                state["image_path"] = output_path
-                logger.info(f"✅ 이미지 생성 완료: {output_path}")
+                filename = os.path.basename(raw_output_path)
+                output_path = os.path.join(save_directory, filename)
 
-                # ✅ response에 image_path 추가
-                if isinstance(state.get("response"), dict):
-                    state["response"]["image_path"] = output_path
-                else:
-                    state["response"] = {"image_path": output_path}
+                if os.path.exists(raw_output_path):
+                    os.rename(raw_output_path, output_path)
+
+                # ✅ `response["image_path"]`에 최종 경로 설정
+                state["response"]["image_path"] = output_path
+                logger.info(f"✅ 이미지 생성 완료: {output_path}")
 
             except Exception as img_err:
                 logger.error(f"🚨 이미지 생성 실패: {img_err}")
-                state["image_path"] = None
+                state["response"]["image_path"] = None
 
             state["next_node"] = "end"
             return state
@@ -436,21 +465,96 @@ class PerfumeService:
 
         return state
     
-    def image_description_generator(self, state: PerfumeState) -> PerfumeState:
+    def image_generator(self, state: PerfumeState) -> PerfumeState:
+        """추천된 향수 기반으로 이미지 생성"""
         try:
-            if "image_path" not in state or state["image_path"] is None:
-                logger.warning("⚠️ 이미지 경로가 없음. 이미지 설명을 생략합니다.")
-                state["image_description"] = "No image description available."
+            recommendations = state.get("recommendations", [])
+            if not recommendations:
+                logger.warning("⚠️ 추천 결과가 없어 이미지를 생성할 수 없습니다")
+                state["image_path"] = None
+                state["next_node"] = "end"
                 return state
 
-            logger.info(f"이미지 설명 생성 시작 - 이미지 경로: {state['image_path']}")
-            state["image_description"] = self.llm_img_service.generate_image_description(state["image_path"])
+            # 1. Translate Korean text to English
+            try:
+                translated_parts = []
+                for rec in recommendations[:3]:
+                    # Translate name and brand
+                    name = rec.get('name', '')
+                    brand = rec.get('brand', '')
+                    perfume_info = f"{name} by {brand}" if brand else name
+
+                    # Translate reason and situation
+                    reason = rec.get('reason', '')
+                    situation = rec.get('situation', '').split(',')[0] if rec.get('situation') else ''
+
+                    translation_prompt = (
+                        "Translate the following Korean text to English, keeping perfume names unchanged:\n"
+                        f"1. {perfume_info}\n"
+                        f"2. {reason}\n"
+                        f"3. {situation}"
+                    )
+                    
+                    translated_text = self.gpt_client.generate_response(translation_prompt).strip()
+                    translated_lines = translated_text.split('\n')
+                    
+                    if len(translated_lines) >= 3:
+                        translated_parts.extend(translated_lines[1:])  # Skip perfume name translation
+
+                logger.info("✅ 텍스트 번역 완료")
+
+                # 2. Generate image prompt
+                image_prompt = (
+                    "Create a professional perfume advertisement featuring:\n"
+                    f"{'. '.join(translated_parts)}.\n"
+                    "Requirements:\n"
+                    "- Elegant and luxurious composition\n"
+                    "- Soft, diffused lighting\n"
+                    "- High-end product photography style\n"
+                    "- Crystal clear perfume bottles\n"
+                    "- Premium background with subtle textures\n"
+                    "- Professional color grading"
+                )
+
+                logger.info(f"📸 이미지 생성 시작\n프롬프트: {image_prompt}")
+
+                # 3. Generate image
+                save_directory = "generated_images"
+                os.makedirs(save_directory, exist_ok=True)
+
+                image_result = self.image_service.generate_image(image_prompt)
+                if not image_result or not isinstance(image_result, dict):
+                    raise ValueError("이미지 생성 결과가 유효하지 않습니다")
+
+                output_path = image_result.get("output_path")
+                if not output_path:
+                    raise ValueError("이미지 경로가 없습니다")
+
+                # 4. Save and update state
+                filename = os.path.basename(output_path)
+                final_path = os.path.join(save_directory, filename)
+
+                if os.path.exists(output_path):
+                    os.rename(output_path, final_path)
+
+                state["image_path"] = final_path
+                logger.info(f"✅ 이미지 생성 완료: {final_path}")
+
+                if isinstance(state.get("response"), dict):
+                    state["response"]["image_path"] = final_path
+
+            except Exception as img_err:
+                logger.error(f"🚨 이미지 생성 상세 오류: {img_err}")
+                state["image_path"] = None
+
+            state["next_node"] = "end"
+            return state
 
         except Exception as e:
-            logger.error(f"🚨 이미지 설명 생성 실패: {e}")
-            state["image_description"] = "Failed to generate image description."
-
-        return state
+            logger.error(f"❌ 이미지 생성 처리 실패: {str(e)}")
+            state["image_path"] = None
+            state["next_node"] = "end"
+            return state
 
     def generate_chat_response(self, state: PerfumeState) -> PerfumeState:
         try:
