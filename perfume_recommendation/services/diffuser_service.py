@@ -7,6 +7,16 @@ from fastapi import HTTPException
 
 logger = logging.getLogger(__name__)
 
+# Define therapy titles
+THERAPY_TITLES = {
+    "수면 & 회복": "#숙면 유도 #깊은 휴식",
+    "집중 & 마인드풀니스": "#업무 효율 #생산성 증진",
+    "활력 & 에너지": "#상쾌한 아침 #활기찬 하루",
+    "평온 & 스트레스 해소": "#마음의 평화 #내적 안정",
+    "기쁨 & 긍정": "#감정 균형 #안정적인 마음",
+    "리프레시 & 클린 에어": "#공기 청정 #깨끗한 환경"
+}
+
 class DiffuserRecommendationService:
     def __init__(self, gpt_client: GPTClient, db_service: DBService) -> None:
         self.gpt_client = gpt_client
@@ -75,14 +85,16 @@ class DiffuserRecommendationService:
                 {
                     'product_id': diffuser['id'],
                     'name': f"{diffuser['name_kr']} {diffuser.get('volume', '200ml')}",
-                    'brand': diffuser['brand']
+                    'brand': diffuser['brand'],
+                    'content': diffuser['content']
                 }
                 for diffuser in diffusers[:2]
             ]
 
             return {
                 'recommendations': recommendations,
-                'usage_routine': gpt_result['usage_routine']
+                'usage_routine': gpt_result['usage_routine'],
+                'therapy_title': THERAPY_TITLES[user_input]
             }
 
         except Exception as e:
