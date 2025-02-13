@@ -397,17 +397,18 @@ class PerfumeService:
                     prompt_parts.append(atmosphere)
 
             # 이미지 프롬프트 구성
-            image_prompt = (
-                "Create a professional perfume advertisement featuring:\n"
-                f"{'. '.join(prompt_parts)}.\n"
-                "Requirements:\n"
-                "- Elegant and luxurious composition\n"
-                "- Soft, diffused lighting\n"
-                "- High-end product photography style\n"
-                "- Crystal clear perfume bottles\n"
-                "- Premium background with subtle textures\n"
-                "- Professional color grading\n"
-            )
+            image_prompt = (  
+            "Create a professional perfume advertisement image with the following characteristics:\n"  
+            f"{'. '.join(prompt_parts)}.\n"  
+            "Requirements:\n"  
+            "- Elegant and luxurious composition\n"  
+            "- Soft, diffused lighting\n"  
+            "- Artistic style with a sophisticated atmosphere\n"  
+            "- Dreamy visual elements that evoke a sense of fragrance\n"  
+            "- Gentle mist, light dispersing through the air, and abstract details inspired by nature\n"  
+            "- Subtle textures and refined color harmony\n"  
+            "- Professional color grading"  
+            )  
 
             logger.info(f"📸 이미지 생성 시작\n프롬프트: {image_prompt}")
 
