@@ -280,13 +280,13 @@ class PerfumeService:
             return state
 
     def fashion_recommendation_generator(self, state: PerfumeState) -> PerfumeState:
-        """패션 기반 향수 추천 생성"""
+        """향수 추천 생성"""
         try:
-            logger.info("🔄 패션 기반 향수 추천 시작")
-            
+            logger.info("🔄 향수 추천 시작")
+
             # LLM 서비스를 통한 직접 추천 생성
             try:
-                response = self.llm_service.fashion_based_generate_recommendation_response(state["user_input"])
+                response = self.llm_service.generate_recommendation_response(state["user_input"])
 
                 if response and isinstance(response, dict):
                     recommendations = response.get("recommendations", [])
@@ -295,7 +295,6 @@ class PerfumeService:
 
                     logger.info("✅ LLM 추천 생성 완료")
 
-                    # ✅ 최상위 recommendations 제거, response와 image_path만 유지
                     state["response"] = {
                         "status": "success",
                         "mode": "recommendation",
@@ -303,7 +302,20 @@ class PerfumeService:
                         "content": content,
                         "line_id": line_id
                     }
-                    state["image_path"] = None  # 이미지 생성 기능 제거
+
+                    # 이미지 생성 시도
+                    try:
+                        image_state = self.image_generator(state)
+                        state["image_path"] = image_state.get("image_path")
+                        if state["image_path"]:
+                            logger.info(f"✅ 이미지 생성 성공: {state['image_path']}")
+                            state["response"]["image_path"] = state["image_path"]
+                        else:
+                            logger.warning("⚠️ 이미지 생성 실패")
+                    except Exception as img_err:
+                        logger.error(f"❌ 이미지 생성 오류: {img_err}")
+                        state["image_path"] = None
+
                     state["next_node"] = "end"
                     return state
 
@@ -321,12 +333,25 @@ class PerfumeService:
 
                         state["response"] = {
                             "status": "success",
-                            "mode": "recommendation",
-                            "recommendation": recommendations,
+                            "mode": "fashion_recommendation",
+                            "recommendation": filtered_perfumes,
                             "content": "향료 기반으로 추천된 향수입니다.",
                             "line_id": state.get("line_id", 1)
                         }
-                        state["image_path"] = None
+
+                        # 이미지 생성 시도
+                        try:
+                            image_state = self.image_generator(state)
+                            state["image_path"] = image_state.get("image_path")
+                            if state["image_path"]:
+                                logger.info(f"✅ 이미지 생성 성공: {state['image_path']}")
+                                state["response"]["image_path"] = state["image_path"]
+                            else:
+                                logger.warning("⚠️ 이미지 생성 실패")
+                        except Exception as img_err:
+                            logger.error(f"❌ 이미지 생성 오류: {img_err}")
+                            state["image_path"] = None
+
                         state["next_node"] = "end"
                         return state
 
