@@ -97,11 +97,14 @@ class PerfumeService:
 
             intent_prompt = (
                 f"입력: {user_input}\n"
-                "다음 사용자의 의도를 분류하세요.\n"
-                "의도 분류:\n"
-                "(1) 향수 추천\n"
-                "(2) 일반 대화\n"
-                "(3) 패션 기반 향수 추천"
+                f"다음 사용자의 의도를 분류하세요.\n\n"
+                f"일반적인 키워드라고 볼 수 없는 향수 추천은 (2) 일반 대화로 분류해야 합니다.\n\n"
+                f"예시) user_input = 나 오늘 기분이 너무 우울해. 그래서 이런 기분을 떨쳐낼 수 있는 플로럴 계열의 향수를 추천해줘 (1) 향수 추천 \n"
+                f"user_input = 나는 오늘 데이트를 하러가는데 추천해줄 만한 향수가 있을까? (1) 향수 추천 \n"
+                f"예시) user_input = 나 오늘 기분이 너무 우울해. 그래서 이런 기분을 떨쳐낼 수 있는 향수를 추천해줘 (1) 향수 추천 \n"
+                f"예시) user_input = 향수를 추천받고 싶은데 뭐 좋은 거 있어? (2) 일반 대화\n"
+                f"예시) user_input = 향수를 추천해주세요. 라면 (2) 일반 대화로 분류해야 합니다.\n\n"
+                f"의도: (1) 향수 추천, (2) 일반 대화, (3) 패션 향수 추천"
             )
 
             intent = self.gpt_client.generate_response(intent_prompt).strip()
@@ -210,7 +213,7 @@ class PerfumeService:
                     state["response"] = {
                         "status": "success",
                         "mode": "recommendation",
-                        "recommendation": recommendations,
+                        "recommendations": recommendations,
                         "content": content,
                         "line_id": line_id
                     }
@@ -246,7 +249,7 @@ class PerfumeService:
                         state["response"] = {
                             "status": "success",
                             "mode": "recommendation",
-                            "recommendation": filtered_perfumes,
+                            "recommendations": filtered_perfumes,
                             "content": "향료 기반으로 추천된 향수입니다.",
                             "line_id": state.get("line_id", 1)
                         }
@@ -392,16 +395,17 @@ class PerfumeService:
             state["next_node"] = "generate_image_description"
 
         return state
-
+    
     def image_generator(self, state: PerfumeState) -> PerfumeState:
         """추천된 향수 기반으로 이미지 생성"""
         try:
-            response = state.get("response") or {}
+            # ✅ response 객체 내부의 "recommendations" 안전하게 검증
+            response = state.get("response") or {}  
             recommendations = response.get("recommendations") or []  
 
             if not recommendations:
                 logger.warning("⚠️ response 객체 내 추천 결과가 없어 이미지를 생성할 수 없습니다")
-                state["response"]["image_path"] = None
+                response["image_path"] = ""
                 state["next_node"] = "end"
                 return state
 
@@ -423,7 +427,7 @@ class PerfumeService:
 
             # 이미지 프롬프트 구성
             image_prompt = (  
-            "Create a professional perfume advertisement image with the following characteristics:\n"  
+            "Create a professional advertisement image with the following characteristics:\n"  
             f"{'. '.join(prompt_parts)}.\n"  
             "Requirements:\n"  
             "- Elegant and luxurious composition\n"  
@@ -454,19 +458,21 @@ class PerfumeService:
                 if not raw_output_path:
                     raise ValueError("❌ 이미지 경로가 없습니다")
 
+                # ✅ 저장 경로를 `generated_images/` 폴더로 변경
                 filename = os.path.basename(raw_output_path)
                 output_path = os.path.join(save_directory, filename)
 
+                # ✅ 파일을 `generated_images/` 폴더로 이동
                 if os.path.exists(raw_output_path):
                     os.rename(raw_output_path, output_path)
 
                 # ✅ `response["image_path"]`에 최종 경로 설정
-                state["response"]["image_path"] = output_path
+                response["image_path"] = output_path
                 logger.info(f"✅ 이미지 생성 완료: {output_path}")
 
             except Exception as img_err:
                 logger.error(f"🚨 이미지 생성 실패: {img_err}")
-                state["response"]["image_path"] = None
+                response["image_path"] = "failed"  # ✅ 실패 시 "failed"로 설정
 
             state["next_node"] = "end"
             return state
@@ -494,7 +500,8 @@ class PerfumeService:
     def image_generator(self, state: PerfumeState) -> PerfumeState:
         """추천된 향수 기반으로 이미지 생성"""
         try:
-            recommendations = state.get("recommendations", [])
+            response = state.get("response") or {}  # None 방지
+            recommendations = response.get("recommendations") or []  # None 방지
             if not recommendations:
                 logger.warning("⚠️ 추천 결과가 없어 이미지를 생성할 수 없습니다")
                 state["image_path"] = None
@@ -594,12 +601,12 @@ class PerfumeService:
             )
 
             response = self.gpt_client.generate_response(chat_prompt)
-            state["response"] = response.strip()
+            state["content"] = response.strip()
             state["next_node"] = None  # ✅ 대화 종료
 
         except Exception as e:
             logger.error(f"🚨 대화 응답 생성 실패: {e}")
-            state["response"] = "죄송합니다. 요청을 처리하는 중 오류가 발생했습니다."
+            state["content"] = "죄송합니다. 요청을 처리하는 중 오류가 발생했습니다."
             state["next_node"] = None
 
         return state

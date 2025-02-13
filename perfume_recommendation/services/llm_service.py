@@ -107,6 +107,7 @@ class LLMService:
                 f"브랜드 목록: {', '.join(brand_list)}\n\n"
                 f"사용자 입력: {user_input}\n\n"
                 "추가 규칙: 만약 사용자의 입력이 패션 스타일에 대한 설명이라면, 다음 패션 스타일과 어울리는 향 계열을 사용하세요.\n"
+                "추가 규칙: 만약 사용자의 입력이 데이트 나 특정 상황에 대한 설명이라면, 다음 상황에 어울리는 향 계열을 사용하세요.\n"
                 f"{json.dumps(fashion_to_line_mapping, ensure_ascii=False, indent=2)}\n\n"
                 "출력 형식은 JSON이어야 합니다:\n"
                 "{\n"
