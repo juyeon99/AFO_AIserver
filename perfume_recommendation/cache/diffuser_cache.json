@@ -1,0 +1,794 @@
+[
+    {
+        "id": 1474,
+        "name_kr": "카 디퓨저 카트리지 본 조르노",
+        "name_en": "CAR DIFFUSER BUONGIORNO CARTRIDGE",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "당신의 여정에 감각적이고 신선한 향기가 퍼집니다. 아침 햇살이 창문을 통해 들어올 때, 산들 바람과 함께 이탈리아 시골을 연상시키는 푸른 향기"
+    },
+    {
+        "id": 1475,
+        "name_kr": "카 디퓨저 카트리지 피코 디 아말피",
+        "name_en": "CAR DIFFUSER FICO DI AMALFI CARTRIDGE",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "무화과 나무의 부드러운 향기에 흠뻑 젖은 듯한 향으로 시간을 초월한 바닷가 풍경을 연출합니다."
+    },
+    {
+        "id": 1476,
+        "name_kr": "카 디퓨저 카트리지 미르토 디 파나레아",
+        "name_en": "CAR DIFFUSER MIRTO DI PANAREA CARTRIDGE",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "피나레아 섬의 고요한 아름다움에서 영감을 받은 향기로 평화로운 하루를 선사합니다."
+    },
+    {
+        "id": 1477,
+        "name_kr": "잉글리쉬 페어 앤 프리지아 센트 투 고",
+        "name_en": "ENGLISH PEAR FREESIA SCENT TO GO",
+        "brand": "조 말론",
+        "category_id": 2,
+        "content": "은은하면서도 신선하고 감미로운 잉글리쉬 페어 앤 프리지아 향은 잘 익은 배의 신선함과 화이트 프리지아 부케의 부드러움에 호박, 파출리, 우디 노트가 더해져 가을의 정수를 담은 특별한 향을 선사합니다."
+    },
+    {
+        "id": 1478,
+        "name_kr": "본 조르노 룸 디퓨저",
+        "name_en": "BUONGIORNO ROOM DIFFUSER",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "창문을 통해 들어오는 바람과 햇살을 연상시키며 이탈리아의 조용한 시골마을에서 느껴지는 프레쉬하면서도 깊은 스파클링 그린, 아로마틱 향기를 선사합니다."
+    },
+    {
+        "id": 1479,
+        "name_kr": "코쿤 드 세레니떼 릴랙싱 필로우 미스트",
+        "name_en": "SPRAY PER CUSCINO RILASSANTE",
+        "brand": "록시땅",
+        "category_id": 2,
+        "content": "라벤더, 베르가못, 스위트 오렌지, 제라늄, 만다린 등 5가지 에센셜 오일이 조화롭게 블렌딩된 향을 선사합니다. 따뜻하면서도 상쾌한 허벌 시트러스 계열의 향이 긴장을 풀어주고, 은은한 플로럴 노트가 편안한 휴식을 돕습니다."
+    },
+    {
+        "id": 1480,
+        "name_kr": "카 디퓨저 카트리지 루체 디 콜로니아",
+        "name_en": "CAR DIFFUSER LUCE DI COLONIA CARTRIDGE",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "이탈리아의 향기, 루체 디 콜로니아는 차 안에 눈부시고 세련된 빛과 같은 느낌을 선사합니다."
+    },
+    {
+        "id": 1481,
+        "name_kr": "타바코 토스카노 왁스 타블렛",
+        "name_en": "TABACCO TOSCANO SCENTED WAX TABLETS",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "우디 오리엔탈 노트와 스모키 바닐라 노트의 금빛 향기"
+    },
+    {
+        "id": 1482,
+        "name_kr": "프리지아 왁스 타블렛",
+        "name_en": "FRESIA SCENTED WAX TABLETS",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "산뜻함을 머금은 비누 향기처럼 깨끗하고 부드러운 플로럴 향이 공간을 감싸줍니다. 프리지아 꽃의 싱그러움과 은은한 머스크 노트가 어우러져 포근하고 편안한 분위기를 연출합니다."
+    },
+    {
+        "id": 1483,
+        "name_kr": "라벤더 앤 문플라워 디퓨저",
+        "name_en": "LAVENDER AND MOON FLOWER DIFFUSER",
+        "brand": "조 말론",
+        "category_id": 2,
+        "content": "은은하고 고요한 향이 감싸는 저녁, 아로마틱한 잉글리쉬 라벤더가 화이트 머스크와 밤에 피는 문플라워의 아늑한 향 속에서 부드럽게 퍼집니다."
+    },
+    {
+        "id": 1484,
+        "name_kr": "베이 센티드 오발",
+        "name_en": "OVALE PROFUMATO BAIES",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "갓 따온 블랙커런트 베리 (baies)의 새큼한 신선함. 한없이 싱그러운 장미 꽃다발과 달콤한 블랙커런트 열매와 초록잎의 조화를 구현합니다."
+    },
+    {
+        "id": 1485,
+        "name_kr": "타바코 토스카노 디퓨저",
+        "name_en": "TABACCO TOSCANO DIFFUSER",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "담뱃잎의 스파이시함과 부드러운 바닐라, 샌들우드의 따뜻한 향이 어우러져 독특하고 매력적인 분위기를 연출합니다. 따뜻하면서도 달콤한 향조로, 실내 공간에 포근하고 안락한 느낌을 더해줍니다."
+    },
+    {
+        "id": 1486,
+        "name_kr": "플레르 도랑줴 아워글라스 디퓨저",
+        "name_en": "NUOVO SABLIER FLEUR D'ORANGER",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "오렌지 블라썸의 상큼하고 부드러운 플로럴 향이 공간을 은은하게 감싸며, 지중해의 따뜻한 햇살을 연상시키는 우아한 향을 선사합니다. 네롤리와 시트러스 노트가 조화를 이루어 밝고 생기 넘치는 분위기를 연출해 줍니다."
+    },
+    {
+        "id": 1487,
+        "name_kr": "34번가 생제르망 리드 디퓨저",
+        "name_en": "DIFFUSORE BASTONCINI 34 + RICARICA",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "그린 노트, 플로럴, 스파이시, 우디 노트가 조화를 이루며 생기 넘치면서도 깊이 있는 향을 선사합니다. 신선한 허브와 따뜻한 나무 향이 어우러져 세련되고 우아한 분위기를 연출합니다."
+    },
+    {
+        "id": 1488,
+        "name_kr": "베이 아워글라스 디퓨저",
+        "name_en": "NUOVO SABLIER BAIES",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "잘 익은 블랙커런트 열매의 상큼하고 달콤한 향과 신선한 잎사귀의 녹음이 어우러져 자연 속에 있는 듯한 싱그러운 분위기를 선사합니다. 은은한 로즈 노트가 더해져 우아하면서도 생동감 넘치는 향을 완성합니다."
+    },
+    {
+        "id": 1489,
+        "name_kr": "루체 디 콜로니아 룸 디퓨저",
+        "name_en": "LUCE DI COLONIA ROOM DIFFUSER",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "밝고 우아한 분위기의 변치 않는 클래식한 향기 시트러스 노트로 시작하여 우아한 플로럴 노트와 우디 노트로 이어집니다."
+    },
+    {
+        "id": 1490,
+        "name_kr": "아메리카 디퓨저",
+        "name_en": "AMERICA DIFFUSER",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "북아메리카의 자연을 표현한 향으로, 달콤한 메이플 시럽, 카라멜, 바닐라 노트가 어우러져 따뜻하고 부드러운 분위기를 연출합니다."
+    },
+    {
+        "id": 1491,
+        "name_kr": "로사 가데니아 디퓨저",
+        "name_en": "ROSA GARDENIA DIFFUSER",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "장미와 가데니아의 우아한 플로럴 향이 어우러져 부드럽고 매혹적인 분위기를 선사합니다. 상큼한 베르가못과 오렌지 블로썸이 향의 시작을 알리고, 따뜻한 샌달우드와 바닐라가 포근한 잔향을 남깁니다."
+    },
+    {
+        "id": 1492,
+        "name_kr": "라임 바질 앤 만다린 디퓨저",
+        "name_en": "LIME BASIL & MANDARIN DIFFUSER",
+        "brand": "조 말론",
+        "category_id": 2,
+        "content": "상큼한 라임과 달콤한 만다린의 신선함에 스파이시한 바질이 더해져 생기 넘치는 향을 선사합니다. 싱그러운 시트러스 노트와 따뜻한 화이트 머스크가 조화를 이루어 우아하면서도 활력 넘치는 분위기를 연출합니다"
+    },
+    {
+        "id": 1493,
+        "name_kr": "로사 가데니아 왁스 타블렛",
+        "name_en": "ROSA GARDENIA SCENTED WAX TABLETS",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "장미와 가데니아의 부드러운 만남"
+    },
+    {
+        "id": 1494,
+        "name_kr": "로즈 아워글라스 디퓨저",
+        "name_en": "NUOVO SABLIER ROSES",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "신선한 장미 꽃잎의 부드럽고 우아한 향이 공간을 은은하게 감싸줍니다. 여기에 살짝 더해진 시트러스와 머스크 노트가 향을 더욱 풍성하고 세련되게 마무리합니다."
+    },
+    {
+        "id": 1495,
+        "name_kr": "잉글리쉬 페어 앤 프리지아 디퓨저",
+        "name_en": "ENGLISH PEAR & FREESIA DIFFUSER",
+        "brand": "조 말론",
+        "category_id": 2,
+        "content": "갓 익은 배의 관능적인 산뜻함이 우아한 화이트 프리지아에 감싸여, 금빛 햇살이 가득한 과수원의 따뜻한 분위기를 공간에 채워줍니다."
+    },
+    {
+        "id": 1496,
+        "name_kr": "유자 룸 디퓨저",
+        "name_en": "SIGNATURES DIFFUSER YUZU",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "프레쉬하고 쌉싸름한 유자의 향기와 활기찬 느낌이 가득한 시트러스의 조화로 다채롭고 섬세한 향을 자아냅니다."
+    },
+    {
+        "id": 1497,
+        "name_kr": "포푸리 로고 자수 실크 파우치 (그린)",
+        "name_en": "POT POURRI EMBROIDERED GREEN SILK BAG",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "토스카나 지역의 꽃과 열매, 허브를 담아 우디한 오리엔탈 계열의 향을 선사합니다. 이 파우치는 공간을 은은하고 따뜻한 분위기로 채워줍니다."
+    },
+    {
+        "id": 1498,
+        "name_kr": "카 디퓨저 카트리지 아란치아 디 카프리",
+        "name_en": "CAR DIFFUSER ARANCIA DI CAPRI CARTRIDGE",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "따뜻함과 아름다움 속으로 빠져들 수 있는 오렌지 특유의 편안한 향기 카프리섬의 신비로운 분위기를 자아냅니다."
+    },
+    {
+        "id": 1499,
+        "name_kr": "포푸리 로고 자수 실크 파우치 (와인)",
+        "name_en": "POT POURRI EMBROIDERED WINE SILK BAG",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "토스카나 지역의 꽃과 열매, 허브를 혼합하여 우디하고 오리엔탈한 향을 선사합니다. 이 파우치는 공간을 은은하고 따뜻한 분위기로 채워줍니다."
+    },
+    {
+        "id": 1500,
+        "name_kr": "아쿠아 델라 레지나 왁스 타블렛",
+        "name_en": "ACQUA DELLA REGINA SCENTED WAX TABLETS",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "시트러스 베이스의 유서 깊은 여왕의 향기"
+    },
+    {
+        "id": 1501,
+        "name_kr": "우드 룸 디퓨저",
+        "name_en": "SIGNATURES OUD DIFFUSER",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "이탈리아의 태양과 자연이 전하는 따뜻하고 풍부한 향기로, 깊이 있는 우디 노트와 은은한 허브 향이 조화를 이룹니다. 편안하면서도 고급스러운 잔향이 오래 지속되어, 특별한 순간을 위한 감각적인 선물로도 잘 어울립니다."
+    },
+    {
+        "id": 1502,
+        "name_kr": "프리지아 디퓨저",
+        "name_en": "FRESIA DIFFUSER",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "신선하고 우아한 프리지아 꽃의 달콤하고 부드러운 향이 공간을 가득 채웁니다. 상큼한 그린 노트와 은은한 머스크가 조화를 이루어 밝고 산뜻한 분위기를 연출합니다."
+    },
+    {
+        "id": 1503,
+        "name_kr": "카 디퓨저 카트리지 라 카사 술 라고",
+        "name_en": "CAR DIFFUSER LA CASA SUL LAGO CARTRIDGE",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "호수 옆 정원에서 느낄 수 있는 평온한 분위기와 꽃의 매혹적인 향기를 담았습니다."
+    },
+    {
+        "id": 1504,
+        "name_kr": "재즈 클럽 디퓨저",
+        "name_en": "JAZZ CLUB DIFFUSER",
+        "brand": "메종 마르지엘라",
+        "category_id": 2,
+        "content": "색소폰 연주가 흐르는 프라이빗 재즈 클럽을 가득 채운 칵테일과 시가의 향을 담은 향."
+    },
+    {
+        "id": 1505,
+        "name_kr": "엔젤 디 피렌체 디퓨저",
+        "name_en": "ANGELI DI FIRENZE DIFFUSER",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "달콤한 복숭아와 상큼한 오렌지 블로섬이 조화를 이루며 산뜻하게 시작됩니다. 이어지는 마린 노트, 블랙 커런트, 자스민이 풍부한 향을 더하고, 머스크와 샌달우드가 따뜻하고 부드러운 잔향을 남겨 우아하면서도 생기 넘치는 분위기를 연출합니다."
+    },
+    {
+        "id": 1506,
+        "name_kr": "로사 노벨라 디퓨저",
+        "name_en": "ROSA NOVELLA DIFFUSER",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": ""
+    },
+    {
+        "id": 1507,
+        "name_kr": "로즈 센티드 오발",
+        "name_en": "OVALE PROFUMATO ROSES",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "따스한 5월의 장미나무를 연상시키는 향기."
+    },
+    {
+        "id": 1508,
+        "name_kr": "포푸리 디퓨저",
+        "name_en": "POT POURRI DIFFUSER",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "토스카나 지역의 허브와 꽃, 과실이 어우러진 자연스럽고 따뜻한 향을 선사합니다. 은은한 우디 노트와 스파이시한 허브 향이 조화를 이루며 고풍스럽고 아늑한 분위기를 연출합니다."
+    },
+    {
+        "id": 1509,
+        "name_kr": "로즈 리드 디퓨저",
+        "name_en": "DIFFUSORE A BASTONCINI ROSES + REFILL",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "신선한 장미 꽃잎의 우아하고 풍성한 향이 공간을 부드럽게 감싸줍니다. 은은한 플로럴 노트와 따뜻한 머스크가 조화를 이루어 로맨틱하면서도 편안한 분위기를 연출합니다."
+    },
+    {
+        "id": 1510,
+        "name_kr": "와일드 블루벨 디퓨저",
+        "name_en": "WILD BLUEBELL DIFFUSER",
+        "brand": "조 말론",
+        "category_id": 2,
+        "content": "그늘진 한적한 숲 속에서 살며시 피어난 사파이어처럼 푸르게 빛나는 꽃으로 공간을 채워보세요."
+    },
+    {
+        "id": 1511,
+        "name_kr": "오렌지 블로썸 디퓨저",
+        "name_en": "ORANGE BLOSSOM DIFFUSER",
+        "brand": "조 말론",
+        "category_id": 2,
+        "content": "반짝이듯 만발한 플로럴 향이 정원 속 오아시스의 오렌지 나무 위로 내리쬐는 햇빛을 떠올리게 하며, 분위기를 한층 더 밝고 생기 있게 만들어 줍니다."
+    },
+    {
+        "id": 1513,
+        "name_kr": "오스만투스 룸 디퓨저",
+        "name_en": "SIGNATURES DIFFUSER OSMANTHUS",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "강렬하고 고결한 느낌을 가지고 있는 오스만투스와 활기찬 느낌이 가득한 시트러스의 조화로 부드럽고 풍부한 향을 전달합니다."
+    },
+    {
+        "id": 1514,
+        "name_kr": "포머그래니트 누와 디퓨저",
+        "name_en": "POMEGRANATE NOIR DIFFUSER",
+        "brand": "조 말론",
+        "category_id": 2,
+        "content": "과즙 가득한 포머그래니트와 따뜻한 저녁 공기에 담긴 스모키한 과이액목의 향으로 공간을 채워보세요."
+    },
+    {
+        "id": 1515,
+        "name_kr": "라벤더 왁스 타블렛",
+        "name_en": "LAVENDER SCENTED WAX TABLETS",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "라벤더 꽃잎의 섬세한 향기"
+    },
+    {
+        "id": 1516,
+        "name_kr": "휘기에 리드 디퓨저",
+        "name_en": "DIFFUSORE A BASTONCINI FIGUIER + REFILL",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "따뜻한 우디 노트와 달콤한 스파이스 향이 어우러져 고급스럽고 신비로운 분위기를 연출합니다. 은은한 머스크와 앰버의 깊이 있는 잔향이 공간을 편안하고 감각적으로 채워줍니다."
+    },
+    {
+        "id": 1517,
+        "name_kr": "튜베로즈 리드 디퓨저",
+        "name_en": "DIFFUSORE A BASTONCINI TUBEREUSE + REFILL",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "관능적인 튜베로즈 꽃의 풍부하고 크리미한 플로럴 향이 공간을 우아하게 감싸줍니다. 은은한 스파이시 노트와 따뜻한 머스크가 더해져 깊고 고혹적인 분위기를 연출합니다."
+    },
+    {
+        "id": 1518,
+        "name_kr": "카페 소사이어트 퍼퓸 건",
+        "name_en": "CAFE SOCIETY PERFUME GUN",
+        "brand": "프레데릭 말",
+        "category_id": 2,
+        "content": "파리의 만찬에서 영감을 받은 향"
+    },
+    {
+        "id": 1519,
+        "name_kr": "미모사 리드 디퓨저",
+        "name_en": "DIFFUSORE A BASTONCINI MIMOSA + REFILL",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "부드럽고 파우더리한 미모사 꽃의 따뜻한 플로럴 향이 공간을 포근하게 감싸줍니다. 은은한 허니 노트와 우디 머스크가 조화를 이루어 아늑하고 편안한 분위기를 연출합니다."
+    },
+    {
+        "id": 1520,
+        "name_kr": "퀘르시아 룸 디퓨저",
+        "name_en": "SIGNATURES QUERCIA DIFFUSER",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "이탈리아의 태양 아래 무성한 오크 숲을 연상시키는 깊고 우아한 우디 향이 공간을 감싸줍니다. 섬세한 시트러스 노트와 따뜻한 머스크가 조화를 이루며, 품격 있는 선물로도 잘 어울리는 매력적인 디퓨저입니다."
+    },
+    {
+        "id": 1521,
+        "name_kr": "엉 가르데니아 라 뉘이 퍼퓸 건",
+        "name_en": "UN GARDENIA LA NUIT PERFUME GUN",
+        "brand": "프레데릭 말",
+        "category_id": 2,
+        "content": "가드니아의 풍만한 향이 섞인 우유의 달콤한 향"
+    },
+    {
+        "id": 1522,
+        "name_kr": "로사 루고사 퍼퓸 건",
+        "name_en": "ROSA RUGOSA PERFUME GUN",
+        "brand": "프레데릭 말",
+        "category_id": 2,
+        "content": "연약한 상태를 유지하기 위해 고군분투하는 장미의 가장 힘겹고 아름다운 순간을 보여주는 향"
+    },
+    {
+        "id": 1523,
+        "name_kr": "아페리티보 인 테라자 룸 디퓨저",
+        "name_en": "APERITIVO IN TERRAZZA ROOM DIFFUSER",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "아름다운 옥상 전망을 바라보며 친구와 스프리츠 한 잔을 기울이는 편안하고 즐거운 분위기를 나타냅니다."
+    },
+    {
+        "id": 1524,
+        "name_kr": "플레르 도랑줴 리드 디퓨저",
+        "name_en": "DIFFUSORE A BASTONCINI FLEUR D'ORANGER + REFILL",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "상큼한 오렌지 블라썸과 은은한 네롤리 향이 조화를 이루며 밝고 산뜻한 분위기를 연출합니다. 따뜻한 플로럴 노트와 부드러운 머스크가 더해져 우아하면서도 편안한 향을 선사합니다."
+    },
+    {
+        "id": 1525,
+        "name_kr": "머르 앤 통카 디퓨저",
+        "name_en": "MYRRH & TONKA DIFFUSER",
+        "brand": "조 말론",
+        "category_id": 2,
+        "content": "나미비아의 머르 나무에서 느껴지는 레진 향과 어우러지는 따스하고 풍성한 통카 빈의 향으로 공간을 채워보세요."
+    },
+    {
+        "id": 1526,
+        "name_kr": "멜로그라노 왁스 타블렛",
+        "name_en": "MELOGRANO SCENTED WAX TABLETS",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "가장 독특한 정수를 담은 플로럴 오리엔탈의 따뜻함"
+    },
+    {
+        "id": 1528,
+        "name_kr": "멜로그라노 디퓨저",
+        "name_en": "MELOGRANO DIFFUSER",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "싱그러운 석류의 상큼한 과즙 향과 은은한 플로럴 노트가 조화를 이루며, 우아하고 신선한 분위기를 선사합니다. 따뜻한 머스크와 우디 노트가 더해져 부드럽고 포근한 잔향을 남깁니다."
+    },
+    {
+        "id": 1529,
+        "name_kr": "피오니 앤 블러쉬 스웨이드 디퓨저",
+        "name_en": "PEONY BLUSH SUEDE DIFFUSER",
+        "brand": "조 말론",
+        "category_id": 2,
+        "content": "매력적으로 활짝 핀 피오니로 장식된 영국 무도회장의 화려함처럼 공간을 채워보세요."
+    },
+    {
+        "id": 1530,
+        "name_kr": "유로파 디퓨저",
+        "name_en": "EUROPA DIFFUSER",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "베르가못과 달콤한 오렌지의 상큼함으로 시작하여, 장미와 바이올렛의 우아한 플로럴 향이 어우러져 화사하고 세련된 분위기를 연출합니다. 마지막으로 아로마틱 우드와 오크모스의 따뜻한 잔향이 공간을 포근하게 감싸줍니다."
+    },
+    {
+        "id": 1531,
+        "name_kr": "아시아 디퓨저",
+        "name_en": "ASIA DIFFUSER",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "고요하고 우아한 동양의 풍경에서 영감을 받아, 백합과 프리지아의 순수하고 은은한 향이 공간을 부드럽게 감싸줍니다. 이러한 플로럴 노트는 청초하고 깨끗한 느낌을 주어, 편안하고 차분한 분위기를 연출합니다."
+    },
+    {
+        "id": 1532,
+        "name_kr": "휘기에 아워글라스 디퓨저",
+        "name_en": "NUOVO SABLIER FIGUIER",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "따뜻한 우디 노트와 은은한 스파이스 향이 어우러져 깊고 신비로운 분위기를 연출합니다. 부드러운 머스크와 앰버의 잔향이 더해져 감각적이면서도 편안한 공간을 만들어줍니다."
+    },
+    {
+        "id": 1533,
+        "name_kr": "문릿 캐모마일 필로우 미스트",
+        "name_en": "MOONLIT CAMO PILLOW MIST",
+        "brand": "조 말론",
+        "category_id": 2,
+        "content": "잉글리시 캐모마일 잎과 밤에 피는 문플라워의 산뜻한 향이 어우러져, 화이트 머스크의 포근함과 함께 편안한 분위기를 조성합니다."
+    },
+    {
+        "id": 1534,
+        "name_kr": "로사 노벨라 왁스 타블렛",
+        "name_en": "ROSA NOVELLA SCENTED WAX TABLETS",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "피렌체 봄의 정원을 거니는 듯한 플로럴 스파이스"
+    },
+    {
+        "id": 1535,
+        "name_kr": "엔젤 디 프렌체 왁스 타블렛",
+        "name_en": "ANGELI DI FIRENZE SCENTED WAX TABLETS",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "물을 가득 머금은 달콤한 과일향과 마린노트 향기"
+    },
+    {
+        "id": 1536,
+        "name_kr": "쥬라식 플라워 러버 인센스",
+        "name_en": "JURASSIC FLOWER RUBBER INCENSE",
+        "brand": "프레데릭 말",
+        "category_id": 2,
+        "content": "시트러스 계열의 향을 내는 탑노트로 인해 유니크한 플로럴 향을 경험할 수 있으며 투명한 느낌의 라벤더와 목련의 향에 복숭아, 살구와 같은 과일의 달콤한 향이 더해져있습니다."
+    },
+    {
+        "id": 1537,
+        "name_kr": "라벤더 앤 문플라워 필로우 미스트",
+        "name_en": "LAVENDER MOONFLOWER PILLOW MIST",
+        "brand": "조 말론",
+        "category_id": 2,
+        "content": "은은하고 고요한 향이 감싸는 저녁, 아로마틱한 잉글리쉬 라벤더가 화이트 머스크와 밤에 피는 문플라워의 아늑한 향 속에서 부드럽게 퍼집니다."
+    },
+    {
+        "id": 1538,
+        "name_kr": "베이 리드 디퓨저",
+        "name_en": "DIFFUSORE A BASTONCINI BAIES + REFILL",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "잘 익은 블랙커런트 열매의 달콤하고 싱그러운 향이 신선한 그린 노트와 조화를 이루어 활기찬 분위기를 연출합니다. 은은한 로즈 노트와 따뜻한 우디 머스크가 더해져 깊이 있고 우아한 잔향을 남깁니다."
+    },
+    {
+        "id": 1539,
+        "name_kr": "아쿠아 델라 레지나 디퓨저",
+        "name_en": "ACQUA DELLA REGINA DIFFUSER",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "상큼한 시트러스 향과 은은한 플로럴 노트가 어우러져, 공간을 신선하고 우아한 분위기로 채워줍니다."
+    },
+    {
+        "id": 1540,
+        "name_kr": "포푸리 로고 자수 실크 파우치 (블루)",
+        "name_en": "POT POURRI EMBROIDERED BLUE SILK BAG",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "토스카나 지역의 꽃과 열매, 허브를 혼합하여 우디하고 오리엔탈한 향을 선사합니다. 이 파우치는 공간을 은은하고 따뜻한 분위기로 채워줍니다."
+    },
+    {
+        "id": 1541,
+        "name_kr": "에르네스토 디퓨저",
+        "name_en": "DIFFUSER ERNESTO",
+        "brand": "트루동",
+        "category_id": 2,
+        "content": "사회주의 혁명의 중심이었던 쿠바 하바나의 한 호텔에서 퍼져 나가는 레더와 시가의 진한 향기는 그의 굳건한 혁명의 결의를 표현하는 듯 합니다."
+    },
+    {
+        "id": 1542,
+        "name_kr": "쌩 데 쌩 러버 인센스",
+        "name_en": "SAINT DES SAINTS RUBBER INCENSE",
+        "brand": "프레데릭 말",
+        "category_id": 2,
+        "content": "고대 사원의 신성함을 담은 향으로, 깊고 풍부한 우디 노트와 은은한 스파이시함이 조화를 이루어 마치 고요한 명상 공간에 있는 듯한 평온함을 선사합니다. 이 향은 공간을 차분하고 신비로운 분위기로 채워줍니다."
+    },
+    {
+        "id": 1543,
+        "name_kr": "인시에메 룸 디퓨저",
+        "name_en": "INSIEME ROOM DIFFUSER",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "이탈리아의 태양처럼 밝고 따뜻한 시트러스 노트와 섬세한 플로럴 향이 조화를 이루며, 공간을 우아하고 생기 넘치는 분위기로 채워줍니다. 부드러운 머스크와 우디한 잔향이 따뜻하게 감싸주어, 특별한 순간을 위한 감각적인 선물로도 잘 어울립니다."
+    },
+    {
+        "id": 1544,
+        "name_kr": "마두라이 디퓨저",
+        "name_en": "DIFFUSER MADURAI",
+        "brand": "트루동",
+        "category_id": 2,
+        "content": "풍성한 재스민 삼박과 인도 강황 에센스의 화려한 플로럴 향이 부드럽게 어우러져 공간을 우아하게 채워줍니다. 이 향은 따뜻한 공기 속에서 꽃과 향신료, 망고와 복숭아 과일의 달콤함으로 가득한 활기찬 시장의 모습을 떠올리게 합니다."
+    },
+    {
+        "id": 1545,
+        "name_kr": "조세핀 디퓨저",
+        "name_en": "DIFFUSER JOSEPHINE",
+        "brand": "트루동",
+        "category_id": 2,
+        "content": "로즈와 자스민의 우아한 플로럴 향이 어우러져 여성스럽고 이국적인 분위기를 연출합니다. 은은한 스파이시 노트와 풀내음이 더해져 깊이 있고 매혹적인 향을 선사합니다."
+    },
+    {
+        "id": 1546,
+        "name_kr": "34번가 생제르망 아워글라스 디퓨저",
+        "name_en": "NUOVO SABLIER 34",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "그린 노트, 플로럴, 스파이시, 우디 노트가 조화를 이루며 생기 넘치면서도 깊이 있는 향을 선사합니다. 신선한 허브와 따뜻한 나무 향이 어우러져 세련되고 우아한 분위기를 연출합니다."
+    },
+    {
+        "id": 1547,
+        "name_kr": "씨르노스 디퓨저",
+        "name_en": "DIFFUSER CYRNOS",
+        "brand": "트루동",
+        "category_id": 2,
+        "content": "달콤한 무화과와 상쾌한 허브 향이 어우러져 지중해의 여유로운 분위기를 연상시키며, 은은한 우디 노트가 더해져 고급스럽고 쾌적한 향을 선사합니다."
+    },
+    {
+        "id": 1548,
+        "name_kr": "쥬라식 플라워 퍼퓸 건",
+        "name_en": "JURASSIC FLOWER PERFUME GUN",
+        "brand": "프레데릭 말",
+        "category_id": 2,
+        "content": "매그놀리아의 상큼한 시트러스 향과 복숭아, 살구의 달콤함이 어우러져, 마치 여름날의 청명한 하늘 아래 피어난 화사한 꽃을 연상시킵니다. 이 향은 공간을 밝고 생기 넘치는 분위기로 채워줍니다."
+    },
+    {
+        "id": 1549,
+        "name_kr": "블랙베리 앤 베이 디퓨저",
+        "name_en": "BLACKBERRY BAY DIFFUSER",
+        "brand": "조 말론",
+        "category_id": 2,
+        "content": "톡 쏘는듯한 블랙베리와 갓 수확한 월계수 잎이 어우러진 상쾌한 향을 만끽해보세요.가을 숲에서 블랙베리를 따던 어린시절의 추억을 떠올리게 합니다."
+    },
+    {
+        "id": 1550,
+        "name_kr": "진저 아워글라스 디퓨저",
+        "name_en": "NUOVO SABLIER GINGEMBRE",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "따뜻하고 스파이시한 진저의 생동감 넘치는 향이 상큼한 시트러스 노트와 조화를 이루어 활력을 불어넣습니다. 부드러운 머스크와 은은한 우디 노트가 잔향으로 남아 편안하고 세련된 분위기를 연출합니다."
+    },
+    {
+        "id": 1551,
+        "name_kr": "바이 더 파이어플레이스 디퓨저",
+        "name_en": "BY THE FIREPLACE DIFFUSER",
+        "brand": "메종 마르지엘라",
+        "category_id": 2,
+        "content": "따뜻한 장작불의 스모키한 우디 향과 달콤한 바닐라, 밤 향이 조화를 이루어 포근하고 아늑한 분위기를 연출합니다. 스파이시한 핑크 페퍼와 캐시미어 우드가 더해져 깊이 있고 감성적인 겨울날의 따뜻함을 느끼게 합니다."
+    },
+    {
+        "id": 1552,
+        "name_kr": "프레그런스 태그 히노키",
+        "name_en": "FRAGNANCE TAG HINOKI",
+        "brand": "라 부르켓",
+        "category_id": 2,
+        "content": "편백나무 특유의 맑고 깊은 우디 향이 공간을 차분하고 고요한 숲속처럼 만들어 줍니다. 은은한 흙 내음과 따뜻한 머스크 노트가 어우러져 편안하고 안정된 분위기를 연출합니다."
+    },
+    {
+        "id": 1553,
+        "name_kr": "미모사 아워글라스 디퓨저",
+        "name_en": "NUOVO SABLIER MIMOSA",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "부드럽고 파우더리한 미모사 꽃의 따뜻한 플로럴 향이 공간을 포근하게 감싸줍니다. 은은한 허니 노트와 우디 머스크가 조화를 이루어 아늑하고 편안한 분위기를 연출합니다."
+    },
+    {
+        "id": 1554,
+        "name_kr": "로사 루고사 러버 인센스",
+        "name_en": "ROSA RUGOSA RUBBER INCENSE",
+        "brand": "프레데릭 말",
+        "category_id": 2,
+        "content": "대서양 연안의 바람에 맞서 자라난 건조하고 차가운 야생장미 덤불의 향입니다."
+    },
+    {
+        "id": 1555,
+        "name_kr": "34번가 생제르망 센티드 오발",
+        "name_en": "OVALE PROFUMATO 34",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "그린 노트, 플로럴, 스파이시, 우디 노트가 조화를 이루며 생기 넘치면서도 깊이 있는 향을 선사합니다. 신선한 허브와 따뜻한 나무 향이 어우러져 세련되고 우아한 분위기를 연출합니다."
+    },
+    {
+        "id": 1556,
+        "name_kr": "레지오 디퓨저",
+        "name_en": "DIFFUSER REGGIO",
+        "brand": "트루동",
+        "category_id": 2,
+        "content": "자몽과 만다린의 상큼한 시트러스 향으로 시작하여, 미모사의 은은한 플로럴 노트가 어우러져 밝고 생기 넘치는 분위기를 연출합니다. 이러한 향조는 공간을 신선하고 활기차게 만들어줍니다."
+    },
+    {
+        "id": 1557,
+        "name_kr": "아프리카 디퓨저",
+        "name_en": "AFRICA DIFFUSER",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "달콤한 망고와 파파야의 과일 향으로 시작하여, 쌉싸름한 우디 노트가 어우러져 이국적이고 따뜻한 분위기를 연출합니다."
+    },
+    {
+        "id": 1558,
+        "name_kr": "레이지 선데이 모닝 디퓨저",
+        "name_en": "LAZY SUNDAY MORNING DIFFUSER",
+        "brand": "메종 마르지엘라",
+        "category_id": 2,
+        "content": "깨끗한 화이트 머스크와 부드러운 아이리스 꽃향이 어우러져 포근하고 산뜻한 아침의 느낌을 선사합니다. 은은한 릴리 오브 더 밸리와 머스크의 조화가 따뜻하고 편안한 분위기를 연출합니다."
+    },
+    {
+        "id": 1559,
+        "name_kr": "프레그런스 태그 코리앤더",
+        "name_en": "FRAGNANCE TAG CORIANDER",
+        "brand": "라 부르켓",
+        "category_id": 2,
+        "content": "북유럽 자연의 향기를 그대로 느껴볼 수 있는 제품으로 향기의 최대 덕목인 은은하면서 꾸준한 발항력이 특징입니다."
+    },
+    {
+        "id": 1560,
+        "name_kr": "룸 디퓨저 코리앤더",
+        "name_en": "ROOM DIFFUSER CORIANDER",
+        "brand": "라 부르켓",
+        "category_id": 2,
+        "content": "신선한 고수와 상쾌한 민트가 어우러져 시원하고 청량한 향을 선사합니다. 이러한 향기는 공간을 은은하게 물들여 쾌적하고 활기찬 분위기를 연출합니다."
+    },
+    {
+        "id": 1561,
+        "name_kr": "오 라모르 룸 디퓨저",
+        "name_en": "OH, L'AMORE ROOM DIFFUSER",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "첫눈에 사랑에 빠진 순간의 설렘을 담아, 따뜻하고 로맨틱한 플로럴 향이 공간을 감싸줍니다. 은은한 잔향이 편안하면서도 감미로운 분위기를 연출하며, 사랑과 열정이 가득한 감성을 전합니다."
+    },
+    {
+        "id": 1562,
+        "name_kr": "쥬와이유 노엘 퍼퓸 건",
+        "name_en": "JOYEUX NOEL PERFUME GUN",
+        "brand": "프레데릭 말",
+        "category_id": 2,
+        "content": "스칸디나비아의 크리스마스처럼 따뜻한 색감과 가족의 분위기 속에서, 황혼의 오후에 장작불이 타오르는 듯한 사랑스러운 향이 공간을 감싸줍니다."
+    },
+    {
+        "id": 1563,
+        "name_kr": "아브 델 카데르 디퓨저",
+        "name_en": "DIFFUSER ABD EL KADER",
+        "brand": "트루동",
+        "category_id": 2,
+        "content": "상쾌한 스피어민트와 따뜻한 생강, 차, 타바코의 조화로 이국적이고 매력적인 향을 선사합니다. 이 독특한 향기는 공간을 신비롭고 고급스러운 분위기로 채워줍니다."
+    },
+    {
+        "id": 1564,
+        "name_kr": "포푸리 왁스 타블렛",
+        "name_en": "POT POURRI SCENTED WAX TABLETS",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "토스카나 언덕의 정취를 향기로 담아내어, 갓 채집한 허브와 꽃, 과실이 어우러진 따뜻하고 풍성한 향을 선사합니다. 우디하고 스파이시한 잔향이 은은하게 퍼지며 고즈넉하고 아늑한 분위기를 완성합니다."
+    },
+    {
+        "id": 1565,
+        "name_kr": "룸 디퓨저 히노키",
+        "name_en": "ROOM DIFFUSER HINOKI",
+        "brand": "라 부르켓",
+        "category_id": 2,
+        "content": "싱그러운 편백나무의 맑고 깊은 우디 향이 공간을 감싸며, 마치 고요한 숲속에 있는 듯한 편안함을 선사합니다. 은은한 흙 내음과 따뜻한 머스크 노트가 더해져 차분하고 안정적인 분위기를 연출합니다."
+    },
+    {
+        "id": 1566,
+        "name_kr": "튜베로즈 아워글라스 디퓨저",
+        "name_en": "NUOVO SABLIER TUBEREUSE",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "관능적인 튜베로즈 꽃의 풍부하고 크리미한 플로럴 향이 공간을 우아하게 감싸줍니다. 은은한 스파이시 노트와 따뜻한 머스크가 더해져 깊고 고혹적인 분위기를 연출합니다."
+    },
+    {
+        "id": 1567,
+        "name_kr": "그라치에 룸 디퓨저",
+        "name_en": "GRAZIE ROOM DIFFUSER",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "태양과 자연이 전하는 풍부한 향기로, 신선한 시트러스 노트와 은은한 허브 향이 조화를 이루며 공간을 밝고 활기찬 분위기로 채워줍니다. 따뜻한 우디 머스크의 잔향이 부드럽게 감싸주며, 감각적인 선물로도 잘 어울리는 매력적인 디퓨저입니다."
+    },
+    {
+        "id": 1568,
+        "name_kr": "튈르리 디퓨저",
+        "name_en": "DIFFUSER TUILIERIES",
+        "brand": "트루동",
+        "category_id": 2,
+        "content": "마리 앙투아네트 왕비가 사랑한 장미의 우아함을 담아, 상큼한 만다린과 핑크 페퍼콘이 생기 넘치는 첫인상을 선사합니다. 뒤이어 장미와 라즈베리, 화이트 플라워의 풍성한 플로럴 향이 로맨틱한 분위기를 더하며, 패출리와 샌달우드, 머스크, 바닐라의 따뜻한 잔향이 공간을 부드럽게 감싸줍니다. "
+    },
+    {
+        "id": 1569,
+        "name_kr": "레드 로즈 디퓨저",
+        "name_en": "RED ROSES DIFFUSER",
+        "brand": "조 말론",
+        "category_id": 2,
+        "content": "정원에서 갓 따온 신선한 장미의 싱그러운 향이 공간을 가득 채우며, 마치 꽃잎에 맺힌 아침 이슬처럼 맑고 생기로운 분위기를 선사합니다. 풍성한 플로럴 노트에 은은한 머스크가 더해져 우아하면서도 로맨틱한 감성을 완성합니다."
+    },
+    {
+        "id": 1570,
+        "name_kr": "휘기에 센티드 오발",
+        "name_en": "OVALE PROFUMATO FIGUIER",
+        "brand": "딥티크",
+        "category_id": 2,
+        "content": "지중해 연안 어느 과수밭에 끝없이 펼쳐지는 무화과 나무의 우디 향기."
+    },
+    {
+        "id": 1571,
+        "name_kr": "라 카사 술 라고 룸 디퓨저",
+        "name_en": "LA CASA SULLAGO ROOM DIFFUSER",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "태양 아래 고요한 호숫가에서 불어오는 상쾌한 바람과 섬세한 플로럴 향이 어우러져 우아한 분위기를 연출합니다. 싱그러운 시트러스와 따뜻한 우디 노트가 조화를 이루며, 감각적인 선물로도 잘 어울리는 매력적인 디퓨저입니다."
+    },
+    {
+        "id": 1572,
+        "name_kr": "피코 디 아말피 룸 디퓨저",
+        "name_en": "FICO DI AMALFI ROOM DIFFUSER",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "아말피섬의 무화과가 전하는 상큼한 자연의 향을 담아, 신선한 그린 노트와 잘 익은 무화과의 달콤함이 조화를 이룹니다. 따뜻한 우디 머스크가 은은하게 퍼지며, 여유롭고 감각적인 지중해의 분위기를 완성합니다."
+    },
+    {
+        "id": 1573,
+        "name_kr": "미르토 디 파나레아 룸 디퓨저",
+        "name_en": "MIRTO DI PANAREA ROOM DIFFUSER",
+        "brand": "아쿠아 디 파르마",
+        "category_id": 2,
+        "content": "미르토가 전하는 짜릿한 지중해의 향을 담아, 상쾌한 허브와 싱그러운 시트러스 노트가 조화를 이룹니다. 은은한 머스크와 우디 노트가 더해져 여유롭고 세련된 지중해의 감성을 완성합니다."
+    },
+    {
+        "id": 1574,
+        "name_kr": "오세아니아 디퓨저",
+        "name_en": "OCEANIA DIFFUSER",
+        "brand": "산타 마리아 노벨라",
+        "category_id": 2,
+        "content": "해변에 흐드러지게 핀 들꽃처럼 시원하면서 내추럴한 향으로, 마치 시원한 바닷바람을 온몸으로 맞는 듯한 상쾌함을 선사합니다."
+    }
+]

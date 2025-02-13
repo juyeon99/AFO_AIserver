@@ -6,3 +6,4 @@ generated_images/
 *.jpeg
 *.jpg
 cache_timestamp.txt
+chroma_db
