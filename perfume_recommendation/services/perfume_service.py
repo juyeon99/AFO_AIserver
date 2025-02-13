@@ -492,77 +492,63 @@ class PerfumeService:
             # Content 번역
             try:
                 if content:
-                    content_translation_prompt = (
-                        "Translate the following Korean text to English, maintaining the professional tone:\n\n"
-                        f"Text: {content}\n"
-                        "Translation:"
-                    )
-                    translated_content = self.gpt_client.generate_response(content_translation_prompt).strip()
-                    prompt_parts.append(translated_content)
-                    logger.info("✅ Content 번역 완료")
+                    # Content 번역을 위한 state 생성
+                    content_state = {"user_input": content}
+                    translated_content_state = self.text_translation(content_state)
+                    if translated_content_state.get("translated_input"):
+                        prompt_parts.append(translated_content_state["translated_input"])
+                        logger.info("✅ Content 번역 완료")
 
                 # 각 추천 항목에 대해 영어로 번역
                 translated_recommendations = []
                 for rec in recommendations[:3]:  # 최대 3개만 처리
-                    # 번역이 필요한 텍스트 구성
-                    translation_text = (
-                        f"Name: {rec.get('name', '')}\n"
-                        f"Brand: {rec.get('brand', '')}\n"
-                        f"Reason: {rec.get('reason', '')}\n"
-                        f"Situation: {rec.get('situation', '')}"
-                    )
+                    if not isinstance(rec, dict):
+                        continue
                     
-                    # text_translation을 통한 번역
-                    translation_state = {"user_input": translation_text}
-                    translated_state = self.text_translation(translation_state)
-                    translated_text = translated_state.get("translated_input", "")
+                    # 번역이 필요한 텍스트만 추출
+                    reason = rec.get('reason', '')
+                    situation = rec.get('situation', '')
                     
-                    # 번역된 텍스트 파싱
-                    translated_parts = translated_text.split("\n")
-                    translated_rec = {
-                        "name": translated_parts[0].replace("Name: ", "").strip(),
-                        "brand": translated_parts[1].replace("Brand: ", "").strip(),
-                        "reason": translated_parts[2].replace("Reason: ", "").strip(),
-                        "situation": translated_parts[3].replace("Situation: ", "").strip()
-                    }
-                    translated_recommendations.append(translated_rec)
+                    if reason or situation:
+                        translation_text = f"Description: {reason}\nSituation: {situation}"
+                        translation_state = {"user_input": translation_text}
+                        translated_state = self.text_translation(translation_state)
+                        
+                        if translated_state.get("translated_input"):
+                            translated_text = translated_state["translated_input"]
+                            parts = translated_text.split("\n")
+                            
+                            translated_rec = {
+                                "name": rec.get('name', ''),
+                                "brand": rec.get('brand', ''),
+                                "reason": parts[0].replace("Description:", "").strip() if len(parts) > 0 else "",
+                                "situation": parts[1].replace("Situation:", "").strip() if len(parts) > 1 else ""
+                            }
+                            translated_recommendations.append(translated_rec)
 
                 # 번역된 정보로 프롬프트 구성
                 for rec in translated_recommendations:
                     if rec['reason']:
                         prompt_parts.append(rec['reason'])
                     if rec['situation']:
-                        atmosphere = rec['situation'].split(',')[0]
-                        prompt_parts.append(atmosphere)
+                        prompt_parts.append(rec['situation'])
 
                 logger.info("✅ 텍스트 번역 완료")
 
             except Exception as trans_err:
                 logger.error(f"❌ 번역 실패: {trans_err}")
-                # 번역 실패 시 기본 프롬프트 사용
-                prompt_parts = ["Elegant and sophisticated fragrance ambiance"
-                                "A refined and luxurious scent experience"
-                                "Aesthetic and harmonious fragrance composition"
-                                "An artistic representation of exquisite aromas"
-                                "A sensory journey of delicate and captivating scents"]
+                # 기본 프롬프트 설정
+                prompt_parts = [
+                    "Elegant and sophisticated fragrance ambiance",
+                    "A refined and luxurious scent experience",
+                    "Aesthetic and harmonious fragrance composition",
+                    "An artistic representation of exquisite aromas",
+                    "A sensory journey of delicate and captivating scents"
+                ]
 
-            # 이미지 프롬프트 구성
+            # 이미지 프롬프트 구성 (나머지 코드는 동일)
             image_prompt = (
-            "Create a professional Sentique advertisement image that immerses the viewer in a luxurious and sensory fragrance experience. The image should evoke an elegant and enchanting atmosphere, focusing on the essence of scent without displaying a perfume bottle.\n\n"
-            "Characteristics:\n"
-            "- A delicate interplay of light and shadow, enhancing depth and mystery\n"
-            "- Ethereal, dreamlike mist that conveys the diffusion of fragrance in the air\n"
-            "- A harmonious blend of soft pastels or deep, moody hues to reflect various scent profiles\n"
-            "- Abstract visual storytelling that hints at floral, woody, citrus, or oriental fragrance families\n"
-            "- Intricate textures, such as flowing silk, delicate petals, or aged parchment, to symbolize complexity and richness of the scent\n"
-            "- A refined composition that exudes elegance, avoiding direct product representation\n"
-            "- Motion elements like floating particles, swirling essence, or diffused reflections to create an immersive ambiance\n\n"
             f"{''.join(prompt_parts)}"
-            "Requirements:\n"
-            "- Cinematic lighting with a soft glow to enhance warmth and depth\n"
-            "- Artistic and sophisticated styling, ensuring an upscale, luxurious feel\n"
-            "- Emphasize the feeling of the scent rather than describing the perfume bottle clearly. The perfume bottle does not appear.\n"
-            "- Professional color grading to maintain visual harmony and depth\n"
             )
             logger.info(f"📸 이미지 생성 시작\n프롬프트: {image_prompt}")
 
