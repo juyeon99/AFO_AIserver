@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Float
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -68,3 +69,12 @@ class Similar(Base):
     product_id = Column(Integer, ForeignKey("product.id"))
     similar_product_id = Column(Integer, ForeignKey("product.id"))
     similarity_score = Column(Float) 
+    
+class Review(Base):
+    __tablename__ = "review"
+    
+    id = Column(Integer, primary_key=True)
+    content = Column(Text, nullable=False)
+    time_stamp = Column(DateTime, nullable=False)
+    member_id = Column(String(255), nullable=False)
+    product_id = Column(Integer, ForeignKey("product.id"), nullable=False)
