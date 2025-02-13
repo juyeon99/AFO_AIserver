@@ -16,6 +16,35 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 class PerfumeState(TypedDict):
+    
+    """
+    향수 추천 서비스의 상태를 관리하는 타입 정의
+    
+    Attributes:
+        user_input (str): 사용자의 입력 텍스트
+            - Channel()을 통해 상태 그래프에서 데이터 흐름 관리
+        processed_input (str): 처리된 입력 텍스트
+            - 의도 분류 결과 저장 (recommendation, chat 등)
+        next_node (str): 다음 실행할 노드의 이름
+            - 그래프 흐름 제어를 위한 다음 노드 지정
+        recommendations (list): 추천된 향수 목록
+            - LLM 또는 DB에서 생성된 향수 추천 목록
+        spices (list): 추출된 향료 정보 목록
+            - 향 계열에 따른 향료 정보
+        image_path (str): 생성된 이미지 경로
+            - 이미지 생성 결과물 저장 경로
+        image_description (str): 이미지 설명
+            - 생성된 이미지에 대한 설명 텍스트
+        response (str): 응답 메시지
+            - 최종 사용자 응답 데이터
+        line_id (int): 향 계열 ID
+            - 향수의 계열 분류 ID
+        translated_input (str): 번역된 입력 텍스트
+            - 이미지 생성을 위한 영문 번역 텍스트
+        error (str): 오류 메시지
+            - 처리 중 발생한 오류 정보
+    """
+    
     user_input: Annotated[str, Channel()]
     processed_input: str  
     next_node: str
@@ -54,13 +83,14 @@ class PerfumeService:
         # Add nodes
         self.graph.add_node("input_processor", self.input_processor)
         self.graph.add_node("process_input", self.process_input)
+        self.graph.add_node("recommendation_type_classifier", self.recommendation_type_classifier)  # 추가
         self.graph.add_node("recommendation_generator", self.recommendation_generator)
         self.graph.add_node("fashion_recommendation_generator", self.fashion_recommendation_generator)
         self.graph.add_node("chat_handler", self.chat_handler)
         self.graph.add_node("error_handler", self.error_handler)
-        self.graph.add_node("end", lambda x: x)  
+        self.graph.add_node("end", lambda x: x)
 
-        # Define routing function
+        # router Function
         def route_based_on_intent(state: PerfumeState) -> str:
             if state.get("error"):
                 return "error_handler"
@@ -68,31 +98,49 @@ class PerfumeService:
                 return "chat_handler"
             if state.get("processed_input") == "fashion_recommendation":
                 return "fashion_recommendation_generator"
-            return "recommendation_generator"
+            if state.get("processed_input") == "general_recommendation":
+                return "recommendation_generator"
+            return "recommendation_type_classifier"  # 향수 추천이면 추가 분류로 이동
 
-        # Add conditional edges
+        # if_rogic
         self.graph.add_conditional_edges(
             "process_input",
             route_based_on_intent,
             {
                 "error_handler": "error_handler",
                 "chat_handler": "chat_handler",
+                "recommendation_type_classifier": "recommendation_type_classifier",  # 추가된 노드
                 "fashion_recommendation_generator": "fashion_recommendation_generator",
-                "recommendation_generator": "recommendation_generator"
+                "recommendation_generator": "recommendation_generator",
             }
         )
 
-        # Add regular edges
+        # if_router_type
+        def route_recommendation_type(state: PerfumeState) -> str:
+            if state.get("processed_input") == "fashion_recommendation":
+                return "fashion_recommendation_generator"
+            return "recommendation_generator"
+
+        self.graph.add_conditional_edges(
+            "recommendation_type_classifier",
+            route_recommendation_type,
+            {
+                "fashion_recommendation_generator": "fashion_recommendation_generator",
+                "recommendation_generator": "recommendation_generator",
+            }
+        )
+
+        # Add_edge
         self.graph.add_edge("input_processor", "process_input")
-        self.graph.add_edge("recommendation_generator", "end")  
-        self.graph.add_edge("fashion_recommendation_generator", "end")  
-        self.graph.add_edge("error_handler", "end")  
-        self.graph.add_edge("chat_handler", "end")  
+        self.graph.add_edge("recommendation_generator", "end")
+        self.graph.add_edge("fashion_recommendation_generator", "end")
+        self.graph.add_edge("error_handler", "end")
+        self.graph.add_edge("chat_handler", "end")
 
     def process_input(self, state: PerfumeState) -> PerfumeState:
         """사용자 입력을 분석하여 의도를 분류"""
         try:
-            user_input = state["user_input"]  # ✅ 원본 유지
+            user_input = state["user_input"]  
             logger.info(f"Received user input: {user_input}")
 
             intent_prompt = (
@@ -101,10 +149,9 @@ class PerfumeService:
                 f"일반적인 키워드라고 볼 수 없는 향수 추천은 (2) 일반 대화로 분류해야 합니다.\n\n"
                 f"예시) user_input = 나 오늘 기분이 너무 우울해. 그래서 이런 기분을 떨쳐낼 수 있는 플로럴 계열의 향수를 추천해줘 (1) 향수 추천 \n"
                 f"user_input = 나는 오늘 데이트를 하러가는데 추천해줄 만한 향수가 있을까? (1) 향수 추천 \n"
-                f"예시) user_input = 나 오늘 기분이 너무 우울해. 그래서 이런 기분을 떨쳐낼 수 있는 향수를 추천해줘 (1) 향수 추천 \n"
                 f"예시) user_input = 향수를 추천받고 싶은데 뭐 좋은 거 있어? (2) 일반 대화\n"
                 f"예시) user_input = 향수를 추천해주세요. 라면 (2) 일반 대화로 분류해야 합니다.\n\n"
-                f"의도: (1) 향수 추천, (2) 일반 대화, (3) 패션 향수 추천"
+                f"의도: (1) 향수 추천, (2) 일반 대화"
             )
 
             intent = self.gpt_client.generate_response(intent_prompt).strip()
@@ -113,21 +160,50 @@ class PerfumeService:
             if "1" in intent:
                 logger.info("💡 향수 추천 실행")
                 state["processed_input"] = "recommendation"  
-                state["next_node"] = "recommendation_generator"
-            elif "3" in intent:
-                logger.info("👕 패션 기반 향수 추천 실행")
-                state["processed_input"] = "fashion_recommendation"
-                state["next_node"] = "fashion_recommendation_generator"
+                state["next_node"] = "recommendation_type_classifier"  # 추천 유형 분류로 이동
             else:
                 logger.info("💬 일반 대화 실행")
                 state["processed_input"] = "chat"
                 state["next_node"] = "chat_handler"
-
+        
         except Exception as e:
             logger.error(f"Error processing input '{user_input}': {e}")
             state["processed_input"] = "chat"
             state["next_node"] = "chat_handler"
 
+        return state
+
+    def recommendation_type_classifier(self, state: PerfumeState) -> PerfumeState:
+        """향수 추천 유형을 추가적으로 분류 (패션 추천 vs 일반 추천)"""
+        try:
+            user_input = state["user_input"]
+            logger.info(f"향수 추천 유형 분류 시작 - 입력: {user_input}")
+
+            type_prompt = (
+                f"입력: {user_input}\n"
+                f"향수 추천을 패션 기반 추천과 일반 추천으로 나누세요.\n\n"
+                f"예시) user_input = 나는 오늘 수트를 입었는데 어울리는 향수가 필요해 (3) 패션 추천\n"
+                f"예시) user_input = 상큼한 향이 나는 향수를 추천해줘 (4) 일반 추천\n\n"
+                f"의도: (3) 패션 추천, (4) 일반 추천"
+            )
+
+            recommendation_type = self.gpt_client.generate_response(type_prompt).strip()
+            logger.info(f"Detected recommendation type: {recommendation_type}")
+
+            if "3" in recommendation_type:
+                logger.info("👕 패션 기반 향수 추천 실행")
+                state["processed_input"] = "fashion_recommendation"
+                state["next_node"] = "fashion_recommendation_generator"
+            else:
+                logger.info("✨ 일반 향수 추천 실행")
+                state["processed_input"] = "general_recommendation"
+                state["next_node"] = "recommendation_generator"
+        
+        except Exception as e:
+            logger.error(f"Error processing recommendation type '{user_input}': {e}")
+            state["processed_input"] = "general_recommendation"
+            state["next_node"] = "recommendation_generator"
+        
         return state
     
     def error_handler(self, state: PerfumeState) -> PerfumeState:
@@ -383,7 +459,7 @@ class PerfumeService:
                 "Output:"
             )
 
-            translated_text = self.gpt_client.generate_response(translation_prompt).strip()
+            translated_text = self.llm_img_service.generate_image_description(translation_prompt).strip()
             logger.info(f"✅ 번역된 텍스트: {translated_text}")
 
             state["translated_input"] = translated_text
@@ -399,9 +475,10 @@ class PerfumeService:
     def image_generator(self, state: PerfumeState) -> PerfumeState:
         """추천된 향수 기반으로 이미지 생성"""
         try:
-            # ✅ response 객체 내부의 "recommendations" 안전하게 검증
+            # ✅ response 객체 내부의 "recommendations" 및 "content" 안전하게 검증
             response = state.get("response") or {}  
             recommendations = response.get("recommendations") or []  
+            content = response.get("content", "")
 
             if not recommendations:
                 logger.warning("⚠️ response 객체 내 추천 결과가 없어 이미지를 생성할 수 없습니다")
@@ -412,33 +489,81 @@ class PerfumeService:
             # 이미지 프롬프트 생성
             prompt_parts = []
 
-            # 향수 이름과 브랜드 정보 추가
-            perfume_info = [f"{rec.get('name', '')} by {rec.get('brand', '')}" for rec in recommendations[:3]]
-            if perfume_info:
-                prompt_parts.append("Luxury perfume bottles of " + ", ".join(perfume_info))
+            # Content 번역
+            try:
+                if content:
+                    content_translation_prompt = (
+                        "Translate the following Korean text to English, maintaining the professional tone:\n\n"
+                        f"Text: {content}\n"
+                        "Translation:"
+                    )
+                    translated_content = self.gpt_client.generate_response(content_translation_prompt).strip()
+                    prompt_parts.append(translated_content)
+                    logger.info("✅ Content 번역 완료")
 
-            # 향수 특징과 상황 정보 추가
-            for rec in recommendations[:3]:
-                if rec.get("reason"):
-                    prompt_parts.append(rec["reason"])
-                if rec.get("situation"):
-                    atmosphere = rec["situation"].split(',')[0]  # 첫 번째 상황만 사용
-                    prompt_parts.append(atmosphere)
+                # 각 추천 항목에 대해 영어로 번역
+                translated_recommendations = []
+                for rec in recommendations[:3]:  # 최대 3개만 처리
+                    # 번역이 필요한 텍스트 구성
+                    translation_text = (
+                        f"Name: {rec.get('name', '')}\n"
+                        f"Brand: {rec.get('brand', '')}\n"
+                        f"Reason: {rec.get('reason', '')}\n"
+                        f"Situation: {rec.get('situation', '')}"
+                    )
+                    
+                    # text_translation을 통한 번역
+                    translation_state = {"user_input": translation_text}
+                    translated_state = self.text_translation(translation_state)
+                    translated_text = translated_state.get("translated_input", "")
+                    
+                    # 번역된 텍스트 파싱
+                    translated_parts = translated_text.split("\n")
+                    translated_rec = {
+                        "name": translated_parts[0].replace("Name: ", "").strip(),
+                        "brand": translated_parts[1].replace("Brand: ", "").strip(),
+                        "reason": translated_parts[2].replace("Reason: ", "").strip(),
+                        "situation": translated_parts[3].replace("Situation: ", "").strip()
+                    }
+                    translated_recommendations.append(translated_rec)
+
+                # 번역된 정보로 프롬프트 구성
+                for rec in translated_recommendations:
+                    if rec['reason']:
+                        prompt_parts.append(rec['reason'])
+                    if rec['situation']:
+                        atmosphere = rec['situation'].split(',')[0]
+                        prompt_parts.append(atmosphere)
+
+                logger.info("✅ 텍스트 번역 완료")
+
+            except Exception as trans_err:
+                logger.error(f"❌ 번역 실패: {trans_err}")
+                # 번역 실패 시 기본 프롬프트 사용
+                prompt_parts = ["Elegant and sophisticated fragrance ambiance"
+                                "A refined and luxurious scent experience"
+                                "Aesthetic and harmonious fragrance composition"
+                                "An artistic representation of exquisite aromas"
+                                "A sensory journey of delicate and captivating scents"]
 
             # 이미지 프롬프트 구성
-            image_prompt = (  
-            "Create a professional advertisement image with the following characteristics:\n"  
-            f"{'. '.join(prompt_parts)}.\n"  
-            "Requirements:\n"  
-            "- Elegant and luxurious composition\n"  
-            "- Soft, diffused lighting\n"  
-            "- Artistic style with a sophisticated atmosphere\n"  
-            "- Dreamy visual elements that evoke a sense of fragrance\n"  
-            "- Gentle mist, light dispersing through the air, and abstract details inspired by nature\n"  
-            "- Subtle textures and refined color harmony\n"  
-            "- Professional color grading"  
-            )  
-
+            image_prompt = (
+            "Create a professional Sentique advertisement image that immerses the viewer in a luxurious and sensory fragrance experience. The image should evoke an elegant and enchanting atmosphere, focusing on the essence of scent without displaying a perfume bottle.\n\n"
+            "Characteristics:\n"
+            "- A delicate interplay of light and shadow, enhancing depth and mystery\n"
+            "- Ethereal, dreamlike mist that conveys the diffusion of fragrance in the air\n"
+            "- A harmonious blend of soft pastels or deep, moody hues to reflect various scent profiles\n"
+            "- Abstract visual storytelling that hints at floral, woody, citrus, or oriental fragrance families\n"
+            "- Intricate textures, such as flowing silk, delicate petals, or aged parchment, to symbolize complexity and richness of the scent\n"
+            "- A refined composition that exudes elegance, avoiding direct product representation\n"
+            "- Motion elements like floating particles, swirling essence, or diffused reflections to create an immersive ambiance\n\n"
+            f"{''.join(prompt_parts)}"
+            "Requirements:\n"
+            "- Cinematic lighting with a soft glow to enhance warmth and depth\n"
+            "- Artistic and sophisticated styling, ensuring an upscale, luxurious feel\n"
+            "- Emphasize the feeling of the scent rather than describing the perfume bottle clearly. The perfume bottle does not appear.\n"
+            "- Professional color grading to maintain visual harmony and depth\n"
+            )
             logger.info(f"📸 이미지 생성 시작\n프롬프트: {image_prompt}")
 
             # ✅ 이미지 저장 경로 지정 (generated_images 폴더)
@@ -497,98 +622,6 @@ class PerfumeService:
 
         return state
     
-    def image_generator(self, state: PerfumeState) -> PerfumeState:
-        """추천된 향수 기반으로 이미지 생성"""
-        try:
-            response = state.get("response") or {}  # None 방지
-            recommendations = response.get("recommendations") or []  # None 방지
-            if not recommendations:
-                logger.warning("⚠️ 추천 결과가 없어 이미지를 생성할 수 없습니다")
-                state["image_path"] = None
-                state["next_node"] = "end"
-                return state
-
-            # 1. Translate Korean text to English
-            try:
-                translated_parts = []
-                for rec in recommendations[:3]:
-                    # Translate name and brand
-                    name = rec.get('name', '')
-                    brand = rec.get('brand', '')
-                    perfume_info = f"{name} by {brand}" if brand else name
-
-                    # Translate reason and situation
-                    reason = rec.get('reason', '')
-                    situation = rec.get('situation', '').split(',')[0] if rec.get('situation') else ''
-
-                    translation_prompt = (
-                        "Translate the following Korean text to English, keeping perfume names unchanged:\n"
-                        f"1. {perfume_info}\n"
-                        f"2. {reason}\n"
-                        f"3. {situation}"
-                    )
-                    
-                    translated_text = self.gpt_client.generate_response(translation_prompt).strip()
-                    translated_lines = translated_text.split('\n')
-                    
-                    if len(translated_lines) >= 3:
-                        translated_parts.extend(translated_lines[1:])  # Skip perfume name translation
-
-                logger.info("✅ 텍스트 번역 완료")
-
-                # 2. Generate image prompt
-                image_prompt = (
-                    "Create a professional perfume advertisement featuring:\n"
-                    f"{'. '.join(translated_parts)}.\n"
-                    "Requirements:\n"
-                    "- Elegant and luxurious composition\n"
-                    "- Soft, diffused lighting\n"
-                    "- High-end product photography style\n"
-                    "- Crystal clear perfume bottles\n"
-                    "- Premium background with subtle textures\n"
-                    "- Professional color grading"
-                )
-
-                logger.info(f"📸 이미지 생성 시작\n프롬프트: {image_prompt}")
-
-                # 3. Generate image
-                save_directory = "generated_images"
-                os.makedirs(save_directory, exist_ok=True)
-
-                image_result = self.image_service.generate_image(image_prompt)
-                if not image_result or not isinstance(image_result, dict):
-                    raise ValueError("이미지 생성 결과가 유효하지 않습니다")
-
-                output_path = image_result.get("output_path")
-                if not output_path:
-                    raise ValueError("이미지 경로가 없습니다")
-
-                # 4. Save and update state
-                filename = os.path.basename(output_path)
-                final_path = os.path.join(save_directory, filename)
-
-                if os.path.exists(output_path):
-                    os.rename(output_path, final_path)
-
-                state["image_path"] = final_path
-                logger.info(f"✅ 이미지 생성 완료: {final_path}")
-
-                if isinstance(state.get("response"), dict):
-                    state["response"]["image_path"] = final_path
-
-            except Exception as img_err:
-                logger.error(f"🚨 이미지 생성 상세 오류: {img_err}")
-                state["image_path"] = None
-
-            state["next_node"] = "end"
-            return state
-
-        except Exception as e:
-            logger.error(f"❌ 이미지 생성 처리 실패: {str(e)}")
-            state["image_path"] = None
-            state["next_node"] = "end"
-            return state
-
     def generate_chat_response(self, state: PerfumeState) -> PerfumeState:
         try:
             user_input = state["user_input"]
@@ -647,10 +680,7 @@ class PerfumeService:
                 
             logger.info("✅ 서비스 실행 완료")
             return {
-                "status": "success",
-                "recommendations": result.get("recommendations", []),
                 "response": result.get("response"),
-                "image_path": result.get("image_path")
             }
 
         except Exception as e:
