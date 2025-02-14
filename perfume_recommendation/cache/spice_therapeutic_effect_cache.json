@@ -1,0 +1,10217 @@
+[
+    {
+        "id": 1,
+        "name_en": "Bergamot",
+        "effect": 1
+    },
+    {
+        "id": 2,
+        "name_en": "Bigarade",
+        "effect": 3
+    },
+    {
+        "id": 3,
+        "name_en": "Bitter Orange",
+        "effect": 3
+    },
+    {
+        "id": 4,
+        "name_en": "Blood Orange",
+        "effect": 2
+    },
+    {
+        "id": 5,
+        "name_en": "Buddha's Hand",
+        "effect": 3
+    },
+    {
+        "id": 6,
+        "name_en": "Calamansi",
+        "effect": 3
+    },
+    {
+        "id": 7,
+        "name_en": "Candied Lemon",
+        "effect": 3
+    },
+    {
+        "id": 8,
+        "name_en": "Chen Pi",
+        "effect": 0
+    },
+    {
+        "id": 9,
+        "name_en": "Chinotto",
+        "effect": 3
+    },
+    {
+        "id": 10,
+        "name_en": "Citron",
+        "effect": 3
+    },
+    {
+        "id": 11,
+        "name_en": "Citrus Water",
+        "effect": 3
+    },
+    {
+        "id": 12,
+        "name_en": "Citruses",
+        "effect": 3
+    },
+    {
+        "id": 13,
+        "name_en": "Clementine",
+        "effect": 2
+    },
+    {
+        "id": 14,
+        "name_en": "Finger Lime",
+        "effect": 3
+    },
+    {
+        "id": 15,
+        "name_en": "Grapefruit",
+        "effect": 3
+    },
+    {
+        "id": 16,
+        "name_en": "Grapefruit Leaf",
+        "effect": 3
+    },
+    {
+        "id": 17,
+        "name_en": "Grapefruit Peel",
+        "effect": 3
+    },
+    {
+        "id": 18,
+        "name_en": "Green Tangerine",
+        "effect": 3
+    },
+    {
+        "id": 19,
+        "name_en": "Hassaku",
+        "effect": 3
+    },
+    {
+        "id": 20,
+        "name_en": "Hatkora Lemon",
+        "effect": 3
+    },
+    {
+        "id": 21,
+        "name_en": "Kaffir Lime",
+        "effect": 3
+    },
+    {
+        "id": 22,
+        "name_en": "Kumquat",
+        "effect": 3
+    },
+    {
+        "id": 23,
+        "name_en": "Lemon",
+        "effect": 3
+    },
+    {
+        "id": 24,
+        "name_en": "Lemon Balm",
+        "effect": 1
+    },
+    {
+        "id": 25,
+        "name_en": "Lemon Myrtle",
+        "effect": 3
+    },
+    {
+        "id": 26,
+        "name_en": "Lemon Tree",
+        "effect": 3
+    },
+    {
+        "id": 27,
+        "name_en": "Lemon Verbena",
+        "effect": 3
+    },
+    {
+        "id": 28,
+        "name_en": "Lemon Zest",
+        "effect": 3
+    },
+    {
+        "id": 29,
+        "name_en": "Lemongrass",
+        "effect": 3
+    },
+    {
+        "id": 30,
+        "name_en": "Lime",
+        "effect": 3
+    },
+    {
+        "id": 31,
+        "name_en": "Limetta",
+        "effect": 3
+    },
+    {
+        "id": 32,
+        "name_en": "Litsea Cubeba",
+        "effect": 3
+    },
+    {
+        "id": 33,
+        "name_en": "Mandarin Orange",
+        "effect": 2
+    },
+    {
+        "id": 34,
+        "name_en": "Mandora",
+        "effect": 0
+    },
+    {
+        "id": 35,
+        "name_en": "Methyl Pamplemousse",
+        "effect": 3
+    },
+    {
+        "id": 36,
+        "name_en": "Neroli",
+        "effect": 2
+    },
+    {
+        "id": 37,
+        "name_en": "Orange",
+        "effect": 2
+    },
+    {
+        "id": 38,
+        "name_en": "Palestinian Sweet Lime",
+        "effect": 3
+    },
+    {
+        "id": 39,
+        "name_en": "Petitgrain",
+        "effect": 1
+    },
+    {
+        "id": 40,
+        "name_en": "Ponkan",
+        "effect": 3
+    },
+    {
+        "id": 41,
+        "name_en": "Pomelo",
+        "effect": 3
+    },
+    {
+        "id": 42,
+        "name_en": "Rangpur",
+        "effect": 3
+    },
+    {
+        "id": 43,
+        "name_en": "Red Mandarin",
+        "effect": 2
+    },
+    {
+        "id": 44,
+        "name_en": "Shiikuwasha",
+        "effect": 3
+    },
+    {
+        "id": 45,
+        "name_en": "Sudachi citrus",
+        "effect": 3
+    },
+    {
+        "id": 46,
+        "name_en": "Tangelo",
+        "effect": 3
+    },
+    {
+        "id": 47,
+        "name_en": "Tangerine",
+        "effect": 2
+    },
+    {
+        "id": 48,
+        "name_en": "Tangerine Zest",
+        "effect": 3
+    },
+    {
+        "id": 49,
+        "name_en": "Yuzu",
+        "effect": 3
+    },
+    {
+        "id": 50,
+        "name_en": "Acai Berry",
+        "effect": 0
+    },
+    {
+        "id": 51,
+        "name_en": "Acerola",
+        "effect": 0
+    },
+    {
+        "id": 52,
+        "name_en": "Acorn",
+        "effect": 0
+    },
+    {
+        "id": 53,
+        "name_en": "Almond",
+        "effect": 0
+    },
+    {
+        "id": 54,
+        "name_en": "Apple",
+        "effect": 2
+    },
+    {
+        "id": 55,
+        "name_en": "Apple Juice",
+        "effect": 3
+    },
+    {
+        "id": 56,
+        "name_en": "Apple Pulp",
+        "effect": 2
+    },
+    {
+        "id": 57,
+        "name_en": "Apple Sherbet",
+        "effect": 3
+    },
+    {
+        "id": 58,
+        "name_en": "Apricot",
+        "effect": 0
+    },
+    {
+        "id": 59,
+        "name_en": "Arctic Bramble",
+        "effect": 0
+    },
+    {
+        "id": 60,
+        "name_en": "Argan",
+        "effect": 0
+    },
+    {
+        "id": 61,
+        "name_en": "Artichoke",
+        "effect": 0
+    },
+    {
+        "id": 62,
+        "name_en": "Banana",
+        "effect": 2
+    },
+    {
+        "id": 63,
+        "name_en": "Barberry",
+        "effect": 0
+    },
+    {
+        "id": 64,
+        "name_en": "Bearberry",
+        "effect": 0
+    },
+    {
+        "id": 65,
+        "name_en": "Beetroot",
+        "effect": 0
+    },
+    {
+        "id": 66,
+        "name_en": "Black Cherry",
+        "effect": 2
+    },
+    {
+        "id": 67,
+        "name_en": "Black Currant",
+        "effect": 0
+    },
+    {
+        "id": 68,
+        "name_en": "Black Sapote",
+        "effect": 0
+    },
+    {
+        "id": 69,
+        "name_en": "Black Walnut",
+        "effect": 0
+    },
+    {
+        "id": 70,
+        "name_en": "Blackberry",
+        "effect": 0
+    },
+    {
+        "id": 71,
+        "name_en": "Blackthorn",
+        "effect": 0
+    },
+    {
+        "id": 72,
+        "name_en": "Blueberry",
+        "effect": 2
+    },
+    {
+        "id": 73,
+        "name_en": "Boysenberry",
+        "effect": 2
+    },
+    {
+        "id": 74,
+        "name_en": "Brazil Nut",
+        "effect": 0
+    },
+    {
+        "id": 75,
+        "name_en": "Breadnut",
+        "effect": 0
+    },
+    {
+        "id": 76,
+        "name_en": "Buriti",
+        "effect": 0
+    },
+    {
+        "id": 77,
+        "name_en": "Burning Cherry",
+        "effect": 0
+    },
+    {
+        "id": 78,
+        "name_en": "Cabernet Grape",
+        "effect": 0
+    },
+    {
+        "id": 79,
+        "name_en": "Candlenut",
+        "effect": 0
+    },
+    {
+        "id": 80,
+        "name_en": "Cantaloupe",
+        "effect": 0
+    },
+    {
+        "id": 81,
+        "name_en": "Carambola (Star Fruit)",
+        "effect": 3
+    },
+    {
+        "id": 82,
+        "name_en": "Carrot",
+        "effect": 0
+    },
+    {
+        "id": 83,
+        "name_en": "Cashew",
+        "effect": 0
+    },
+    {
+        "id": 84,
+        "name_en": "Cassowary Fruit",
+        "effect": 0
+    },
+    {
+        "id": 85,
+        "name_en": "Cauliflower",
+        "effect": 0
+    },
+    {
+        "id": 86,
+        "name_en": "Cepes",
+        "effect": 0
+    },
+    {
+        "id": 87,
+        "name_en": "Chayote",
+        "effect": 0
+    },
+    {
+        "id": 88,
+        "name_en": "Cherimoya",
+        "effect": 0
+    },
+    {
+        "id": 89,
+        "name_en": "Cherry",
+        "effect": 2
+    },
+    {
+        "id": 90,
+        "name_en": "Cherry Jam",
+        "effect": 2
+    },
+    {
+        "id": 91,
+        "name_en": "Chestnut",
+        "effect": 0
+    },
+    {
+        "id": 92,
+        "name_en": "Chia Seed",
+        "effect": 0
+    },
+    {
+        "id": 93,
+        "name_en": "Chickpeas",
+        "effect": 0
+    },
+    {
+        "id": 94,
+        "name_en": "Chinese Magnolia",
+        "effect": 0
+    },
+    {
+        "id": 95,
+        "name_en": "Cloudberry",
+        "effect": 2
+    },
+    {
+        "id": 96,
+        "name_en": "Coco De Mer",
+        "effect": 0
+    },
+    {
+        "id": 97,
+        "name_en": "Cocoa Shell",
+        "effect": 2
+    },
+    {
+        "id": 98,
+        "name_en": "Coconut",
+        "effect": 2
+    },
+    {
+        "id": 99,
+        "name_en": "Coconut Water",
+        "effect": 3
+    },
+    {
+        "id": 100,
+        "name_en": "Cogumelo Porcino",
+        "effect": 0
+    },
+    {
+        "id": 101,
+        "name_en": "Conifer",
+        "effect": 3
+    },
+    {
+        "id": 102,
+        "name_en": "Corn",
+        "effect": 0
+    },
+    {
+        "id": 103,
+        "name_en": "Corn Silk",
+        "effect": 0
+    },
+    {
+        "id": 104,
+        "name_en": "Count's Fruit",
+        "effect": 0
+    },
+    {
+        "id": 105,
+        "name_en": "Cranberry",
+        "effect": 0
+    },
+    {
+        "id": 106,
+        "name_en": "Cucumber",
+        "effect": 3
+    },
+    {
+        "id": 107,
+        "name_en": "Cupuassu",
+        "effect": 0
+    },
+    {
+        "id": 108,
+        "name_en": "Currant Leaf and Bud",
+        "effect": 3
+    },
+    {
+        "id": 109,
+        "name_en": "Cyperus Scariosus",
+        "effect": 0
+    },
+    {
+        "id": 110,
+        "name_en": "Daikon Radish",
+        "effect": 0
+    },
+    {
+        "id": 111,
+        "name_en": "Dark Plum Wu Mei",
+        "effect": 0
+    },
+    {
+        "id": 112,
+        "name_en": "Dewberry",
+        "effect": 0
+    },
+    {
+        "id": 113,
+        "name_en": "Dried Apple Crisp",
+        "effect": 2
+    },
+    {
+        "id": 114,
+        "name_en": "Dried Apricot",
+        "effect": 0
+    },
+    {
+        "id": 115,
+        "name_en": "Dried Fruits",
+        "effect": 2
+    },
+    {
+        "id": 116,
+        "name_en": "Durian",
+        "effect": 0
+    },
+    {
+        "id": 117,
+        "name_en": "Elderberry",
+        "effect": 0
+    },
+    {
+        "id": 118,
+        "name_en": "Feijoa Fruit",
+        "effect": 0
+    },
+    {
+        "id": 119,
+        "name_en": "Fig",
+        "effect": 2
+    },
+    {
+        "id": 120,
+        "name_en": "Fig Leaf",
+        "effect": 3
+    },
+    {
+        "id": 121,
+        "name_en": "Forest Fruits",
+        "effect": 2
+    },
+    {
+        "id": 122,
+        "name_en": "Frosted Berries",
+        "effect": 2
+    },
+    {
+        "id": 123,
+        "name_en": "Fruit Salad",
+        "effect": 2
+    },
+    {
+        "id": 125,
+        "name_en": "Fuji Apple",
+        "effect": 3
+    },
+    {
+        "id": 126,
+        "name_en": "Gariguette Strawberry",
+        "effect": 2
+    },
+    {
+        "id": 127,
+        "name_en": "Genipapo",
+        "effect": 0
+    },
+    {
+        "id": 128,
+        "name_en": "Goji Berries",
+        "effect": 0
+    },
+    {
+        "id": 129,
+        "name_en": "Gooseberry",
+        "effect": 0
+    },
+    {
+        "id": 130,
+        "name_en": "Grains",
+        "effect": 0
+    },
+    {
+        "id": 131,
+        "name_en": "Grape Seed",
+        "effect": 0
+    },
+    {
+        "id": 132,
+        "name_en": "Grapes",
+        "effect": 0
+    },
+    {
+        "id": 133,
+        "name_en": "Green Anjou Pears",
+        "effect": 3
+    },
+    {
+        "id": 134,
+        "name_en": "Green Grape",
+        "effect": 3
+    },
+    {
+        "id": 135,
+        "name_en": "Green Pear",
+        "effect": 3
+    },
+    {
+        "id": 136,
+        "name_en": "Green Plum",
+        "effect": 3
+    },
+    {
+        "id": 137,
+        "name_en": "Greengage",
+        "effect": 0
+    },
+    {
+        "id": 138,
+        "name_en": "Ground Cherry",
+        "effect": 0
+    },
+    {
+        "id": 139,
+        "name_en": "Guarana",
+        "effect": 6
+    },
+    {
+        "id": 140,
+        "name_en": "Guava",
+        "effect": 0
+    },
+    {
+        "id": 141,
+        "name_en": "Hazelnut",
+        "effect": 0
+    },
+    {
+        "id": 142,
+        "name_en": "Hog Plum",
+        "effect": 0
+    },
+    {
+        "id": 143,
+        "name_en": "Honeydew Melon",
+        "effect": 3
+    },
+    {
+        "id": 144,
+        "name_en": "Isabella Grape",
+        "effect": 0
+    },
+    {
+        "id": 145,
+        "name_en": "Jabuticaba",
+        "effect": 0
+    },
+    {
+        "id": 146,
+        "name_en": "Jackfruit",
+        "effect": 0
+    },
+    {
+        "id": 147,
+        "name_en": "Japanese Loquat",
+        "effect": 0
+    },
+    {
+        "id": 148,
+        "name_en": "Jobs Tears (Yi Yi Ren)",
+        "effect": 0
+    },
+    {
+        "id": 149,
+        "name_en": "Kiwi",
+        "effect": 3
+    },
+    {
+        "id": 150,
+        "name_en": "Kumbaru",
+        "effect": 0
+    },
+    {
+        "id": 151,
+        "name_en": "Lingonberry",
+        "effect": 0
+    },
+    {
+        "id": 152,
+        "name_en": "Litchi",
+        "effect": 2
+    },
+    {
+        "id": 153,
+        "name_en": "Loganberry",
+        "effect": 0
+    },
+    {
+        "id": 154,
+        "name_en": "Longan Berries",
+        "effect": 0
+    },
+    {
+        "id": 155,
+        "name_en": "Lucuma",
+        "effect": 0
+    },
+    {
+        "id": 156,
+        "name_en": "Macadamia",
+        "effect": 0
+    },
+    {
+        "id": 157,
+        "name_en": "Mahonia",
+        "effect": 0
+    },
+    {
+        "id": 158,
+        "name_en": "Malt",
+        "effect": 0
+    },
+    {
+        "id": 159,
+        "name_en": "Mamey",
+        "effect": 0
+    },
+    {
+        "id": 160,
+        "name_en": "Mango",
+        "effect": 2
+    },
+    {
+        "id": 161,
+        "name_en": "Mangosteen",
+        "effect": 0
+    },
+    {
+        "id": 162,
+        "name_en": "Maninka",
+        "effect": 0
+    },
+    {
+        "id": 163,
+        "name_en": "Marian Plum",
+        "effect": 0
+    },
+    {
+        "id": 164,
+        "name_en": "Medlar",
+        "effect": 0
+    },
+    {
+        "id": 165,
+        "name_en": "Melon",
+        "effect": 3
+    },
+    {
+        "id": 166,
+        "name_en": "Mirabelle",
+        "effect": 0
+    },
+    {
+        "id": 167,
+        "name_en": "Miracle Berry",
+        "effect": 0
+    },
+    {
+        "id": 168,
+        "name_en": "Moepel Accord",
+        "effect": 0
+    },
+    {
+        "id": 169,
+        "name_en": "Mulberry",
+        "effect": 0
+    },
+    {
+        "id": 170,
+        "name_en": "Mung Bean",
+        "effect": 0
+    },
+    {
+        "id": 171,
+        "name_en": "Mushroom",
+        "effect": 0
+    },
+    {
+        "id": 172,
+        "name_en": "Nashi Pear",
+        "effect": 0
+    },
+    {
+        "id": 173,
+        "name_en": "Nectarine",
+        "effect": 3
+    },
+    {
+        "id": 175,
+        "name_en": "Okra Seeds",
+        "effect": 0
+    },
+    {
+        "id": 176,
+        "name_en": "Olive",
+        "effect": 0
+    },
+    {
+        "id": 177,
+        "name_en": "Papaya",
+        "effect": 0
+    },
+    {
+        "id": 178,
+        "name_en": "Passionfruit",
+        "effect": 2
+    },
+    {
+        "id": 179,
+        "name_en": "Pea",
+        "effect": 0
+    },
+    {
+        "id": 180,
+        "name_en": "Peach",
+        "effect": 2
+    },
+    {
+        "id": 181,
+        "name_en": "Peanut",
+        "effect": 0
+    },
+    {
+        "id": 182,
+        "name_en": "Pear",
+        "effect": 0
+    },
+    {
+        "id": 183,
+        "name_en": "Pecan",
+        "effect": 0
+    },
+    {
+        "id": 184,
+        "name_en": "Persimmon",
+        "effect": 0
+    },
+    {
+        "id": 185,
+        "name_en": "Peruvian Pepper",
+        "effect": 0
+    },
+    {
+        "id": 186,
+        "name_en": "Pineapple",
+        "effect": 3
+    },
+    {
+        "id": 187,
+        "name_en": "Pinot Noir Grapes",
+        "effect": 0
+    },
+    {
+        "id": 188,
+        "name_en": "Pistachio",
+        "effect": 0
+    },
+    {
+        "id": 189,
+        "name_en": "Pitahaya",
+        "effect": 0
+    },
+    {
+        "id": 190,
+        "name_en": "Pitanga",
+        "effect": 0
+    },
+    {
+        "id": 191,
+        "name_en": "Plum",
+        "effect": 0
+    },
+    {
+        "id": 192,
+        "name_en": "Pomegranate",
+        "effect": 0
+    },
+    {
+        "id": 193,
+        "name_en": "Potato",
+        "effect": 0
+    },
+    {
+        "id": 194,
+        "name_en": "Prickly Pear",
+        "effect": 0
+    },
+    {
+        "id": 195,
+        "name_en": "Pumpkin",
+        "effect": 2
+    },
+    {
+        "id": 196,
+        "name_en": "Quandong (Desert Peach)",
+        "effect": 0
+    },
+    {
+        "id": 197,
+        "name_en": "Quince",
+        "effect": 0
+    },
+    {
+        "id": 198,
+        "name_en": "Rambutan",
+        "effect": 0
+    },
+    {
+        "id": 199,
+        "name_en": "Raspberry",
+        "effect": 2
+    },
+    {
+        "id": 200,
+        "name_en": "Red Apple",
+        "effect": 2
+    },
+    {
+        "id": 201,
+        "name_en": "Red Berries",
+        "effect": 2
+    },
+    {
+        "id": 202,
+        "name_en": "Red Currant",
+        "effect": 0
+    },
+    {
+        "id": 203,
+        "name_en": "Red Fruits",
+        "effect": 2
+    },
+    {
+        "id": 205,
+        "name_en": "Red Mulberry",
+        "effect": 0
+    },
+    {
+        "id": 206,
+        "name_en": "Rhubarb",
+        "effect": 0
+    },
+    {
+        "id": 207,
+        "name_en": "Roasted Nuts",
+        "effect": 1
+    },
+    {
+        "id": 208,
+        "name_en": "Salak",
+        "effect": 0
+    },
+    {
+        "id": 209,
+        "name_en": "Sapodilla",
+        "effect": 0
+    },
+    {
+        "id": 210,
+        "name_en": "Sarsaparilla",
+        "effect": 0
+    },
+    {
+        "id": 211,
+        "name_en": "Sea Buckthorn",
+        "effect": 0
+    },
+    {
+        "id": 212,
+        "name_en": "Seriguela",
+        "effect": 0
+    },
+    {
+        "id": 213,
+        "name_en": "Serrano Pepper",
+        "effect": 0
+    },
+    {
+        "id": 214,
+        "name_en": "Shea Butter",
+        "effect": 0
+    },
+    {
+        "id": 215,
+        "name_en": "Shea Nuts",
+        "effect": 0
+    },
+    {
+        "id": 216,
+        "name_en": "Silverberry",
+        "effect": 0
+    },
+    {
+        "id": 217,
+        "name_en": "Snowberry",
+        "effect": 0
+    },
+    {
+        "id": 218,
+        "name_en": "Sour Cherry",
+        "effect": 0
+    },
+    {
+        "id": 219,
+        "name_en": "Soursop",
+        "effect": 0
+    },
+    {
+        "id": 220,
+        "name_en": "Soybean",
+        "effect": 0
+    },
+    {
+        "id": 221,
+        "name_en": "Squash",
+        "effect": 0
+    },
+    {
+        "id": 222,
+        "name_en": "Star Apple",
+        "effect": 0
+    },
+    {
+        "id": 223,
+        "name_en": "Strawberry",
+        "effect": 2
+    },
+    {
+        "id": 224,
+        "name_en": "Taro",
+        "effect": 0
+    },
+    {
+        "id": 225,
+        "name_en": "Tayberry",
+        "effect": 0
+    },
+    {
+        "id": 226,
+        "name_en": "Tomato",
+        "effect": 0
+    },
+    {
+        "id": 227,
+        "name_en": "Tropical Fruits",
+        "effect": 3
+    },
+    {
+        "id": 228,
+        "name_en": "Tropicalone",
+        "effect": 0
+    },
+    {
+        "id": 229,
+        "name_en": "Tucumã",
+        "effect": 0
+    },
+    {
+        "id": 230,
+        "name_en": "Walnut",
+        "effect": 0
+    },
+    {
+        "id": 231,
+        "name_en": "Walnut Milk",
+        "effect": 0
+    },
+    {
+        "id": 233,
+        "name_en": "Watermelon",
+        "effect": 3
+    },
+    {
+        "id": 234,
+        "name_en": "Wattleseed",
+        "effect": 0
+    },
+    {
+        "id": 235,
+        "name_en": "White Currant",
+        "effect": 0
+    },
+    {
+        "id": 236,
+        "name_en": "White Grape",
+        "effect": 0
+    },
+    {
+        "id": 237,
+        "name_en": "Wild Strawberry",
+        "effect": 2
+    },
+    {
+        "id": 238,
+        "name_en": "Williams Pear",
+        "effect": 0
+    },
+    {
+        "id": 239,
+        "name_en": "Winterberry",
+        "effect": 0
+    },
+    {
+        "id": 240,
+        "name_en": "Wolfberry",
+        "effect": 0
+    },
+    {
+        "id": 241,
+        "name_en": "Yellow Cherry",
+        "effect": 0
+    },
+    {
+        "id": 243,
+        "name_en": "Yuca Cassava",
+        "effect": 0
+    },
+    {
+        "id": 244,
+        "name_en": "Yumberry",
+        "effect": 0
+    },
+    {
+        "id": 245,
+        "name_en": "Acacia",
+        "effect": 0
+    },
+    {
+        "id": 246,
+        "name_en": "Acerola Blossom",
+        "effect": 2
+    },
+    {
+        "id": 247,
+        "name_en": "Aglaia",
+        "effect": 0
+    },
+    {
+        "id": 248,
+        "name_en": "Albizia",
+        "effect": 0
+    },
+    {
+        "id": 249,
+        "name_en": "Almond Blossom",
+        "effect": 2
+    },
+    {
+        "id": 250,
+        "name_en": "Alpinia",
+        "effect": 3
+    },
+    {
+        "id": 251,
+        "name_en": "Alstroemeria",
+        "effect": 0
+    },
+    {
+        "id": 252,
+        "name_en": "Althaea",
+        "effect": 0
+    },
+    {
+        "id": 253,
+        "name_en": "Alumroot",
+        "effect": 0
+    },
+    {
+        "id": 254,
+        "name_en": "Alyssum",
+        "effect": 0
+    },
+    {
+        "id": 255,
+        "name_en": "Amarillys",
+        "effect": 0
+    },
+    {
+        "id": 256,
+        "name_en": "Amazon Moonflower",
+        "effect": 0
+    },
+    {
+        "id": 257,
+        "name_en": "Anemone",
+        "effect": 0
+    },
+    {
+        "id": 258,
+        "name_en": "Angel's Trumpet",
+        "effect": 0
+    },
+    {
+        "id": 259,
+        "name_en": "Apple Blossom",
+        "effect": 2
+    },
+    {
+        "id": 260,
+        "name_en": "Apricot Blossom",
+        "effect": 2
+    },
+    {
+        "id": 261,
+        "name_en": "Ashoka Flower",
+        "effect": 0
+    },
+    {
+        "id": 262,
+        "name_en": "Astragalus의",
+        "effect": 0
+    },
+    {
+        "id": 263,
+        "name_en": "Azalea",
+        "effect": 0
+    },
+    {
+        "id": 264,
+        "name_en": "Azteca Lily",
+        "effect": 0
+    },
+    {
+        "id": 265,
+        "name_en": "Banana Flower",
+        "effect": 0
+    },
+    {
+        "id": 266,
+        "name_en": "Banksia Australian",
+        "effect": 0
+    },
+    {
+        "id": 267,
+        "name_en": "Begonia",
+        "effect": 0
+    },
+    {
+        "id": 268,
+        "name_en": "Belladona",
+        "effect": 0
+    },
+    {
+        "id": 269,
+        "name_en": "Bellflower",
+        "effect": 0
+    },
+    {
+        "id": 270,
+        "name_en": "Bergamot Blossom",
+        "effect": 2
+    },
+    {
+        "id": 271,
+        "name_en": "Bird cherry",
+        "effect": 0
+    },
+    {
+        "id": 272,
+        "name_en": "Black Currant Blossom",
+        "effect": 3
+    },
+    {
+        "id": 273,
+        "name_en": "Blackberry Blossom",
+        "effect": 0
+    },
+    {
+        "id": 274,
+        "name_en": "Blue Lilies",
+        "effect": 0
+    },
+    {
+        "id": 275,
+        "name_en": "Blue Poppy",
+        "effect": 0
+    },
+    {
+        "id": 276,
+        "name_en": "Bluebell",
+        "effect": 0
+    },
+    {
+        "id": 277,
+        "name_en": "Bottlebrush",
+        "effect": 0
+    },
+    {
+        "id": 278,
+        "name_en": "Bougainvillea",
+        "effect": 0
+    },
+    {
+        "id": 279,
+        "name_en": "Bread Flower",
+        "effect": 0
+    },
+    {
+        "id": 280,
+        "name_en": "Bromelia",
+        "effect": 0
+    },
+    {
+        "id": 281,
+        "name_en": "Buddleia",
+        "effect": 0
+    },
+    {
+        "id": 282,
+        "name_en": "Butomus Umbellatus",
+        "effect": 0
+    },
+    {
+        "id": 283,
+        "name_en": "Buttercup",
+        "effect": 0
+    },
+    {
+        "id": 284,
+        "name_en": "Cacao Blossom",
+        "effect": 2
+    },
+    {
+        "id": 285,
+        "name_en": "Calla Lily",
+        "effect": 0
+    },
+    {
+        "id": 286,
+        "name_en": "Camellia",
+        "effect": 0
+    },
+    {
+        "id": 287,
+        "name_en": "Campion Flower",
+        "effect": 0
+    },
+    {
+        "id": 288,
+        "name_en": "Cananga",
+        "effect": 0
+    },
+    {
+        "id": 289,
+        "name_en": "Cannonball Flower",
+        "effect": 0
+    },
+    {
+        "id": 290,
+        "name_en": "Carambola Blossom",
+        "effect": 3
+    },
+    {
+        "id": 291,
+        "name_en": "Cardamom Flower",
+        "effect": 5
+    },
+    {
+        "id": 292,
+        "name_en": "Carnation",
+        "effect": 0
+    },
+    {
+        "id": 293,
+        "name_en": "Celosia",
+        "effect": 0
+    },
+    {
+        "id": 294,
+        "name_en": "Chai Hu",
+        "effect": 0
+    },
+    {
+        "id": 295,
+        "name_en": "Chamomile",
+        "effect": 4
+    },
+    {
+        "id": 296,
+        "name_en": "Champaca",
+        "effect": 2
+    },
+    {
+        "id": 297,
+        "name_en": "Cherry Blossom",
+        "effect": 2
+    },
+    {
+        "id": 298,
+        "name_en": "Chimonanthus or Wintersweet",
+        "effect": 0
+    },
+    {
+        "id": 299,
+        "name_en": "China Rose",
+        "effect": 2
+    },
+    {
+        "id": 300,
+        "name_en": "Chinotto blossom",
+        "effect": 3
+    },
+    {
+        "id": 301,
+        "name_en": "Chocolate Flower",
+        "effect": 2
+    },
+    {
+        "id": 302,
+        "name_en": "Christmas Tree",
+        "effect": 3
+    },
+    {
+        "id": 303,
+        "name_en": "Chrysanthemum",
+        "effect": 0
+    },
+    {
+        "id": 304,
+        "name_en": "Cistus Incanus",
+        "effect": 0
+    },
+    {
+        "id": 305,
+        "name_en": "Clematis",
+        "effect": 0
+    },
+    {
+        "id": 306,
+        "name_en": "Clover",
+        "effect": 0
+    },
+    {
+        "id": 307,
+        "name_en": "Coconut Blossom",
+        "effect": 2
+    },
+    {
+        "id": 308,
+        "name_en": "Coffee Blossom",
+        "effect": 0
+    },
+    {
+        "id": 309,
+        "name_en": "Cornflower Sultan Seeds",
+        "effect": 0
+    },
+    {
+        "id": 310,
+        "name_en": "Cosmos Flower",
+        "effect": 0
+    },
+    {
+        "id": 311,
+        "name_en": "Costus",
+        "effect": 0
+    },
+    {
+        "id": 312,
+        "name_en": "Cotton Flower",
+        "effect": 0
+    },
+    {
+        "id": 313,
+        "name_en": "Creamy Flowers",
+        "effect": 2
+    },
+    {
+        "id": 314,
+        "name_en": "Crinum Lily",
+        "effect": 0
+    },
+    {
+        "id": 315,
+        "name_en": "Cucumber Flower",
+        "effect": 3
+    },
+    {
+        "id": 316,
+        "name_en": "Cyclamen",
+        "effect": 0
+    },
+    {
+        "id": 317,
+        "name_en": "Dahlia",
+        "effect": 0
+    },
+    {
+        "id": 318,
+        "name_en": "Daisy",
+        "effect": 0
+    },
+    {
+        "id": 319,
+        "name_en": "Dandelion",
+        "effect": 0
+    },
+    {
+        "id": 320,
+        "name_en": "Daphne",
+        "effect": 0
+    },
+    {
+        "id": 321,
+        "name_en": "Daylily",
+        "effect": 0
+    },
+    {
+        "id": 322,
+        "name_en": "Deadnettle",
+        "effect": 0
+    },
+    {
+        "id": 323,
+        "name_en": "Delonix",
+        "effect": 0
+    },
+    {
+        "id": 324,
+        "name_en": "Desert Rose",
+        "effect": 0
+    },
+    {
+        "id": 325,
+        "name_en": "Dianthus",
+        "effect": 0
+    },
+    {
+        "id": 326,
+        "name_en": "Dogwood Blossom",
+        "effect": 0
+    },
+    {
+        "id": 327,
+        "name_en": "Dove Tree",
+        "effect": 0
+    },
+    {
+        "id": 328,
+        "name_en": "Dried Rose",
+        "effect": 2
+    },
+    {
+        "id": 329,
+        "name_en": "Dyer's Greenweed",
+        "effect": 0
+    },
+    {
+        "id": 330,
+        "name_en": "Edelweiss",
+        "effect": 0
+    },
+    {
+        "id": 331,
+        "name_en": "Eglantine Rose",
+        "effect": 2
+    },
+    {
+        "id": 332,
+        "name_en": "Elderflower",
+        "effect": 0
+    },
+    {
+        "id": 333,
+        "name_en": "Encian",
+        "effect": 0
+    },
+    {
+        "id": 334,
+        "name_en": "English Marigold",
+        "effect": 0
+    },
+    {
+        "id": 335,
+        "name_en": "Erigeron (Fleabane)",
+        "effect": 0
+    },
+    {
+        "id": 336,
+        "name_en": "Euphorbia",
+        "effect": 0
+    },
+    {
+        "id": 337,
+        "name_en": "Eustoma | Lisianthus",
+        "effect": 0
+    },
+    {
+        "id": 338,
+        "name_en": "Evergreen",
+        "effect": 3
+    },
+    {
+        "id": 339,
+        "name_en": "Field Scabious",
+        "effect": 0
+    },
+    {
+        "id": 340,
+        "name_en": "Fig Blossom",
+        "effect": 0
+    },
+    {
+        "id": 341,
+        "name_en": "Fire Lily",
+        "effect": 0
+    },
+    {
+        "id": 342,
+        "name_en": "Flamingo Flower (Anthurium)",
+        "effect": 0
+    },
+    {
+        "id": 343,
+        "name_en": "Flax",
+        "effect": 0
+    },
+    {
+        "id": 345,
+        "name_en": "Forget Me Not",
+        "effect": 0
+    },
+    {
+        "id": 346,
+        "name_en": "Fragonia",
+        "effect": 1
+    },
+    {
+        "id": 347,
+        "name_en": "Freesia",
+        "effect": 2
+    },
+    {
+        "id": 348,
+        "name_en": "Fringed Pink",
+        "effect": 0
+    },
+    {
+        "id": 349,
+        "name_en": "Fuchsia",
+        "effect": 0
+    },
+    {
+        "id": 350,
+        "name_en": "Geranium",
+        "effect": 2
+    },
+    {
+        "id": 351,
+        "name_en": "Gerbera",
+        "effect": 0
+    },
+    {
+        "id": 352,
+        "name_en": "Gladiolus",
+        "effect": 0
+    },
+    {
+        "id": 353,
+        "name_en": "Goldenrod",
+        "effect": 0
+    },
+    {
+        "id": 354,
+        "name_en": "Gorse",
+        "effect": 0
+    },
+    {
+        "id": 355,
+        "name_en": "Grapeflower",
+        "effect": 3
+    },
+    {
+        "id": 356,
+        "name_en": "Great Burnet",
+        "effect": 0
+    },
+    {
+        "id": 357,
+        "name_en": "Green Nard",
+        "effect": 0
+    },
+    {
+        "id": 358,
+        "name_en": "Green Tea Flower",
+        "effect": 3
+    },
+    {
+        "id": 359,
+        "name_en": "Grevillea",
+        "effect": 0
+    },
+    {
+        "id": 360,
+        "name_en": "Guava Blossom",
+        "effect": 2
+    },
+    {
+        "id": 361,
+        "name_en": "Guayacan",
+        "effect": 0
+    },
+    {
+        "id": 362,
+        "name_en": "Gustavia Flower",
+        "effect": 0
+    },
+    {
+        "id": 363,
+        "name_en": "Hawthorn",
+        "effect": 0
+    },
+    {
+        "id": 364,
+        "name_en": "Hazel Blossom",
+        "effect": 0
+    },
+    {
+        "id": 365,
+        "name_en": "Heather",
+        "effect": 0
+    },
+    {
+        "id": 366,
+        "name_en": "Heliotrope",
+        "effect": 2
+    },
+    {
+        "id": 367,
+        "name_en": "Hellabore Flower",
+        "effect": 0
+    },
+    {
+        "id": 368,
+        "name_en": "Hemlock",
+        "effect": 0
+    },
+    {
+        "id": 369,
+        "name_en": "Hibiscus",
+        "effect": 0
+    },
+    {
+        "id": 370,
+        "name_en": "Hoary Stock",
+        "effect": 0
+    },
+    {
+        "id": 371,
+        "name_en": "Holly Flower",
+        "effect": 0
+    },
+    {
+        "id": 372,
+        "name_en": "Hollyhock",
+        "effect": 0
+    },
+    {
+        "id": 373,
+        "name_en": "Honeybush(Cyclopia)",
+        "effect": 1
+    },
+    {
+        "id": 374,
+        "name_en": "Honeydew Blossom",
+        "effect": 0
+    },
+    {
+        "id": 375,
+        "name_en": "Hortensia",
+        "effect": 0
+    },
+    {
+        "id": 376,
+        "name_en": "Wax Plant(Hoya Carnosa)",
+        "effect": 0
+    },
+    {
+        "id": 377,
+        "name_en": "Hyacinth",
+        "effect": 0
+    },
+    {
+        "id": 378,
+        "name_en": "Hyssop",
+        "effect": 0
+    },
+    {
+        "id": 379,
+        "name_en": "Impatiens",
+        "effect": 0
+    },
+    {
+        "id": 380,
+        "name_en": "Inula",
+        "effect": 0
+    },
+    {
+        "id": 381,
+        "name_en": "Iris",
+        "effect": 0
+    },
+    {
+        "id": 382,
+        "name_en": "Iris Butter",
+        "effect": 0
+    },
+    {
+        "id": 383,
+        "name_en": "Iris Pallida",
+        "effect": 0
+    },
+    {
+        "id": 384,
+        "name_en": "Jacaranda",
+        "effect": 0
+    },
+    {
+        "id": 385,
+        "name_en": "Jade Flower",
+        "effect": 0
+    },
+    {
+        "id": 386,
+        "name_en": "Jarana Flower",
+        "effect": 0
+    },
+    {
+        "id": 387,
+        "name_en": "Jasmine Orchid",
+        "effect": 2
+    },
+    {
+        "id": 388,
+        "name_en": "Jujube Blossom",
+        "effect": 0
+    },
+    {
+        "id": 389,
+        "name_en": "Kadam",
+        "effect": 0
+    },
+    {
+        "id": 390,
+        "name_en": "Kangaroo Paw",
+        "effect": 0
+    },
+    {
+        "id": 391,
+        "name_en": "Kanuka",
+        "effect": 0
+    },
+    {
+        "id": 392,
+        "name_en": "Karmaflor®",
+        "effect": 0
+    },
+    {
+        "id": 393,
+        "name_en": "Kiwi blossom",
+        "effect": 3
+    },
+    {
+        "id": 394,
+        "name_en": "Kudzu",
+        "effect": 0
+    },
+    {
+        "id": 395,
+        "name_en": "Laburnum",
+        "effect": 0
+    },
+    {
+        "id": 396,
+        "name_en": "Lady of the Night Flower",
+        "effect": 4
+    },
+    {
+        "id": 397,
+        "name_en": "Lady Slipper Orchid",
+        "effect": 0
+    },
+    {
+        "id": 398,
+        "name_en": "Lamduan Flower",
+        "effect": 0
+    },
+    {
+        "id": 399,
+        "name_en": "Lamprocapnos",
+        "effect": 0
+    },
+    {
+        "id": 400,
+        "name_en": "Lantana",
+        "effect": 0
+    },
+    {
+        "id": 401,
+        "name_en": "Larkspur",
+        "effect": 0
+    },
+    {
+        "id": 402,
+        "name_en": "Laurel Blossom",
+        "effect": 0
+    },
+    {
+        "id": 403,
+        "name_en": "Lavender",
+        "effect": 4
+    },
+    {
+        "id": 404,
+        "name_en": "Leatherwood",
+        "effect": 0
+    },
+    {
+        "id": 405,
+        "name_en": "Ledum",
+        "effect": 0
+    },
+    {
+        "id": 406,
+        "name_en": "Liatris",
+        "effect": 0
+    },
+    {
+        "id": 408,
+        "name_en": "Licorice Flower",
+        "effect": 0
+    },
+    {
+        "id": 409,
+        "name_en": "Lilac",
+        "effect": 2
+    },
+    {
+        "id": 410,
+        "name_en": "Lily-of-the-Valley",
+        "effect": 0
+    },
+    {
+        "id": 411,
+        "name_en": "Lime (Linden) Blossom",
+        "effect": 1
+    },
+    {
+        "id": 412,
+        "name_en": "Litchi Blossom",
+        "effect": 2
+    },
+    {
+        "id": 413,
+        "name_en": "Longoza",
+        "effect": 0
+    },
+    {
+        "id": 414,
+        "name_en": "Lotus",
+        "effect": 0
+    },
+    {
+        "id": 415,
+        "name_en": "Lupin",
+        "effect": 0
+    },
+    {
+        "id": 416,
+        "name_en": "Lydia Broom",
+        "effect": 0
+    },
+    {
+        "id": 417,
+        "name_en": "Lysylang",
+        "effect": 0
+    },
+    {
+        "id": 418,
+        "name_en": "Macadamia Flower",
+        "effect": 0
+    },
+    {
+        "id": 419,
+        "name_en": "Magnolia",
+        "effect": 2
+    },
+    {
+        "id": 420,
+        "name_en": "Magnolia Brooklynensis",
+        "effect": 0
+    },
+    {
+        "id": 421,
+        "name_en": "Magnolia Leaf",
+        "effect": 0
+    },
+    {
+        "id": 422,
+        "name_en": "Mahonial",
+        "effect": 0
+    },
+    {
+        "id": 423,
+        "name_en": "Malva",
+        "effect": 0
+    },
+    {
+        "id": 424,
+        "name_en": "Mango Blossom",
+        "effect": 2
+    },
+    {
+        "id": 425,
+        "name_en": "Mariposa Lily",
+        "effect": 0
+    },
+    {
+        "id": 426,
+        "name_en": "Mayflower",
+        "effect": 0
+    },
+    {
+        "id": 427,
+        "name_en": "Meadowsweet",
+        "effect": 0
+    },
+    {
+        "id": 428,
+        "name_en": "Melilotus",
+        "effect": 0
+    },
+    {
+        "id": 429,
+        "name_en": "Melissa Flower",
+        "effect": 1
+    },
+    {
+        "id": 430,
+        "name_en": "Michelia",
+        "effect": 0
+    },
+    {
+        "id": 431,
+        "name_en": "Mignonette",
+        "effect": 0
+    },
+    {
+        "id": 432,
+        "name_en": "Mimosa",
+        "effect": 2
+    },
+    {
+        "id": 433,
+        "name_en": "Mimusops Elengi",
+        "effect": 0
+    },
+    {
+        "id": 434,
+        "name_en": "Mirabilis",
+        "effect": 0
+    },
+    {
+        "id": 435,
+        "name_en": "Monarda",
+        "effect": 0
+    },
+    {
+        "id": 436,
+        "name_en": "Monoi Oil",
+        "effect": 0
+    },
+    {
+        "id": 437,
+        "name_en": "Morning Glory Flower",
+        "effect": 0
+    },
+    {
+        "id": 438,
+        "name_en": "Moss Flox",
+        "effect": 0
+    },
+    {
+        "id": 439,
+        "name_en": "Myrtle",
+        "effect": 3
+    },
+    {
+        "id": 440,
+        "name_en": "Narcissus",
+        "effect": 0
+    },
+    {
+        "id": 441,
+        "name_en": "Nard",
+        "effect": 4
+    },
+    {
+        "id": 442,
+        "name_en": "Nasturtium",
+        "effect": 0
+    },
+    {
+        "id": 443,
+        "name_en": "Nectarine Blossom",
+        "effect": 2
+    },
+    {
+        "id": 444,
+        "name_en": "Nerium Oleander",
+        "effect": 0
+    },
+    {
+        "id": 445,
+        "name_en": "Nigella",
+        "effect": 0
+    },
+    {
+        "id": 446,
+        "name_en": "Night Blooming Jasmine",
+        "effect": 4
+    },
+    {
+        "id": 447,
+        "name_en": "Nom Maew",
+        "effect": 0
+    },
+    {
+        "id": 448,
+        "name_en": "Olive Flower",
+        "effect": 0
+    },
+    {
+        "id": 449,
+        "name_en": "Opium",
+        "effect": 0
+    },
+    {
+        "id": 450,
+        "name_en": "Orange Cassia Tree",
+        "effect": 0
+    },
+    {
+        "id": 452,
+        "name_en": "Orange Flower Water",
+        "effect": 2
+    },
+    {
+        "id": 453,
+        "name_en": "Orchard Blossom",
+        "effect": 2
+    },
+    {
+        "id": 454,
+        "name_en": "Orchid",
+        "effect": 0
+    },
+    {
+        "id": 455,
+        "name_en": "Orchid Black Diamond",
+        "effect": 0
+    },
+    {
+        "id": 456,
+        "name_en": "Orchid Cactus",
+        "effect": 0
+    },
+    {
+        "id": 457,
+        "name_en": "Orchid Pink Leopard",
+        "effect": 0
+    },
+    {
+        "id": 458,
+        "name_en": "Ornithogalum",
+        "effect": 0
+    },
+    {
+        "id": 459,
+        "name_en": "Orris Root",
+        "effect": 0
+    },
+    {
+        "id": 460,
+        "name_en": "Osmanthus",
+        "effect": 2
+    },
+    {
+        "id": 461,
+        "name_en": "Pansy",
+        "effect": 0
+    },
+    {
+        "id": 462,
+        "name_en": "Papaya Blossom",
+        "effect": 0
+    },
+    {
+        "id": 463,
+        "name_en": "Paramela",
+        "effect": 0
+    },
+    {
+        "id": 464,
+        "name_en": "Passion Flower",
+        "effect": 4
+    },
+    {
+        "id": 465,
+        "name_en": "Pataqueira",
+        "effect": 0
+    },
+    {
+        "id": 466,
+        "name_en": "Peach Blossom",
+        "effect": 2
+    },
+    {
+        "id": 467,
+        "name_en": "Pear Blossom",
+        "effect": 3
+    },
+    {
+        "id": 468,
+        "name_en": "Pelargonium",
+        "effect": 2
+    },
+    {
+        "id": 469,
+        "name_en": "Peony",
+        "effect": 2
+    },
+    {
+        "id": 470,
+        "name_en": "Periwinkle",
+        "effect": 0
+    },
+    {
+        "id": 471,
+        "name_en": "Petalia",
+        "effect": 0
+    },
+    {
+        "id": 472,
+        "name_en": "Petunia",
+        "effect": 0
+    },
+    {
+        "id": 473,
+        "name_en": "Phlox",
+        "effect": 0
+    },
+    {
+        "id": 474,
+        "name_en": "Pineapple Blossom",
+        "effect": 3
+    },
+    {
+        "id": 475,
+        "name_en": "Pink Flamingo Heliconia",
+        "effect": 0
+    },
+    {
+        "id": 476,
+        "name_en": "Pink Lily",
+        "effect": 0
+    },
+    {
+        "id": 477,
+        "name_en": "Pinwheel Flower",
+        "effect": 0
+    },
+    {
+        "id": 478,
+        "name_en": "Pitahaya Flower",
+        "effect": 0
+    },
+    {
+        "id": 479,
+        "name_en": "Pittosporum",
+        "effect": 0
+    },
+    {
+        "id": 480,
+        "name_en": "Plum Blossom",
+        "effect": 2
+    },
+    {
+        "id": 481,
+        "name_en": "Plumeria",
+        "effect": 2
+    },
+    {
+        "id": 482,
+        "name_en": "Poinsettia",
+        "effect": 0
+    },
+    {
+        "id": 483,
+        "name_en": "Pomegranate Blossom",
+        "effect": 2
+    },
+    {
+        "id": 484,
+        "name_en": "Poppy",
+        "effect": 0
+    },
+    {
+        "id": 485,
+        "name_en": "Primrose",
+        "effect": 0
+    },
+    {
+        "id": 486,
+        "name_en": "Princess Tree (Paulownia)",
+        "effect": 0
+    },
+    {
+        "id": 487,
+        "name_en": "Privet",
+        "effect": 0
+    },
+    {
+        "id": 488,
+        "name_en": "Protea",
+        "effect": 0
+    },
+    {
+        "id": 489,
+        "name_en": "Prunella",
+        "effect": 0
+    },
+    {
+        "id": 490,
+        "name_en": "Purple Coneflower",
+        "effect": 0
+    },
+    {
+        "id": 491,
+        "name_en": "Rangoon Creeper",
+        "effect": 0
+    },
+    {
+        "id": 492,
+        "name_en": "Raspberry Blossom",
+        "effect": 2
+    },
+    {
+        "id": 493,
+        "name_en": "Redwood Flower",
+        "effect": 0
+    },
+    {
+        "id": 494,
+        "name_en": "Reseda",
+        "effect": 0
+    },
+    {
+        "id": 495,
+        "name_en": "Rhododendron",
+        "effect": 0
+    },
+    {
+        "id": 496,
+        "name_en": "Rosa Alba",
+        "effect": 2
+    },
+    {
+        "id": 497,
+        "name_en": "Rosa Rubiginosa",
+        "effect": 0
+    },
+    {
+        "id": 498,
+        "name_en": "Rose",
+        "effect": 2
+    },
+    {
+        "id": 499,
+        "name_en": "Rose Hip",
+        "effect": 0
+    },
+    {
+        "id": 500,
+        "name_en": "Rose Japanese (Hamanasu)",
+        "effect": 2
+    },
+    {
+        "id": 501,
+        "name_en": "Rose Mallow",
+        "effect": 0
+    },
+    {
+        "id": 502,
+        "name_en": "Rosebay Willowherb",
+        "effect": 0
+    },
+    {
+        "id": 503,
+        "name_en": "Rosebud",
+        "effect": 2
+    },
+    {
+        "id": 504,
+        "name_en": "Roselle",
+        "effect": 0
+    },
+    {
+        "id": 505,
+        "name_en": "Rosyfolia",
+        "effect": 0
+    },
+    {
+        "id": 506,
+        "name_en": "Safflower",
+        "effect": 0
+    },
+    {
+        "id": 507,
+        "name_en": "Sainfoins",
+        "effect": 0
+    },
+    {
+        "id": 508,
+        "name_en": "Sand Lily",
+        "effect": 0
+    },
+    {
+        "id": 509,
+        "name_en": "Sandalwood Flower",
+        "effect": 1
+    },
+    {
+        "id": 510,
+        "name_en": "Santolina",
+        "effect": 0
+    },
+    {
+        "id": 511,
+        "name_en": "Saucer Magnolia",
+        "effect": 0
+    },
+    {
+        "id": 512,
+        "name_en": "Sea Daffodil",
+        "effect": 0
+    },
+    {
+        "id": 513,
+        "name_en": "Siberian Rhododendron",
+        "effect": 0
+    },
+    {
+        "id": 514,
+        "name_en": "Silk Tree Blossom",
+        "effect": 0
+    },
+    {
+        "id": 515,
+        "name_en": "Skeleton Flower",
+        "effect": 0
+    },
+    {
+        "id": 516,
+        "name_en": "Smoketree",
+        "effect": 0
+    },
+    {
+        "id": 517,
+        "name_en": "Snakeroot",
+        "effect": 0
+    },
+    {
+        "id": 518,
+        "name_en": "Snow Lotus",
+        "effect": 0
+    },
+    {
+        "id": 519,
+        "name_en": "Snowdrops",
+        "effect": 0
+    },
+    {
+        "id": 520,
+        "name_en": "Solomon's Seal",
+        "effect": 0
+    },
+    {
+        "id": 521,
+        "name_en": "Sophora Toromiro Flower",
+        "effect": 0
+    },
+    {
+        "id": 522,
+        "name_en": "Sour Cherry Blossom",
+        "effect": 2
+    },
+    {
+        "id": 523,
+        "name_en": "Spanish Broom",
+        "effect": 0
+    },
+    {
+        "id": 524,
+        "name_en": "Spiraea",
+        "effect": 0
+    },
+    {
+        "id": 525,
+        "name_en": "St. John's Wort",
+        "effect": 2
+    },
+    {
+        "id": 526,
+        "name_en": "Starflower",
+        "effect": 0
+    },
+    {
+        "id": 527,
+        "name_en": "Strawberry Flower",
+        "effect": 2
+    },
+    {
+        "id": 528,
+        "name_en": "Strelitzia",
+        "effect": 0
+    },
+    {
+        "id": 529,
+        "name_en": "Strobilanthes Callosa",
+        "effect": 0
+    },
+    {
+        "id": 530,
+        "name_en": "Sunflower",
+        "effect": 0
+    },
+    {
+        "id": 531,
+        "name_en": "Sweet Pea",
+        "effect": 2
+    },
+    {
+        "id": 532,
+        "name_en": "Taif Rose",
+        "effect": 2
+    },
+    {
+        "id": 533,
+        "name_en": "Tamarisk",
+        "effect": 0
+    },
+    {
+        "id": 534,
+        "name_en": "Tobacco Blossom",
+        "effect": 0
+    },
+    {
+        "id": 536,
+        "name_en": "Trillium",
+        "effect": 0
+    },
+    {
+        "id": 537,
+        "name_en": "Tulip",
+        "effect": 0
+    },
+    {
+        "id": 538,
+        "name_en": "Vanilla Bahiana",
+        "effect": 2
+    },
+    {
+        "id": 539,
+        "name_en": "Viburnum",
+        "effect": 0
+    },
+    {
+        "id": 540,
+        "name_en": "Violet",
+        "effect": 0
+    },
+    {
+        "id": 541,
+        "name_en": "Violet Woodsorrel",
+        "effect": 0
+    },
+    {
+        "id": 542,
+        "name_en": "Wallflower",
+        "effect": 0
+    },
+    {
+        "id": 543,
+        "name_en": "Waratah",
+        "effect": 0
+    },
+    {
+        "id": 544,
+        "name_en": "Water Flowers",
+        "effect": 3
+    },
+    {
+        "id": 545,
+        "name_en": "Water Hyacinth",
+        "effect": 3
+    },
+    {
+        "id": 546,
+        "name_en": "Water Lily(Nymphaea)",
+        "effect": 0
+    },
+    {
+        "id": 547,
+        "name_en": "Weeping Cherry Blossom",
+        "effect": 2
+    },
+    {
+        "id": 548,
+        "name_en": "White Dahlia",
+        "effect": 0
+    },
+    {
+        "id": 549,
+        "name_en": "White Ginger Lily",
+        "effect": 3
+    },
+    {
+        "id": 550,
+        "name_en": "White Lace Flower",
+        "effect": 0
+    },
+    {
+        "id": 551,
+        "name_en": "White Tea Blossom",
+        "effect": 3
+    },
+    {
+        "id": 552,
+        "name_en": "Wildflowers",
+        "effect": 0
+    },
+    {
+        "id": 553,
+        "name_en": "Wisteria",
+        "effect": 0
+    },
+    {
+        "id": 554,
+        "name_en": "Wrightia",
+        "effect": 0
+    },
+    {
+        "id": 555,
+        "name_en": "Yellow Bells",
+        "effect": 0
+    },
+    {
+        "id": 557,
+        "name_en": "Ylang-Ylang",
+        "effect": 1
+    },
+    {
+        "id": 558,
+        "name_en": "Yunnan Osmanthus",
+        "effect": 2
+    },
+    {
+        "id": 559,
+        "name_en": "Yuzu Flower",
+        "effect": 3
+    },
+    {
+        "id": 560,
+        "name_en": "Zinnia",
+        "effect": 0
+    },
+    {
+        "id": 561,
+        "name_en": "Arum Lily",
+        "effect": 0
+    },
+    {
+        "id": 562,
+        "name_en": "Belanis",
+        "effect": 0
+    },
+    {
+        "id": 563,
+        "name_en": "Black Locust",
+        "effect": 0
+    },
+    {
+        "id": 564,
+        "name_en": "Boronia",
+        "effect": 0
+    },
+    {
+        "id": 565,
+        "name_en": "Carissa",
+        "effect": 0
+    },
+    {
+        "id": 566,
+        "name_en": "Datura",
+        "effect": 0
+    },
+    {
+        "id": 567,
+        "name_en": "Frangipani",
+        "effect": 2
+    },
+    {
+        "id": 568,
+        "name_en": "Gardenia",
+        "effect": 2
+    },
+    {
+        "id": 569,
+        "name_en": "Grapefruit Blossom",
+        "effect": 3
+    },
+    {
+        "id": 570,
+        "name_en": "Honeysuckle",
+        "effect": 2
+    },
+    {
+        "id": 571,
+        "name_en": "Jasmine",
+        "effect": 2
+    },
+    {
+        "id": 572,
+        "name_en": "Karo-Karounde",
+        "effect": 0
+    },
+    {
+        "id": 573,
+        "name_en": "Lemon Blossom",
+        "effect": 3
+    },
+    {
+        "id": 574,
+        "name_en": "Lily",
+        "effect": 0
+    },
+    {
+        "id": 575,
+        "name_en": "Mandarin Orange Blossom",
+        "effect": 2
+    },
+    {
+        "id": 576,
+        "name_en": "Melati",
+        "effect": 2
+    },
+    {
+        "id": 577,
+        "name_en": "Mock Orange",
+        "effect": 0
+    },
+    {
+        "id": 578,
+        "name_en": "Moon Flower",
+        "effect": 0
+    },
+    {
+        "id": 579,
+        "name_en": "Night Blooming Cereus",
+        "effect": 0
+    },
+    {
+        "id": 580,
+        "name_en": "Orange Blossom",
+        "effect": 2
+    },
+    {
+        "id": 581,
+        "name_en": "Stephanotis",
+        "effect": 0
+    },
+    {
+        "id": 582,
+        "name_en": "Syringa",
+        "effect": 0
+    },
+    {
+        "id": 583,
+        "name_en": "Tangerine Blossom",
+        "effect": 2
+    },
+    {
+        "id": 584,
+        "name_en": "Tiare Flower",
+        "effect": 2
+    },
+    {
+        "id": 585,
+        "name_en": "Tuberose",
+        "effect": 2
+    },
+    {
+        "id": 587,
+        "name_en": "White Tobacco",
+        "effect": 0
+    },
+    {
+        "id": 588,
+        "name_en": "Agave",
+        "effect": 0
+    },
+    {
+        "id": 589,
+        "name_en": "Algae",
+        "effect": 0
+    },
+    {
+        "id": 590,
+        "name_en": "Aloe Vera",
+        "effect": 3
+    },
+    {
+        "id": 591,
+        "name_en": "Ammophila (Beach Grass)",
+        "effect": 0
+    },
+    {
+        "id": 592,
+        "name_en": "Angelica",
+        "effect": 0
+    },
+    {
+        "id": 593,
+        "name_en": "Angelica Root",
+        "effect": 0
+    },
+    {
+        "id": 594,
+        "name_en": "Apple Mint",
+        "effect": 3
+    },
+    {
+        "id": 595,
+        "name_en": "Arnica",
+        "effect": 0
+    },
+    {
+        "id": 596,
+        "name_en": "Aromatic Notes",
+        "effect": 0
+    },
+    {
+        "id": 597,
+        "name_en": "Artemisia",
+        "effect": 0
+    },
+    {
+        "id": 598,
+        "name_en": "Asparagus",
+        "effect": 0
+    },
+    {
+        "id": 599,
+        "name_en": "Assam Tea",
+        "effect": 3
+    },
+    {
+        "id": 600,
+        "name_en": "Avocado",
+        "effect": 0
+    },
+    {
+        "id": 601,
+        "name_en": "Azolla (Water Fern)",
+        "effect": 0
+    },
+    {
+        "id": 602,
+        "name_en": "Bagas de Zimbro",
+        "effect": 3
+    },
+    {
+        "id": 603,
+        "name_en": "Banana Leaf",
+        "effect": 3
+    },
+    {
+        "id": 604,
+        "name_en": "Barley",
+        "effect": 0
+    },
+    {
+        "id": 605,
+        "name_en": "Barrenwort",
+        "effect": 0
+    },
+    {
+        "id": 606,
+        "name_en": "Basil",
+        "effect": 3
+    },
+    {
+        "id": 607,
+        "name_en": "Bay Essence",
+        "effect": 0
+    },
+    {
+        "id": 608,
+        "name_en": "Beachheather",
+        "effect": 0
+    },
+    {
+        "id": 609,
+        "name_en": "Betel Leaf",
+        "effect": 0
+    },
+    {
+        "id": 610,
+        "name_en": "Bigarane™",
+        "effect": 0
+    },
+    {
+        "id": 611,
+        "name_en": "Black Currant Leaf",
+        "effect": 3
+    },
+    {
+        "id": 612,
+        "name_en": "Blackberry Leaf",
+        "effect": 0
+    },
+    {
+        "id": 613,
+        "name_en": "Blue Bugle",
+        "effect": 0
+    },
+    {
+        "id": 614,
+        "name_en": "Borage",
+        "effect": 0
+    },
+    {
+        "id": 615,
+        "name_en": "Borneol",
+        "effect": 3
+    },
+    {
+        "id": 616,
+        "name_en": "Bran",
+        "effect": 0
+    },
+    {
+        "id": 617,
+        "name_en": "Buchu or Agathosma",
+        "effect": 3
+    },
+    {
+        "id": 618,
+        "name_en": "Buckwheat",
+        "effect": 0
+    },
+    {
+        "id": 619,
+        "name_en": "Buckwheat Tea",
+        "effect": 0
+    },
+    {
+        "id": 620,
+        "name_en": "Bulrush",
+        "effect": 0
+    },
+    {
+        "id": 621,
+        "name_en": "Burdock",
+        "effect": 0
+    },
+    {
+        "id": 622,
+        "name_en": "Cactus",
+        "effect": 0
+    },
+    {
+        "id": 623,
+        "name_en": "Calamus",
+        "effect": 0
+    },
+    {
+        "id": 624,
+        "name_en": "Calycanthus",
+        "effect": 0
+    },
+    {
+        "id": 625,
+        "name_en": "Cangzhu",
+        "effect": 0
+    },
+    {
+        "id": 626,
+        "name_en": "Cannabis",
+        "effect": 1
+    },
+    {
+        "id": 627,
+        "name_en": "Caper",
+        "effect": 0
+    },
+    {
+        "id": 628,
+        "name_en": "Capitiú",
+        "effect": 0
+    },
+    {
+        "id": 629,
+        "name_en": "Carnation Leaves",
+        "effect": 0
+    },
+    {
+        "id": 630,
+        "name_en": "Catnip",
+        "effect": 0
+    },
+    {
+        "id": 631,
+        "name_en": "Cedar Leaves",
+        "effect": 0
+    },
+    {
+        "id": 632,
+        "name_en": "Celery",
+        "effect": 0
+    },
+    {
+        "id": 633,
+        "name_en": "Celery Seeds",
+        "effect": 0
+    },
+    {
+        "id": 634,
+        "name_en": "Centella Asiatica",
+        "effect": 1
+    },
+    {
+        "id": 635,
+        "name_en": "Cherry Leaf",
+        "effect": 0
+    },
+    {
+        "id": 636,
+        "name_en": "Chicory",
+        "effect": 0
+    },
+    {
+        "id": 637,
+        "name_en": "Chive",
+        "effect": 0
+    },
+    {
+        "id": 638,
+        "name_en": "Chuan Xiong",
+        "effect": 0
+    },
+    {
+        "id": 639,
+        "name_en": "Cilantro",
+        "effect": 0
+    },
+    {
+        "id": 640,
+        "name_en": "Citron Leaf",
+        "effect": 3
+    },
+    {
+        "id": 641,
+        "name_en": "Clary Sage",
+        "effect": 1
+    },
+    {
+        "id": 642,
+        "name_en": "Coca",
+        "effect": 6
+    },
+    {
+        "id": 643,
+        "name_en": "Coleus",
+        "effect": 0
+    },
+    {
+        "id": 644,
+        "name_en": "Creosote Bush",
+        "effect": 0
+    },
+    {
+        "id": 645,
+        "name_en": "Crithmum",
+        "effect": 3
+    },
+    {
+        "id": 646,
+        "name_en": "Davana",
+        "effect": 1
+    },
+    {
+        "id": 647,
+        "name_en": "Deer Tongue Grass",
+        "effect": 0
+    },
+    {
+        "id": 648,
+        "name_en": "Dried Fallen Leaves",
+        "effect": 0
+    },
+    {
+        "id": 649,
+        "name_en": "Earl Grey Tea",
+        "effect": 1
+    },
+    {
+        "id": 650,
+        "name_en": "Fermented Tea",
+        "effect": 0
+    },
+    {
+        "id": 651,
+        "name_en": "Fern",
+        "effect": 0
+    },
+    {
+        "id": 652,
+        "name_en": "Flouve",
+        "effect": 0
+    },
+    {
+        "id": 653,
+        "name_en": "Fo Ti (Ho Shou Wu)",
+        "effect": 0
+    },
+    {
+        "id": 654,
+        "name_en": "Fougère Accord",
+        "effect": 0
+    },
+    {
+        "id": 655,
+        "name_en": "Fresh Evergreen",
+        "effect": 3
+    },
+    {
+        "id": 656,
+        "name_en": "Gajumaru Banyan",
+        "effect": 0
+    },
+    {
+        "id": 657,
+        "name_en": "Galbanum",
+        "effect": 0
+    },
+    {
+        "id": 658,
+        "name_en": "Garlic",
+        "effect": 0
+    },
+    {
+        "id": 659,
+        "name_en": "Genmaicha",
+        "effect": 1
+    },
+    {
+        "id": 660,
+        "name_en": "Geranium Macrorrhizum (Zdravetz)",
+        "effect": 0
+    },
+    {
+        "id": 661,
+        "name_en": "Ginkgo",
+        "effect": 0
+    },
+    {
+        "id": 662,
+        "name_en": "Ginseng",
+        "effect": 6
+    },
+    {
+        "id": 663,
+        "name_en": "Grape Leaves",
+        "effect": 0
+    },
+    {
+        "id": 664,
+        "name_en": "Grass",
+        "effect": 3
+    },
+    {
+        "id": 666,
+        "name_en": "Green Chilli",
+        "effect": 6
+    },
+    {
+        "id": 667,
+        "name_en": "Green Forest",
+        "effect": 3
+    },
+    {
+        "id": 669,
+        "name_en": "Green Pepper",
+        "effect": 3
+    },
+    {
+        "id": 670,
+        "name_en": "Green Sap",
+        "effect": 0
+    },
+    {
+        "id": 671,
+        "name_en": "Gromwell",
+        "effect": 0
+    },
+    {
+        "id": 672,
+        "name_en": "Guao or Maiden Plum",
+        "effect": 0
+    },
+    {
+        "id": 674,
+        "name_en": "Hay",
+        "effect": 0
+    },
+    {
+        "id": 675,
+        "name_en": "Henna",
+        "effect": 0
+    },
+    {
+        "id": 676,
+        "name_en": "Hops",
+        "effect": 4
+    },
+    {
+        "id": 677,
+        "name_en": "Horseweed",
+        "effect": 0
+    },
+    {
+        "id": 678,
+        "name_en": "Immortelle",
+        "effect": 0
+    },
+    {
+        "id": 679,
+        "name_en": "Ivy",
+        "effect": 0
+    },
+    {
+        "id": 680,
+        "name_en": "Jambu",
+        "effect": 0
+    },
+    {
+        "id": 681,
+        "name_en": "Jatamansi or Spikenard",
+        "effect": 4
+    },
+    {
+        "id": 682,
+        "name_en": "Jojoba",
+        "effect": 0
+    },
+    {
+        "id": 683,
+        "name_en": "Juniper",
+        "effect": 3
+    },
+    {
+        "id": 684,
+        "name_en": "Katrafay",
+        "effect": 0
+    },
+    {
+        "id": 685,
+        "name_en": "Katsura Leaf",
+        "effect": 0
+    },
+    {
+        "id": 686,
+        "name_en": "Khella",
+        "effect": 0
+    },
+    {
+        "id": 687,
+        "name_en": "Kunzea",
+        "effect": 0
+    },
+    {
+        "id": 688,
+        "name_en": "Laminaria",
+        "effect": 0
+    },
+    {
+        "id": 689,
+        "name_en": "Lantana leaf",
+        "effect": 0
+    },
+    {
+        "id": 690,
+        "name_en": "Lapsang Souchong Tea",
+        "effect": 1
+    },
+    {
+        "id": 691,
+        "name_en": "Laurissilva Forest",
+        "effect": 0
+    },
+    {
+        "id": 692,
+        "name_en": "Lesser Calamint",
+        "effect": 0
+    },
+    {
+        "id": 693,
+        "name_en": "Lettuce",
+        "effect": 0
+    },
+    {
+        "id": 694,
+        "name_en": "Lily-of-the-Valley Leaves",
+        "effect": 0
+    },
+    {
+        "id": 695,
+        "name_en": "Limnophila Aromatica",
+        "effect": 3
+    },
+    {
+        "id": 696,
+        "name_en": "Linaloe Berry",
+        "effect": 3
+    },
+    {
+        "id": 697,
+        "name_en": "Longjing Tea",
+        "effect": 3
+    },
+    {
+        "id": 698,
+        "name_en": "Lovage Root",
+        "effect": 0
+    },
+    {
+        "id": 699,
+        "name_en": "Mandrake",
+        "effect": 0
+    },
+    {
+        "id": 700,
+        "name_en": "Marigold",
+        "effect": 0
+    },
+    {
+        "id": 701,
+        "name_en": "Marjoram",
+        "effect": 4
+    },
+    {
+        "id": 702,
+        "name_en": "Matcha Tea",
+        "effect": 3
+    },
+    {
+        "id": 703,
+        "name_en": "Mate",
+        "effect": 6
+    },
+    {
+        "id": 704,
+        "name_en": "Melilot or Sweet Clover",
+        "effect": 0
+    },
+    {
+        "id": 705,
+        "name_en": "Mimosa Leaves",
+        "effect": 3
+    },
+    {
+        "id": 706,
+        "name_en": "Mint",
+        "effect": 3
+    },
+    {
+        "id": 707,
+        "name_en": "Mistletoe",
+        "effect": 0
+    },
+    {
+        "id": 708,
+        "name_en": "Mugwort",
+        "effect": 4
+    },
+    {
+        "id": 709,
+        "name_en": "Naswar",
+        "effect": 0
+    },
+    {
+        "id": 710,
+        "name_en": "Nettle",
+        "effect": 0
+    },
+    {
+        "id": 711,
+        "name_en": "Nut Grass",
+        "effect": 0
+    },
+    {
+        "id": 712,
+        "name_en": "Oak Leaves",
+        "effect": 0
+    },
+    {
+        "id": 713,
+        "name_en": "Oat",
+        "effect": 0
+    },
+    {
+        "id": 714,
+        "name_en": "Olive Leaf",
+        "effect": 0
+    },
+    {
+        "id": 715,
+        "name_en": "Oolong Tea",
+        "effect": 3
+    },
+    {
+        "id": 716,
+        "name_en": "Orchid Leaf",
+        "effect": 0
+    },
+    {
+        "id": 717,
+        "name_en": "Oregano",
+        "effect": 0
+    },
+    {
+        "id": 718,
+        "name_en": "Palm Leaf",
+        "effect": 3
+    },
+    {
+        "id": 719,
+        "name_en": "Palmarosa",
+        "effect": 1
+    },
+    {
+        "id": 720,
+        "name_en": "Pandanus",
+        "effect": 0
+    },
+    {
+        "id": 721,
+        "name_en": "Parsley",
+        "effect": 0
+    },
+    {
+        "id": 722,
+        "name_en": "Peach Leaf",
+        "effect": 0
+    },
+    {
+        "id": 723,
+        "name_en": "Pear Leaf",
+        "effect": 0
+    },
+    {
+        "id": 724,
+        "name_en": "Pennyroyal",
+        "effect": 0
+    },
+    {
+        "id": 725,
+        "name_en": "Pesto",
+        "effect": 0
+    },
+    {
+        "id": 726,
+        "name_en": "Petrichor",
+        "effect": 3
+    },
+    {
+        "id": 727,
+        "name_en": "Peyote",
+        "effect": 0
+    },
+    {
+        "id": 728,
+        "name_en": "Physcool®",
+        "effect": 0
+    },
+    {
+        "id": 729,
+        "name_en": "Polygonum",
+        "effect": 0
+    },
+    {
+        "id": 730,
+        "name_en": "Portulaca or Pigweed",
+        "effect": 0
+    },
+    {
+        "id": 731,
+        "name_en": "Pu'er Tea",
+        "effect": 0
+    },
+    {
+        "id": 732,
+        "name_en": "Purslane",
+        "effect": 0
+    },
+    {
+        "id": 734,
+        "name_en": "Reed",
+        "effect": 0
+    },
+    {
+        "id": 735,
+        "name_en": "Rice",
+        "effect": 0
+    },
+    {
+        "id": 736,
+        "name_en": "Rooibos Red Tea",
+        "effect": 0
+    },
+    {
+        "id": 738,
+        "name_en": "Rose Leaf",
+        "effect": 0
+    },
+    {
+        "id": 739,
+        "name_en": "Rose Thorn",
+        "effect": 0
+    },
+    {
+        "id": 740,
+        "name_en": "Rosemary",
+        "effect": 5
+    },
+    {
+        "id": 741,
+        "name_en": "Roseroot",
+        "effect": 1
+    },
+    {
+        "id": 743,
+        "name_en": "Rumex",
+        "effect": 0
+    },
+    {
+        "id": 744,
+        "name_en": "Rye",
+        "effect": 0
+    },
+    {
+        "id": 745,
+        "name_en": "Sabah Snake Grass",
+        "effect": 0
+    },
+    {
+        "id": 746,
+        "name_en": "Sage",
+        "effect": 0
+    },
+    {
+        "id": 747,
+        "name_en": "Sansevieria",
+        "effect": 0
+    },
+    {
+        "id": 749,
+        "name_en": "Satureja",
+        "effect": 0
+    },
+    {
+        "id": 750,
+        "name_en": "Saw Palmetto",
+        "effect": 0
+    },
+    {
+        "id": 752,
+        "name_en": "Senecio",
+        "effect": 0
+    },
+    {
+        "id": 753,
+        "name_en": "Shiso",
+        "effect": 3
+    },
+    {
+        "id": 754,
+        "name_en": "Sideritis Mountain Tea",
+        "effect": 1
+    },
+    {
+        "id": 755,
+        "name_en": "Silk Vine or Milk Broom",
+        "effect": 0
+    },
+    {
+        "id": 756,
+        "name_en": "Siriuba Tree",
+        "effect": 0
+    },
+    {
+        "id": 757,
+        "name_en": "Skunk Cabbage",
+        "effect": 0
+    },
+    {
+        "id": 759,
+        "name_en": "Spearmint",
+        "effect": 3
+    },
+    {
+        "id": 760,
+        "name_en": "Spinach",
+        "effect": 0
+    },
+    {
+        "id": 762,
+        "name_en": "Strawberry Leaf",
+        "effect": 0
+    },
+    {
+        "id": 763,
+        "name_en": "Sugandha Kokila",
+        "effect": 1
+    },
+    {
+        "id": 764,
+        "name_en": "Sundew",
+        "effect": 0
+    },
+    {
+        "id": 765,
+        "name_en": "Swartzia",
+        "effect": 0
+    },
+    {
+        "id": 767,
+        "name_en": "Tangerine Leaves",
+        "effect": 3
+    },
+    {
+        "id": 768,
+        "name_en": "Tansy",
+        "effect": 0
+    },
+    {
+        "id": 769,
+        "name_en": "Tarragon",
+        "effect": 6
+    },
+    {
+        "id": 771,
+        "name_en": "Thistle",
+        "effect": 0
+    },
+    {
+        "id": 772,
+        "name_en": "Thyme",
+        "effect": 0
+    },
+    {
+        "id": 773,
+        "name_en": "Ti Leaf (Cordyline)",
+        "effect": 0
+    },
+    {
+        "id": 774,
+        "name_en": "Tieguanyin Tea",
+        "effect": 3
+    },
+    {
+        "id": 775,
+        "name_en": "Tobacco",
+        "effect": 0
+    },
+    {
+        "id": 776,
+        "name_en": "Tomato Leaf",
+        "effect": 3
+    },
+    {
+        "id": 777,
+        "name_en": "Torreya",
+        "effect": 0
+    },
+    {
+        "id": 779,
+        "name_en": "Tulsi",
+        "effect": 1
+    },
+    {
+        "id": 780,
+        "name_en": "Turnera Diffusa (Damiana)",
+        "effect": 2
+    },
+    {
+        "id": 781,
+        "name_en": "Valerian",
+        "effect": 4
+    },
+    {
+        "id": 782,
+        "name_en": "Vanilla Leaves",
+        "effect": 2
+    },
+    {
+        "id": 783,
+        "name_en": "Vine",
+        "effect": 0
+    },
+    {
+        "id": 784,
+        "name_en": "Violet Leaf",
+        "effect": 0
+    },
+    {
+        "id": 785,
+        "name_en": "Water Lily Leaf",
+        "effect": 3
+    },
+    {
+        "id": 786,
+        "name_en": "Wheat",
+        "effect": 0
+    },
+    {
+        "id": 787,
+        "name_en": "White Meranti",
+        "effect": 0
+    },
+    {
+        "id": 788,
+        "name_en": "Wild garlic leaf",
+        "effect": 0
+    },
+    {
+        "id": 789,
+        "name_en": "Willow-Leaved",
+        "effect": 0
+    },
+    {
+        "id": 790,
+        "name_en": "Wintergreen",
+        "effect": 3
+    },
+    {
+        "id": 791,
+        "name_en": "Woodruff or Galium Odoratum",
+        "effect": 4
+    },
+    {
+        "id": 792,
+        "name_en": "Wormwood",
+        "effect": 0
+    },
+    {
+        "id": 793,
+        "name_en": "Yarrow",
+        "effect": 0
+    },
+    {
+        "id": 794,
+        "name_en": "Yunnan Red Tea",
+        "effect": 1
+    },
+    {
+        "id": 795,
+        "name_en": "Allspice",
+        "effect": 0
+    },
+    {
+        "id": 796,
+        "name_en": "Anise",
+        "effect": 6
+    },
+    {
+        "id": 797,
+        "name_en": "Asafoetida",
+        "effect": 0
+    },
+    {
+        "id": 798,
+        "name_en": "Bay Leaf",
+        "effect": 0
+    },
+    {
+        "id": 799,
+        "name_en": "Bengal Pepper",
+        "effect": 0
+    },
+    {
+        "id": 800,
+        "name_en": "Cacao Pod",
+        "effect": 2
+    },
+    {
+        "id": 801,
+        "name_en": "Caraway Seed",
+        "effect": 0
+    },
+    {
+        "id": 802,
+        "name_en": "Cardamom",
+        "effect": 5
+    },
+    {
+        "id": 803,
+        "name_en": "Carolina Reaper",
+        "effect": 0
+    },
+    {
+        "id": 804,
+        "name_en": "Cassia",
+        "effect": 0
+    },
+    {
+        "id": 805,
+        "name_en": "Chutney",
+        "effect": 0
+    },
+    {
+        "id": 806,
+        "name_en": "Cinnamon",
+        "effect": 5
+    },
+    {
+        "id": 807,
+        "name_en": "Cinnamon Leaf",
+        "effect": 6
+    },
+    {
+        "id": 808,
+        "name_en": "Clove Leaf",
+        "effect": 6
+    },
+    {
+        "id": 809,
+        "name_en": "Cloves",
+        "effect": 6
+    },
+    {
+        "id": 810,
+        "name_en": "Coffee",
+        "effect": 6
+    },
+    {
+        "id": 811,
+        "name_en": "Coffee CO2",
+        "effect": 6
+    },
+    {
+        "id": 812,
+        "name_en": "Coffee Tincture",
+        "effect": 6
+    },
+    {
+        "id": 813,
+        "name_en": "Coriander",
+        "effect": 5
+    },
+    {
+        "id": 814,
+        "name_en": "Cubeb or Tailed Pepper",
+        "effect": 0
+    },
+    {
+        "id": 815,
+        "name_en": "Cumin",
+        "effect": 6
+    },
+    {
+        "id": 816,
+        "name_en": "Curcuma (Turmeric)",
+        "effect": 0
+    },
+    {
+        "id": 817,
+        "name_en": "Curry",
+        "effect": 0
+    },
+    {
+        "id": 818,
+        "name_en": "Curry Tree",
+        "effect": 0
+    },
+    {
+        "id": 819,
+        "name_en": "Dill",
+        "effect": 0
+    },
+    {
+        "id": 820,
+        "name_en": "Fennel",
+        "effect": 5
+    },
+    {
+        "id": 821,
+        "name_en": "Fenugreek",
+        "effect": 0
+    },
+    {
+        "id": 822,
+        "name_en": "Galanga",
+        "effect": 0
+    },
+    {
+        "id": 823,
+        "name_en": "Ginger",
+        "effect": 6
+    },
+    {
+        "id": 824,
+        "name_en": "Green Coffee",
+        "effect": 6
+    },
+    {
+        "id": 825,
+        "name_en": "Guinea Pepper",
+        "effect": 0
+    },
+    {
+        "id": 827,
+        "name_en": "Japanese Pepper",
+        "effect": 0
+    },
+    {
+        "id": 828,
+        "name_en": "Kaempferia Galanga",
+        "effect": 0
+    },
+    {
+        "id": 829,
+        "name_en": "Kopi Luwak Coffee",
+        "effect": 6
+    },
+    {
+        "id": 830,
+        "name_en": "Licorice",
+        "effect": 0
+    },
+    {
+        "id": 831,
+        "name_en": "Mace",
+        "effect": 0
+    },
+    {
+        "id": 832,
+        "name_en": "Mustard Seed",
+        "effect": 0
+    },
+    {
+        "id": 833,
+        "name_en": "Nutmeg",
+        "effect": 4
+    },
+    {
+        "id": 836,
+        "name_en": "Pepper",
+        "effect": 0
+    },
+    {
+        "id": 837,
+        "name_en": "Peppertree",
+        "effect": 0
+    },
+    {
+        "id": 838,
+        "name_en": "Pimento",
+        "effect": 0
+    },
+    {
+        "id": 839,
+        "name_en": "Pimento Leaf",
+        "effect": 0
+    },
+    {
+        "id": 840,
+        "name_en": "Pimento Seeds",
+        "effect": 0
+    },
+    {
+        "id": 841,
+        "name_en": "Pink Pepper",
+        "effect": 0
+    },
+    {
+        "id": 842,
+        "name_en": "Priprioca",
+        "effect": 0
+    },
+    {
+        "id": 843,
+        "name_en": "Saffron",
+        "effect": 6
+    },
+    {
+        "id": 844,
+        "name_en": "Safraleine",
+        "effect": 0
+    },
+    {
+        "id": 845,
+        "name_en": "Sesame",
+        "effect": 0
+    },
+    {
+        "id": 846,
+        "name_en": "Siam Cardamom",
+        "effect": 5
+    },
+    {
+        "id": 847,
+        "name_en": "Sichuan Pepper",
+        "effect": 0
+    },
+    {
+        "id": 849,
+        "name_en": "Spiked Pepper",
+        "effect": 0
+    },
+    {
+        "id": 850,
+        "name_en": "Star Anise",
+        "effect": 0
+    },
+    {
+        "id": 851,
+        "name_en": "Sumac",
+        "effect": 0
+    },
+    {
+        "id": 852,
+        "name_en": "Tamarind",
+        "effect": 0
+    },
+    {
+        "id": 853,
+        "name_en": "Timur",
+        "effect": 0
+    },
+    {
+        "id": 854,
+        "name_en": "Tonka Bean",
+        "effect": 2
+    },
+    {
+        "id": 855,
+        "name_en": "Toscanol",
+        "effect": 0
+    },
+    {
+        "id": 856,
+        "name_en": "Ultravanil",
+        "effect": 2
+    },
+    {
+        "id": 857,
+        "name_en": "Vanilla",
+        "effect": 2
+    },
+    {
+        "id": 858,
+        "name_en": "Wan Sao Lhong",
+        "effect": 0
+    },
+    {
+        "id": 859,
+        "name_en": "Wasabi",
+        "effect": 3
+    },
+    {
+        "id": 860,
+        "name_en": "Water Pepper",
+        "effect": 0
+    },
+    {
+        "id": 861,
+        "name_en": "West Indian Bay",
+        "effect": 1
+    },
+    {
+        "id": 862,
+        "name_en": "Acetyl Furan",
+        "effect": 0
+    },
+    {
+        "id": 863,
+        "name_en": "Agave Nectar",
+        "effect": 0
+    },
+    {
+        "id": 864,
+        "name_en": "Apple Pie",
+        "effect": 2
+    },
+    {
+        "id": 865,
+        "name_en": "Baba (Italian dessert)",
+        "effect": 0
+    },
+    {
+        "id": 866,
+        "name_en": "Baked Apple",
+        "effect": 2
+    },
+    {
+        "id": 867,
+        "name_en": "Baklava",
+        "effect": 2
+    },
+    {
+        "id": 868,
+        "name_en": "Biscuit",
+        "effect": 2
+    },
+    {
+        "id": 869,
+        "name_en": "Bonbon",
+        "effect": 2
+    },
+    {
+        "id": 870,
+        "name_en": "Bread",
+        "effect": 2
+    },
+    {
+        "id": 871,
+        "name_en": "Brioche",
+        "effect": 2
+    },
+    {
+        "id": 872,
+        "name_en": "Brown Sugar",
+        "effect": 2
+    },
+    {
+        "id": 873,
+        "name_en": "Brownie",
+        "effect": 2
+    },
+    {
+        "id": 874,
+        "name_en": "Bubbaloo",
+        "effect": 0
+    },
+    {
+        "id": 875,
+        "name_en": "Bubble Gum",
+        "effect": 2
+    },
+    {
+        "id": 876,
+        "name_en": "Burnt Sugar",
+        "effect": 2
+    },
+    {
+        "id": 877,
+        "name_en": "Butter",
+        "effect": 0
+    },
+    {
+        "id": 878,
+        "name_en": "Buttercream",
+        "effect": 2
+    },
+    {
+        "id": 879,
+        "name_en": "Butterscotch",
+        "effect": 2
+    },
+    {
+        "id": 880,
+        "name_en": "Cacao Butter",
+        "effect": 2
+    },
+    {
+        "id": 881,
+        "name_en": "Cake",
+        "effect": 2
+    },
+    {
+        "id": 882,
+        "name_en": "Calissons d'Aix",
+        "effect": 2
+    },
+    {
+        "id": 883,
+        "name_en": "Candied Fruits",
+        "effect": 2
+    },
+    {
+        "id": 884,
+        "name_en": "Candied Ginger",
+        "effect": 2
+    },
+    {
+        "id": 885,
+        "name_en": "Candied Orange",
+        "effect": 2
+    },
+    {
+        "id": 886,
+        "name_en": "Candies",
+        "effect": 2
+    },
+    {
+        "id": 887,
+        "name_en": "Canelé",
+        "effect": 0
+    },
+    {
+        "id": 888,
+        "name_en": "Caramel",
+        "effect": 2
+    },
+    {
+        "id": 889,
+        "name_en": "Cassata Siciliana",
+        "effect": 2
+    },
+    {
+        "id": 890,
+        "name_en": "Cereals",
+        "effect": 0
+    },
+    {
+        "id": 891,
+        "name_en": "Chamallow",
+        "effect": 2
+    },
+    {
+        "id": 892,
+        "name_en": "Cheesecake",
+        "effect": 2
+    },
+    {
+        "id": 893,
+        "name_en": "Cherry Milk",
+        "effect": 2
+    },
+    {
+        "id": 894,
+        "name_en": "Cherry Syrup",
+        "effect": 2
+    },
+    {
+        "id": 895,
+        "name_en": "Chocolate Fudge",
+        "effect": 2
+    },
+    {
+        "id": 896,
+        "name_en": "Chocolate Sauce",
+        "effect": 2
+    },
+    {
+        "id": 897,
+        "name_en": "Chocolate Truffle",
+        "effect": 2
+    },
+    {
+        "id": 898,
+        "name_en": "Churros",
+        "effect": 2
+    },
+    {
+        "id": 899,
+        "name_en": "Coconut Pie",
+        "effect": 2
+    },
+    {
+        "id": 900,
+        "name_en": "Coconut Powder",
+        "effect": 2
+    },
+    {
+        "id": 901,
+        "name_en": "Condensed Milk",
+        "effect": 0
+    },
+    {
+        "id": 902,
+        "name_en": "Cone Waffle",
+        "effect": 0
+    },
+    {
+        "id": 903,
+        "name_en": "Confetti (Sugared Almonds)",
+        "effect": 2
+    },
+    {
+        "id": 904,
+        "name_en": "Cookie",
+        "effect": 2
+    },
+    {
+        "id": 905,
+        "name_en": "Cookie Dough",
+        "effect": 2
+    },
+    {
+        "id": 906,
+        "name_en": "Cosmofruit",
+        "effect": 0
+    },
+    {
+        "id": 907,
+        "name_en": "Cotton Candy",
+        "effect": 2
+    },
+    {
+        "id": 908,
+        "name_en": "Cream",
+        "effect": 0
+    },
+    {
+        "id": 909,
+        "name_en": "Creamsicle",
+        "effect": 2
+    },
+    {
+        "id": 910,
+        "name_en": "Crème Brûlée",
+        "effect": 2
+    },
+    {
+        "id": 911,
+        "name_en": "Croissant",
+        "effect": 2
+    },
+    {
+        "id": 912,
+        "name_en": "Cupcake",
+        "effect": 2
+    },
+    {
+        "id": 913,
+        "name_en": "Custard",
+        "effect": 2
+    },
+    {
+        "id": 914,
+        "name_en": "Dark Chocolate",
+        "effect": 2
+    },
+    {
+        "id": 915,
+        "name_en": "Dates",
+        "effect": 0
+    },
+    {
+        "id": 916,
+        "name_en": "Donut or Doughnut",
+        "effect": 2
+    },
+    {
+        "id": 917,
+        "name_en": "Dulce de Leche",
+        "effect": 2
+    },
+    {
+        "id": 918,
+        "name_en": "Eggnog",
+        "effect": 2
+    },
+    {
+        "id": 919,
+        "name_en": "Fougassette",
+        "effect": 0
+    },
+    {
+        "id": 920,
+        "name_en": "French Pastries",
+        "effect": 2
+    },
+    {
+        "id": 921,
+        "name_en": "Fresh Cream",
+        "effect": 2
+    },
+    {
+        "id": 922,
+        "name_en": "Frosting [Glacé]",
+        "effect": 0
+    },
+    {
+        "id": 923,
+        "name_en": "Gelatin",
+        "effect": 0
+    },
+    {
+        "id": 924,
+        "name_en": "Gianduia",
+        "effect": 2
+    },
+    {
+        "id": 925,
+        "name_en": "Gingerbread",
+        "effect": 2
+    },
+    {
+        "id": 926,
+        "name_en": "Gourmand Accord",
+        "effect": 2
+    },
+    {
+        "id": 927,
+        "name_en": "Griotte Cherries",
+        "effect": 2
+    },
+    {
+        "id": 928,
+        "name_en": "Halva",
+        "effect": 0
+    },
+    {
+        "id": 929,
+        "name_en": "Hazelnut Cocoa Spread",
+        "effect": 2
+    },
+    {
+        "id": 930,
+        "name_en": "Honey",
+        "effect": 2
+    },
+    {
+        "id": 931,
+        "name_en": "Honeycomb",
+        "effect": 2
+    },
+    {
+        "id": 932,
+        "name_en": "Horchata",
+        "effect": 0
+    },
+    {
+        "id": 933,
+        "name_en": "Ice cream",
+        "effect": 2
+    },
+    {
+        "id": 934,
+        "name_en": "Icing Pink",
+        "effect": 0
+    },
+    {
+        "id": 935,
+        "name_en": "Jelly",
+        "effect": 0
+    },
+    {
+        "id": 936,
+        "name_en": "Jellybean",
+        "effect": 2
+    },
+    {
+        "id": 937,
+        "name_en": "Jiuniang (Sweet Fermented Rice Wine)",
+        "effect": 1
+    },
+    {
+        "id": 938,
+        "name_en": "Kulfi",
+        "effect": 0
+    },
+    {
+        "id": 939,
+        "name_en": "Lemon Pie",
+        "effect": 2
+    },
+    {
+        "id": 940,
+        "name_en": "Loukhoum",
+        "effect": 0
+    },
+    {
+        "id": 941,
+        "name_en": "Macarons",
+        "effect": 2
+    },
+    {
+        "id": 942,
+        "name_en": "Madeleine",
+        "effect": 0
+    },
+    {
+        "id": 943,
+        "name_en": "Maple Syrup",
+        "effect": 2
+    },
+    {
+        "id": 944,
+        "name_en": "Maraschino Cherry",
+        "effect": 2
+    },
+    {
+        "id": 945,
+        "name_en": "Marmalade",
+        "effect": 0
+    },
+    {
+        "id": 946,
+        "name_en": "Marron Glacé",
+        "effect": 2
+    },
+    {
+        "id": 947,
+        "name_en": "Marshmallow",
+        "effect": 2
+    },
+    {
+        "id": 948,
+        "name_en": "Marzipan",
+        "effect": 2
+    },
+    {
+        "id": 949,
+        "name_en": "Meringues",
+        "effect": 0
+    },
+    {
+        "id": 950,
+        "name_en": "Milk Cream",
+        "effect": 0
+    },
+    {
+        "id": 951,
+        "name_en": "Milk Mousse",
+        "effect": 0
+    },
+    {
+        "id": 952,
+        "name_en": "Milkshake",
+        "effect": 2
+    },
+    {
+        "id": 953,
+        "name_en": "Molasses",
+        "effect": 0
+    },
+    {
+        "id": 954,
+        "name_en": "Nougat",
+        "effect": 0
+    },
+    {
+        "id": 955,
+        "name_en": "Nutella",
+        "effect": 2
+    },
+    {
+        "id": 956,
+        "name_en": "Oatmilk",
+        "effect": 0
+    },
+    {
+        "id": 957,
+        "name_en": "Palm Sugar",
+        "effect": 0
+    },
+    {
+        "id": 958,
+        "name_en": "Pancake",
+        "effect": 0
+    },
+    {
+        "id": 959,
+        "name_en": "Panettone",
+        "effect": 2
+    },
+    {
+        "id": 960,
+        "name_en": "Panna Cotta",
+        "effect": 0
+    },
+    {
+        "id": 961,
+        "name_en": "Pastiera Napoletana",
+        "effect": 2
+    },
+    {
+        "id": 962,
+        "name_en": "Peach Cream",
+        "effect": 2
+    },
+    {
+        "id": 963,
+        "name_en": "Pear Ice Cream",
+        "effect": 3
+    },
+    {
+        "id": 964,
+        "name_en": "Pistachio Spread Cream",
+        "effect": 2
+    },
+    {
+        "id": 965,
+        "name_en": "Popcorn",
+        "effect": 2
+    },
+    {
+        "id": 966,
+        "name_en": "Praline",
+        "effect": 2
+    },
+    {
+        "id": 967,
+        "name_en": "Profiterole",
+        "effect": 0
+    },
+    {
+        "id": 968,
+        "name_en": "Pudding",
+        "effect": 0
+    },
+    {
+        "id": 969,
+        "name_en": "Puff Pastry",
+        "effect": 0
+    },
+    {
+        "id": 970,
+        "name_en": "Rainbow Sorbet",
+        "effect": 2
+    },
+    {
+        "id": 971,
+        "name_en": "Red Fruits Sorbet",
+        "effect": 3
+    },
+    {
+        "id": 972,
+        "name_en": "Rice Pudding",
+        "effect": 2
+    },
+    {
+        "id": 973,
+        "name_en": "Rose Jam",
+        "effect": 2
+    },
+    {
+        "id": 974,
+        "name_en": "Rose Milk",
+        "effect": 2
+    },
+    {
+        "id": 975,
+        "name_en": "Sacher Torte",
+        "effect": 2
+    },
+    {
+        "id": 976,
+        "name_en": "Salted Caramel",
+        "effect": 2
+    },
+    {
+        "id": 977,
+        "name_en": "Salted Caramel Fudge",
+        "effect": 2
+    },
+    {
+        "id": 978,
+        "name_en": "Sorbet",
+        "effect": 3
+    },
+    {
+        "id": 979,
+        "name_en": "Souffle",
+        "effect": 0
+    },
+    {
+        "id": 980,
+        "name_en": "Sprinkles",
+        "effect": 0
+    },
+    {
+        "id": 981,
+        "name_en": "Spun Sugar",
+        "effect": 2
+    },
+    {
+        "id": 982,
+        "name_en": "Strawberry Fizz Candy",
+        "effect": 2
+    },
+    {
+        "id": 983,
+        "name_en": "Strawberry Syrup",
+        "effect": 2
+    },
+    {
+        "id": 984,
+        "name_en": "Sugar",
+        "effect": 2
+    },
+    {
+        "id": 985,
+        "name_en": "Sugar Syrup",
+        "effect": 2
+    },
+    {
+        "id": 986,
+        "name_en": "Tartine",
+        "effect": 0
+    },
+    {
+        "id": 987,
+        "name_en": "Tiramisu",
+        "effect": 2
+    },
+    {
+        "id": 988,
+        "name_en": "Toast",
+        "effect": 0
+    },
+    {
+        "id": 989,
+        "name_en": "Toffee",
+        "effect": 2
+    },
+    {
+        "id": 990,
+        "name_en": "Tropézienne Tarte",
+        "effect": 2
+    },
+    {
+        "id": 991,
+        "name_en": "Vanilla Caviar",
+        "effect": 2
+    },
+    {
+        "id": 992,
+        "name_en": "Waffle",
+        "effect": 2
+    },
+    {
+        "id": 993,
+        "name_en": "White Chocolate",
+        "effect": 2
+    },
+    {
+        "id": 994,
+        "name_en": "White Chocolate Truffle",
+        "effect": 2
+    },
+    {
+        "id": 995,
+        "name_en": "Whoopie Pie",
+        "effect": 2
+    },
+    {
+        "id": 996,
+        "name_en": "Yogurt",
+        "effect": 0
+    },
+    {
+        "id": 997,
+        "name_en": "Zefir",
+        "effect": 0
+    },
+    {
+        "id": 998,
+        "name_en": "Agarwood (Oud)",
+        "effect": 0
+    },
+    {
+        "id": 999,
+        "name_en": "Akigalawood",
+        "effect": 0
+    },
+    {
+        "id": 1000,
+        "name_en": "Alder",
+        "effect": 0
+    },
+    {
+        "id": 1001,
+        "name_en": "Almond tree",
+        "effect": 0
+    },
+    {
+        "id": 1002,
+        "name_en": "Amaranth",
+        "effect": 0
+    },
+    {
+        "id": 1003,
+        "name_en": "Amburana Bark",
+        "effect": 0
+    },
+    {
+        "id": 1004,
+        "name_en": "Amburana Wood",
+        "effect": 0
+    },
+    {
+        "id": 1005,
+        "name_en": "Amyris",
+        "effect": 0
+    },
+    {
+        "id": 1006,
+        "name_en": "Apple Tree",
+        "effect": 0
+    },
+    {
+        "id": 1007,
+        "name_en": "Araucaria",
+        "effect": 0
+    },
+    {
+        "id": 1009,
+        "name_en": "Arbutus (Madrona, Bearberry Tree)",
+        "effect": 0
+    },
+    {
+        "id": 1010,
+        "name_en": "Argan Tree",
+        "effect": 0
+    },
+    {
+        "id": 1011,
+        "name_en": "Aspen",
+        "effect": 0
+    },
+    {
+        "id": 1012,
+        "name_en": "Australian Blue Cypress",
+        "effect": 3
+    },
+    {
+        "id": 1013,
+        "name_en": "Bamboo",
+        "effect": 3
+    },
+    {
+        "id": 1014,
+        "name_en": "Baobab",
+        "effect": 0
+    },
+    {
+        "id": 1015,
+        "name_en": "Bark",
+        "effect": 0
+    },
+    {
+        "id": 1016,
+        "name_en": "Beech",
+        "effect": 0
+    },
+    {
+        "id": 1017,
+        "name_en": "Belambra Tree",
+        "effect": 0
+    },
+    {
+        "id": 1018,
+        "name_en": "Birch",
+        "effect": 0
+    },
+    {
+        "id": 1019,
+        "name_en": "Black Hemlock or Tsuga",
+        "effect": 0
+    },
+    {
+        "id": 1020,
+        "name_en": "Black Spruce",
+        "effect": 0
+    },
+    {
+        "id": 1021,
+        "name_en": "Blackwood",
+        "effect": 0
+    },
+    {
+        "id": 1022,
+        "name_en": "Blonde Woods",
+        "effect": 0
+    },
+    {
+        "id": 1023,
+        "name_en": "Brazilian Rosewood",
+        "effect": 0
+    },
+    {
+        "id": 1024,
+        "name_en": "Buddha Wood",
+        "effect": 0
+    },
+    {
+        "id": 1025,
+        "name_en": "Buxus",
+        "effect": 0
+    },
+    {
+        "id": 1026,
+        "name_en": "Cabreuva",
+        "effect": 0
+    },
+    {
+        "id": 1027,
+        "name_en": "Cambodian Oud",
+        "effect": 0
+    },
+    {
+        "id": 1028,
+        "name_en": "Canadian Balsam",
+        "effect": 1
+    },
+    {
+        "id": 1029,
+        "name_en": "Carob Tree",
+        "effect": 0
+    },
+    {
+        "id": 1030,
+        "name_en": "Cascarilla",
+        "effect": 0
+    },
+    {
+        "id": 1031,
+        "name_en": "Cashmir wood",
+        "effect": 0
+    },
+    {
+        "id": 1032,
+        "name_en": "Cedar",
+        "effect": 1
+    },
+    {
+        "id": 1033,
+        "name_en": "Chalood Bark",
+        "effect": 0
+    },
+    {
+        "id": 1034,
+        "name_en": "Cherry Tree",
+        "effect": 0
+    },
+    {
+        "id": 1035,
+        "name_en": "Chinese Oud",
+        "effect": 0
+    },
+    {
+        "id": 1036,
+        "name_en": "Chypre Notes",
+        "effect": 0
+    },
+    {
+        "id": 1037,
+        "name_en": "Clearwood",
+        "effect": 0
+    },
+    {
+        "id": 1038,
+        "name_en": "Cocobolo",
+        "effect": 0
+    },
+    {
+        "id": 1039,
+        "name_en": "Coconut Tree",
+        "effect": 0
+    },
+    {
+        "id": 1040,
+        "name_en": "Coffee Tree",
+        "effect": 6
+    },
+    {
+        "id": 1041,
+        "name_en": "Cork",
+        "effect": 0
+    },
+    {
+        "id": 1042,
+        "name_en": "Cottonwood",
+        "effect": 0
+    },
+    {
+        "id": 1043,
+        "name_en": "Cypress",
+        "effect": 0
+    },
+    {
+        "id": 1044,
+        "name_en": "Cypriol Oil",
+        "effect": 0
+    },
+    {
+        "id": 1045,
+        "name_en": "Dark Patchouli",
+        "effect": 1
+    },
+    {
+        "id": 1046,
+        "name_en": "Ditax Wood",
+        "effect": 0
+    },
+    {
+        "id": 1047,
+        "name_en": "Dreamwood",
+        "effect": 0
+    },
+    {
+        "id": 1048,
+        "name_en": "Driftwood",
+        "effect": 0
+    },
+    {
+        "id": 1049,
+        "name_en": "Dry Wood",
+        "effect": 0
+    },
+    {
+        "id": 1050,
+        "name_en": "Duke",
+        "effect": 0
+    },
+    {
+        "id": 1051,
+        "name_en": "Ebony Tree",
+        "effect": 0
+    },
+    {
+        "id": 1052,
+        "name_en": "Elm",
+        "effect": 0
+    },
+    {
+        "id": 1053,
+        "name_en": "Eucalyptus",
+        "effect": 3
+    },
+    {
+        "id": 1054,
+        "name_en": "Fig tree",
+        "effect": 0
+    },
+    {
+        "id": 1055,
+        "name_en": "Fir",
+        "effect": 3
+    },
+    {
+        "id": 1056,
+        "name_en": "Grass Tree",
+        "effect": 0
+    },
+    {
+        "id": 1057,
+        "name_en": "Guaiac Wood",
+        "effect": 0
+    },
+    {
+        "id": 1058,
+        "name_en": "Hiba",
+        "effect": 0
+    },
+    {
+        "id": 1059,
+        "name_en": "Himalayan Cedar",
+        "effect": 1
+    },
+    {
+        "id": 1060,
+        "name_en": "Hinoki Wood",
+        "effect": 1
+    },
+    {
+        "id": 1061,
+        "name_en": "Ho Wood",
+        "effect": 1
+    },
+    {
+        "id": 1062,
+        "name_en": "Incienso",
+        "effect": 0
+    },
+    {
+        "id": 1063,
+        "name_en": "Indian Oud",
+        "effect": 0
+    },
+    {
+        "id": 1064,
+        "name_en": "Indian Sandalwood",
+        "effect": 1
+    },
+    {
+        "id": 1065,
+        "name_en": "Indian Woods",
+        "effect": 0
+    },
+    {
+        "id": 1066,
+        "name_en": "Ironwood",
+        "effect": 0
+    },
+    {
+        "id": 1067,
+        "name_en": "Ishpink",
+        "effect": 0
+    },
+    {
+        "id": 1068,
+        "name_en": "Kowhai",
+        "effect": 0
+    },
+    {
+        "id": 1069,
+        "name_en": "Laotian Oud",
+        "effect": 1
+    },
+    {
+        "id": 1070,
+        "name_en": "Larch",
+        "effect": 0
+    },
+    {
+        "id": 1071,
+        "name_en": "Lichen",
+        "effect": 0
+    },
+    {
+        "id": 1072,
+        "name_en": "Liquidambar",
+        "effect": 0
+    },
+    {
+        "id": 1073,
+        "name_en": "Mahogany",
+        "effect": 0
+    },
+    {
+        "id": 1074,
+        "name_en": "Malaysian Oud",
+        "effect": 0
+    },
+    {
+        "id": 1075,
+        "name_en": "Mango Tree",
+        "effect": 2
+    },
+    {
+        "id": 1076,
+        "name_en": "Manuka",
+        "effect": 0
+    },
+    {
+        "id": 1077,
+        "name_en": "Maple",
+        "effect": 0
+    },
+    {
+        "id": 1078,
+        "name_en": "Massoia",
+        "effect": 0
+    },
+    {
+        "id": 1079,
+        "name_en": "Mesquite Wood",
+        "effect": 0
+    },
+    {
+        "id": 1080,
+        "name_en": "Muhuhu",
+        "effect": 0
+    },
+    {
+        "id": 1081,
+        "name_en": "Mulberry plant",
+        "effect": 0
+    },
+    {
+        "id": 1082,
+        "name_en": "Mysore Sandalwood",
+        "effect": 1
+    },
+    {
+        "id": 1083,
+        "name_en": "Neem",
+        "effect": 0
+    },
+    {
+        "id": 1084,
+        "name_en": "Nootka",
+        "effect": 0
+    },
+    {
+        "id": 1085,
+        "name_en": "Oak",
+        "effect": 0
+    },
+    {
+        "id": 1086,
+        "name_en": "Oakmoss",
+        "effect": 0
+    },
+    {
+        "id": 1087,
+        "name_en": "Olive Tree",
+        "effect": 0
+    },
+    {
+        "id": 1088,
+        "name_en": "Palisander Rosewood",
+        "effect": 0
+    },
+    {
+        "id": 1089,
+        "name_en": "Palo Santo",
+        "effect": 1
+    },
+    {
+        "id": 1090,
+        "name_en": "Palo Verde Tree",
+        "effect": 0
+    },
+    {
+        "id": 1091,
+        "name_en": "Pamplewood",
+        "effect": 0
+    },
+    {
+        "id": 1092,
+        "name_en": "Paperbark",
+        "effect": 0
+    },
+    {
+        "id": 1093,
+        "name_en": "Papyrus",
+        "effect": 0
+    },
+    {
+        "id": 1094,
+        "name_en": "Patchouli",
+        "effect": 1
+    },
+    {
+        "id": 1095,
+        "name_en": "Patchouli Note",
+        "effect": 1
+    },
+    {
+        "id": 1097,
+        "name_en": "Pear Tree",
+        "effect": 0
+    },
+    {
+        "id": 1098,
+        "name_en": "Pepperwood",
+        "effect": 0
+    },
+    {
+        "id": 1099,
+        "name_en": "Pine Tree",
+        "effect": 3
+    },
+    {
+        "id": 1100,
+        "name_en": "Pink Ipê Tree",
+        "effect": 0
+    },
+    {
+        "id": 1101,
+        "name_en": "Plum Tree",
+        "effect": 0
+    },
+    {
+        "id": 1102,
+        "name_en": "Pua Keni Keni (Pua-Lulu)",
+        "effect": 2
+    },
+    {
+        "id": 1103,
+        "name_en": "Ravenala",
+        "effect": 0
+    },
+    {
+        "id": 1104,
+        "name_en": "Ravensara",
+        "effect": 1
+    },
+    {
+        "id": 1105,
+        "name_en": "Red Willow",
+        "effect": 0
+    },
+    {
+        "id": 1106,
+        "name_en": "Redwood",
+        "effect": 0
+    },
+    {
+        "id": 1107,
+        "name_en": "Rhizoma Atractylodis",
+        "effect": 0
+    },
+    {
+        "id": 1108,
+        "name_en": "Saman",
+        "effect": 0
+    },
+    {
+        "id": 1109,
+        "name_en": "Sandalwood",
+        "effect": 1
+    },
+    {
+        "id": 1110,
+        "name_en": "Sassafras",
+        "effect": 0
+    },
+    {
+        "id": 1111,
+        "name_en": "Satinwood",
+        "effect": 0
+    },
+    {
+        "id": 1112,
+        "name_en": "Sawdust",
+        "effect": 0
+    },
+    {
+        "id": 1113,
+        "name_en": "Scots pine variant",
+        "effect": 3
+    },
+    {
+        "id": 1114,
+        "name_en": "Selaginella tamariscina",
+        "effect": 0
+    },
+    {
+        "id": 1115,
+        "name_en": "Sequoia",
+        "effect": 0
+    },
+    {
+        "id": 1116,
+        "name_en": "Siam",
+        "effect": 0
+    },
+    {
+        "id": 1117,
+        "name_en": "Siam Wood",
+        "effect": 0
+    },
+    {
+        "id": 1118,
+        "name_en": "Spruce",
+        "effect": 3
+    },
+    {
+        "id": 1119,
+        "name_en": "Sycamore",
+        "effect": 0
+    },
+    {
+        "id": 1120,
+        "name_en": "Takamaka",
+        "effect": 0
+    },
+    {
+        "id": 1121,
+        "name_en": "Tamboti Wood",
+        "effect": 0
+    },
+    {
+        "id": 1122,
+        "name_en": "Tatami",
+        "effect": 0
+    },
+    {
+        "id": 1123,
+        "name_en": "Teak Wood",
+        "effect": 0
+    },
+    {
+        "id": 1124,
+        "name_en": "Thailand Oud",
+        "effect": 0
+    },
+    {
+        "id": 1125,
+        "name_en": "Thanaka Wood",
+        "effect": 0
+    },
+    {
+        "id": 1126,
+        "name_en": "Thuja",
+        "effect": 0
+    },
+    {
+        "id": 1127,
+        "name_en": "Transparent Woods",
+        "effect": 0
+    },
+    {
+        "id": 1128,
+        "name_en": "Vetiver",
+        "effect": 1
+    },
+    {
+        "id": 1129,
+        "name_en": "Vietnamese Oud",
+        "effect": 0
+    },
+    {
+        "id": 1130,
+        "name_en": "White Oud",
+        "effect": 0
+    },
+    {
+        "id": 1131,
+        "name_en": "White Willow",
+        "effect": 0
+    },
+    {
+        "id": 1132,
+        "name_en": "Wood Barrel",
+        "effect": 0
+    },
+    {
+        "id": 1134,
+        "name_en": "Yohimbe",
+        "effect": 0
+    },
+    {
+        "id": 1135,
+        "name_en": "Amberwood",
+        "effect": 0
+    },
+    {
+        "id": 1136,
+        "name_en": "Andiroba",
+        "effect": 0
+    },
+    {
+        "id": 1137,
+        "name_en": "Bakhoor",
+        "effect": 1
+    },
+    {
+        "id": 1138,
+        "name_en": "Balsamic Notes",
+        "effect": 1
+    },
+    {
+        "id": 1139,
+        "name_en": "Balsamic Vinegar",
+        "effect": 0
+    },
+    {
+        "id": 1140,
+        "name_en": "Benzoin",
+        "effect": 1
+    },
+    {
+        "id": 1141,
+        "name_en": "Birch Tar",
+        "effect": 0
+    },
+    {
+        "id": 1142,
+        "name_en": "Bisabolene",
+        "effect": 0
+    },
+    {
+        "id": 1143,
+        "name_en": "Blue Amber",
+        "effect": 0
+    },
+    {
+        "id": 1144,
+        "name_en": "Breu-Branco",
+        "effect": 0
+    },
+    {
+        "id": 1145,
+        "name_en": "Bushman Candle",
+        "effect": 0
+    },
+    {
+        "id": 1146,
+        "name_en": "Cade Oil",
+        "effect": 0
+    },
+    {
+        "id": 1147,
+        "name_en": "Choya Loban",
+        "effect": 0
+    },
+    {
+        "id": 1149,
+        "name_en": "Choya Ral",
+        "effect": 0
+    },
+    {
+        "id": 1150,
+        "name_en": "Coal Tar",
+        "effect": 0
+    },
+    {
+        "id": 1151,
+        "name_en": "Copahu Balm",
+        "effect": 0
+    },
+    {
+        "id": 1152,
+        "name_en": "Copaiba Balm",
+        "effect": 0
+    },
+    {
+        "id": 1153,
+        "name_en": "Copal",
+        "effect": 0
+    },
+    {
+        "id": 1154,
+        "name_en": "Dragon Blood Resin",
+        "effect": 0
+    },
+    {
+        "id": 1155,
+        "name_en": "Elemi",
+        "effect": 3
+    },
+    {
+        "id": 1156,
+        "name_en": "Estoraque",
+        "effect": 0
+    },
+    {
+        "id": 1157,
+        "name_en": "Gurjun Balsam",
+        "effect": 0
+    },
+    {
+        "id": 1158,
+        "name_en": "Incense",
+        "effect": 1
+    },
+    {
+        "id": 1159,
+        "name_en": "Japanese Incense",
+        "effect": 1
+    },
+    {
+        "id": 1160,
+        "name_en": "Labdanum",
+        "effect": 1
+    },
+    {
+        "id": 1161,
+        "name_en": "Mastic",
+        "effect": 0
+    },
+    {
+        "id": 1162,
+        "name_en": "Mopane",
+        "effect": 0
+    },
+    {
+        "id": 1163,
+        "name_en": "Myrica",
+        "effect": 0
+    },
+    {
+        "id": 1164,
+        "name_en": "Myrrh",
+        "effect": 4
+    },
+    {
+        "id": 1165,
+        "name_en": "Nag Champa",
+        "effect": 1
+    },
+    {
+        "id": 1166,
+        "name_en": "Olibanum (Frankincense)",
+        "effect": 1
+    },
+    {
+        "id": 1167,
+        "name_en": "Olibanum Sacra Resin Green",
+        "effect": 0
+    },
+    {
+        "id": 1168,
+        "name_en": "Opoponax",
+        "effect": 0
+    },
+    {
+        "id": 1169,
+        "name_en": "Peru Balsam",
+        "effect": 0
+    },
+    {
+        "id": 1170,
+        "name_en": "Pine Tar",
+        "effect": 0
+    },
+    {
+        "id": 1171,
+        "name_en": "Poplar (Populus) Buds",
+        "effect": 0
+    },
+    {
+        "id": 1172,
+        "name_en": "Resins",
+        "effect": 0
+    },
+    {
+        "id": 1173,
+        "name_en": "Rubber",
+        "effect": 0
+    },
+    {
+        "id": 1174,
+        "name_en": "Styrax",
+        "effect": 0
+    },
+    {
+        "id": 1175,
+        "name_en": "Surf Wax",
+        "effect": 3
+    },
+    {
+        "id": 1176,
+        "name_en": "Tea Tree Oil",
+        "effect": 0
+    },
+    {
+        "id": 1177,
+        "name_en": "Akashic Acord",
+        "effect": 0
+    },
+    {
+        "id": 1178,
+        "name_en": "Aldron",
+        "effect": 0
+    },
+    {
+        "id": 1179,
+        "name_en": "Amber",
+        "effect": 0
+    },
+    {
+        "id": 1180,
+        "name_en": "Amber Xtreme",
+        "effect": 0
+    },
+    {
+        "id": 1181,
+        "name_en": "Ambergris",
+        "effect": 0
+    },
+    {
+        "id": 1182,
+        "name_en": "Ambertonic™ (IFF)",
+        "effect": 0
+    },
+    {
+        "id": 1183,
+        "name_en": "Ambrarome",
+        "effect": 0
+    },
+    {
+        "id": 1184,
+        "name_en": "Ambretone",
+        "effect": 0
+    },
+    {
+        "id": 1185,
+        "name_en": "Ambrette (Musk Mallow)",
+        "effect": 1
+    },
+    {
+        "id": 1186,
+        "name_en": "Ambrettolide",
+        "effect": 0
+    },
+    {
+        "id": 1187,
+        "name_en": "Ambrocenide (Symrise)",
+        "effect": 0
+    },
+    {
+        "id": 1188,
+        "name_en": "Ambrostar",
+        "effect": 0
+    },
+    {
+        "id": 1190,
+        "name_en": "Ambroxan",
+        "effect": 0
+    },
+    {
+        "id": 1192,
+        "name_en": "Bacon",
+        "effect": 2
+    },
+    {
+        "id": 1193,
+        "name_en": "BBQ",
+        "effect": 0
+    },
+    {
+        "id": 1194,
+        "name_en": "Beeswax",
+        "effect": 0
+    },
+    {
+        "id": 1195,
+        "name_en": "Carrot Seeds",
+        "effect": 0
+    },
+    {
+        "id": 1196,
+        "name_en": "Castoreum",
+        "effect": 0
+    },
+    {
+        "id": 1197,
+        "name_en": "Caviar",
+        "effect": 0
+    },
+    {
+        "id": 1198,
+        "name_en": "Cetalox",
+        "effect": 0
+    },
+    {
+        "id": 1199,
+        "name_en": "Cheese",
+        "effect": 0
+    },
+    {
+        "id": 1200,
+        "name_en": "Civet",
+        "effect": 0
+    },
+    {
+        "id": 1201,
+        "name_en": "Civettone",
+        "effect": 0
+    },
+    {
+        "id": 1202,
+        "name_en": "Coral Reef",
+        "effect": 0
+    },
+    {
+        "id": 1203,
+        "name_en": "Daim",
+        "effect": 0
+    },
+    {
+        "id": 1204,
+        "name_en": "Exaltolide®",
+        "effect": 0
+    },
+    {
+        "id": 1205,
+        "name_en": "Fur",
+        "effect": 0
+    },
+    {
+        "id": 1206,
+        "name_en": "Genet",
+        "effect": 0
+    },
+    {
+        "id": 1207,
+        "name_en": "Goat Hair",
+        "effect": 0
+    },
+    {
+        "id": 1208,
+        "name_en": "Goat's Milk",
+        "effect": 0
+    },
+    {
+        "id": 1209,
+        "name_en": "Habanolide®",
+        "effect": 0
+    },
+    {
+        "id": 1210,
+        "name_en": "Hyraceum",
+        "effect": 0
+    },
+    {
+        "id": 1211,
+        "name_en": "Kephalis",
+        "effect": 0
+    },
+    {
+        "id": 1212,
+        "name_en": "Kyphi",
+        "effect": 4
+    },
+    {
+        "id": 1213,
+        "name_en": "Leather",
+        "effect": 0
+    },
+    {
+        "id": 1214,
+        "name_en": "Meat",
+        "effect": 0
+    },
+    {
+        "id": 1215,
+        "name_en": "Milk",
+        "effect": 0
+    },
+    {
+        "id": 1216,
+        "name_en": "Musk",
+        "effect": 0
+    },
+    {
+        "id": 1217,
+        "name_en": "Muskrat",
+        "effect": 0
+    },
+    {
+        "id": 1218,
+        "name_en": "Oysters",
+        "effect": 0
+    },
+    {
+        "id": 1219,
+        "name_en": "Saffiano Leather",
+        "effect": 0
+    },
+    {
+        "id": 1220,
+        "name_en": "Sea Shells",
+        "effect": 0
+    },
+    {
+        "id": 1221,
+        "name_en": "Skatole",
+        "effect": 0
+    },
+    {
+        "id": 1222,
+        "name_en": "Skin",
+        "effect": 0
+    },
+    {
+        "id": 1223,
+        "name_en": "Starfish",
+        "effect": 0
+    },
+    {
+        "id": 1224,
+        "name_en": "Suede",
+        "effect": 0
+    },
+    {
+        "id": 1225,
+        "name_en": "Sylkolide",
+        "effect": 0
+    },
+    {
+        "id": 1227,
+        "name_en": "Truffle",
+        "effect": 0
+    },
+    {
+        "id": 1228,
+        "name_en": "Velvione™",
+        "effect": 0
+    },
+    {
+        "id": 1229,
+        "name_en": "Absinthe",
+        "effect": 0
+    },
+    {
+        "id": 1230,
+        "name_en": "Advocaat",
+        "effect": 0
+    },
+    {
+        "id": 1231,
+        "name_en": "Amaretto",
+        "effect": 2
+    },
+    {
+        "id": 1232,
+        "name_en": "Applejack",
+        "effect": 0
+    },
+    {
+        "id": 1233,
+        "name_en": "Baileys Irish Cream",
+        "effect": 2
+    },
+    {
+        "id": 1234,
+        "name_en": "Batida",
+        "effect": 0
+    },
+    {
+        "id": 1236,
+        "name_en": "Beer/Ale",
+        "effect": 2
+    },
+    {
+        "id": 1237,
+        "name_en": "Bellini",
+        "effect": 0
+    },
+    {
+        "id": 1238,
+        "name_en": "Blue Margarita",
+        "effect": 3
+    },
+    {
+        "id": 1239,
+        "name_en": "Boozy Notes",
+        "effect": 0
+    },
+    {
+        "id": 1240,
+        "name_en": "Bourbon Whiskey",
+        "effect": 0
+    },
+    {
+        "id": 1241,
+        "name_en": "Buttered Rum",
+        "effect": 2
+    },
+    {
+        "id": 1242,
+        "name_en": "Buttermilk",
+        "effect": 0
+    },
+    {
+        "id": 1243,
+        "name_en": "Cachaça",
+        "effect": 0
+    },
+    {
+        "id": 1244,
+        "name_en": "Caipirinha",
+        "effect": 3
+    },
+    {
+        "id": 1245,
+        "name_en": "Calvados Drink",
+        "effect": 0
+    },
+    {
+        "id": 1246,
+        "name_en": "Campari",
+        "effect": 0
+    },
+    {
+        "id": 1247,
+        "name_en": "Cappuccino",
+        "effect": 1
+    },
+    {
+        "id": 1248,
+        "name_en": "Champagne",
+        "effect": 3
+    },
+    {
+        "id": 1249,
+        "name_en": "Champagne Rosé",
+        "effect": 2
+    },
+    {
+        "id": 1250,
+        "name_en": "Cherry Liqueur",
+        "effect": 2
+    },
+    {
+        "id": 1251,
+        "name_en": "Chinotto",
+        "effect": 3
+    },
+    {
+        "id": 1252,
+        "name_en": "Coca-Cola",
+        "effect": 3
+    },
+    {
+        "id": 1253,
+        "name_en": "Cocktail Fruits",
+        "effect": 2
+    },
+    {
+        "id": 1254,
+        "name_en": "Cognac",
+        "effect": 0
+    },
+    {
+        "id": 1256,
+        "name_en": "Cosmopolitan Cocktail",
+        "effect": 2
+    },
+    {
+        "id": 1257,
+        "name_en": "Cream Liqueur",
+        "effect": 2
+    },
+    {
+        "id": 1258,
+        "name_en": "Cream Soda",
+        "effect": 2
+    },
+    {
+        "id": 1259,
+        "name_en": "Curaçao",
+        "effect": 0
+    },
+    {
+        "id": 1260,
+        "name_en": "Daiquiri",
+        "effect": 3
+    },
+    {
+        "id": 1261,
+        "name_en": "Eau de Vie",
+        "effect": 0
+    },
+    {
+        "id": 1262,
+        "name_en": "Espresso",
+        "effect": 6
+    },
+    {
+        "id": 1263,
+        "name_en": "Espresso Coffee",
+        "effect": 6
+    },
+    {
+        "id": 1264,
+        "name_en": "Fruit Tea",
+        "effect": 3
+    },
+    {
+        "id": 1265,
+        "name_en": "Génépi",
+        "effect": 0
+    },
+    {
+        "id": 1266,
+        "name_en": "Gin",
+        "effect": 3
+    },
+    {
+        "id": 1267,
+        "name_en": "Goldwasser",
+        "effect": 0
+    },
+    {
+        "id": 1268,
+        "name_en": "Grenadine",
+        "effect": 0
+    },
+    {
+        "id": 1269,
+        "name_en": "Hi-Fi",
+        "effect": 0
+    },
+    {
+        "id": 1270,
+        "name_en": "Ice Wine",
+        "effect": 0
+    },
+    {
+        "id": 1271,
+        "name_en": "Jasmine Tea",
+        "effect": 1
+    },
+    {
+        "id": 1272,
+        "name_en": "Kava Drink",
+        "effect": 1
+    },
+    {
+        "id": 1273,
+        "name_en": "Kir Royal",
+        "effect": 2
+    },
+    {
+        "id": 1274,
+        "name_en": "Lemon Soda",
+        "effect": 3
+    },
+    {
+        "id": 1275,
+        "name_en": "Lemonade",
+        "effect": 3
+    },
+    {
+        "id": 1276,
+        "name_en": "Limoncello",
+        "effect": 3
+    },
+    {
+        "id": 1277,
+        "name_en": "Liquor",
+        "effect": 0
+    },
+    {
+        "id": 1278,
+        "name_en": "Macchiato",
+        "effect": 0
+    },
+    {
+        "id": 1279,
+        "name_en": "Madeira",
+        "effect": 0
+    },
+    {
+        "id": 1280,
+        "name_en": "Mai Tai Cocktail",
+        "effect": 2
+    },
+    {
+        "id": 1281,
+        "name_en": "Margarita",
+        "effect": 3
+    },
+    {
+        "id": 1282,
+        "name_en": "Martini",
+        "effect": 0
+    },
+    {
+        "id": 1283,
+        "name_en": "Masala Chai",
+        "effect": 1
+    },
+    {
+        "id": 1284,
+        "name_en": "Mezcal",
+        "effect": 0
+    },
+    {
+        "id": 1285,
+        "name_en": "Midori",
+        "effect": 3
+    },
+    {
+        "id": 1286,
+        "name_en": "Mocha",
+        "effect": 2
+    },
+    {
+        "id": 1287,
+        "name_en": "Mojito",
+        "effect": 3
+    },
+    {
+        "id": 1288,
+        "name_en": "Moonshine",
+        "effect": 0
+    },
+    {
+        "id": 1289,
+        "name_en": "Moscow Mule",
+        "effect": 3
+    },
+    {
+        "id": 1290,
+        "name_en": "Mulled Wine",
+        "effect": 2
+    },
+    {
+        "id": 1291,
+        "name_en": "Orange Soda",
+        "effect": 3
+    },
+    {
+        "id": 1292,
+        "name_en": "Ouzo",
+        "effect": 0
+    },
+    {
+        "id": 1293,
+        "name_en": "Pina Colada",
+        "effect": 2
+    },
+    {
+        "id": 1294,
+        "name_en": "Pisco Sour Cocktail",
+        "effect": 0
+    },
+    {
+        "id": 1295,
+        "name_en": "Plum Liquor",
+        "effect": 2
+    },
+    {
+        "id": 1296,
+        "name_en": "Plum Wine",
+        "effect": 2
+    },
+    {
+        "id": 1297,
+        "name_en": "Port Wine",
+        "effect": 0
+    },
+    {
+        "id": 1298,
+        "name_en": "Prosecco",
+        "effect": 0
+    },
+    {
+        "id": 1299,
+        "name_en": "Punch",
+        "effect": 0
+    },
+    {
+        "id": 1300,
+        "name_en": "Raki",
+        "effect": 0
+    },
+    {
+        "id": 1301,
+        "name_en": "Red Wine",
+        "effect": 0
+    },
+    {
+        "id": 1302,
+        "name_en": "Rhum Agricole",
+        "effect": 0
+    },
+    {
+        "id": 1303,
+        "name_en": "Rice Water",
+        "effect": 0
+    },
+    {
+        "id": 1304,
+        "name_en": "Rum",
+        "effect": 2
+    },
+    {
+        "id": 1305,
+        "name_en": "Sake",
+        "effect": 0
+    },
+    {
+        "id": 1306,
+        "name_en": "Sangria",
+        "effect": 0
+    },
+    {
+        "id": 1307,
+        "name_en": "Soy Milk",
+        "effect": 0
+    },
+    {
+        "id": 1308,
+        "name_en": "Sparkling Water",
+        "effect": 3
+    },
+    {
+        "id": 1309,
+        "name_en": "Sparkling Wine",
+        "effect": 3
+    },
+    {
+        "id": 1310,
+        "name_en": "Syrup",
+        "effect": 0
+    },
+    {
+        "id": 1311,
+        "name_en": "Tequila",
+        "effect": 0
+    },
+    {
+        "id": 1312,
+        "name_en": "Tokaji Wine",
+        "effect": 0
+    },
+    {
+        "id": 1313,
+        "name_en": "Tonic Water",
+        "effect": 3
+    },
+    {
+        "id": 1314,
+        "name_en": "Umeshu",
+        "effect": 0
+    },
+    {
+        "id": 1315,
+        "name_en": "Vermouth",
+        "effect": 0
+    },
+    {
+        "id": 1316,
+        "name_en": "Vinegar",
+        "effect": 0
+    },
+    {
+        "id": 1317,
+        "name_en": "Vodka",
+        "effect": 0
+    },
+    {
+        "id": 1318,
+        "name_en": "Whiskey",
+        "effect": 0
+    },
+    {
+        "id": 1319,
+        "name_en": "White Wine",
+        "effect": 0
+    },
+    {
+        "id": 1320,
+        "name_en": "Wine Lees",
+        "effect": 0
+    },
+    {
+        "id": 1321,
+        "name_en": "Wine must",
+        "effect": 0
+    },
+    {
+        "id": 1323,
+        "name_en": "Accord Eudora",
+        "effect": 0
+    },
+    {
+        "id": 1324,
+        "name_en": "Alcantara Accord",
+        "effect": 0
+    },
+    {
+        "id": 1325,
+        "name_en": "Aldambre",
+        "effect": 0
+    },
+    {
+        "id": 1326,
+        "name_en": "Aldehydes",
+        "effect": 3
+    },
+    {
+        "id": 1327,
+        "name_en": "Aluminum",
+        "effect": 0
+    },
+    {
+        "id": 1328,
+        "name_en": "Ambreine",
+        "effect": 0
+    },
+    {
+        "id": 1329,
+        "name_en": "Ambrinol",
+        "effect": 0
+    },
+    {
+        "id": 1330,
+        "name_en": "Ambrofix",
+        "effect": 0
+    },
+    {
+        "id": 1331,
+        "name_en": "AMBROX SUPER",
+        "effect": 0
+    },
+    {
+        "id": 1332,
+        "name_en": "Ammonia",
+        "effect": 0
+    },
+    {
+        "id": 1333,
+        "name_en": "Amyl Salicylate",
+        "effect": 0
+    },
+    {
+        "id": 1334,
+        "name_en": "Antillone",
+        "effect": 0
+    },
+    {
+        "id": 1335,
+        "name_en": "Apple Shisha Accord",
+        "effect": 2
+    },
+    {
+        "id": 1336,
+        "name_en": "Aqual",
+        "effect": 0
+    },
+    {
+        "id": 1337,
+        "name_en": "Aquozone",
+        "effect": 3
+    },
+    {
+        "id": 1338,
+        "name_en": "Ash",
+        "effect": 0
+    },
+    {
+        "id": 1339,
+        "name_en": "Asphalt",
+        "effect": 0
+    },
+    {
+        "id": 1340,
+        "name_en": "Azarbre",
+        "effect": 0
+    },
+    {
+        "id": 1341,
+        "name_en": "Black Diamond",
+        "effect": 0
+    },
+    {
+        "id": 1342,
+        "name_en": "Black Leather",
+        "effect": 0
+    },
+    {
+        "id": 1343,
+        "name_en": "Blood",
+        "effect": 0
+    },
+    {
+        "id": 1344,
+        "name_en": "Boisiris",
+        "effect": 0
+    },
+    {
+        "id": 1345,
+        "name_en": "Bourgeonal",
+        "effect": 0
+    },
+    {
+        "id": 1346,
+        "name_en": "Brick",
+        "effect": 0
+    },
+    {
+        "id": 1347,
+        "name_en": "Brown Scotch Tape",
+        "effect": 0
+    },
+    {
+        "id": 1348,
+        "name_en": "Burnt Match",
+        "effect": 0
+    },
+    {
+        "id": 1349,
+        "name_en": "Calone",
+        "effect": 3
+    },
+    {
+        "id": 1350,
+        "name_en": "Calypsone",
+        "effect": 0
+    },
+    {
+        "id": 1351,
+        "name_en": "Camphor",
+        "effect": 3
+    },
+    {
+        "id": 1352,
+        "name_en": "Candle Wax",
+        "effect": 0
+    },
+    {
+        "id": 1353,
+        "name_en": "Canvas",
+        "effect": 0
+    },
+    {
+        "id": 1354,
+        "name_en": "Caoutchouc",
+        "effect": 0
+    },
+    {
+        "id": 1355,
+        "name_en": "Cascalone",
+        "effect": 0
+    },
+    {
+        "id": 1356,
+        "name_en": "Cashalox",
+        "effect": 0
+    },
+    {
+        "id": 1357,
+        "name_en": "Cashmeran",
+        "effect": 0
+    },
+    {
+        "id": 1358,
+        "name_en": "Cetonal",
+        "effect": 0
+    },
+    {
+        "id": 1359,
+        "name_en": "Chalk",
+        "effect": 0
+    },
+    {
+        "id": 1360,
+        "name_en": "Cigarette",
+        "effect": 0
+    },
+    {
+        "id": 1361,
+        "name_en": "Cinnamaldehyde",
+        "effect": 2
+    },
+    {
+        "id": 1362,
+        "name_en": "Clarycet",
+        "effect": 1
+    },
+    {
+        "id": 1363,
+        "name_en": "Clay",
+        "effect": 0
+    },
+    {
+        "id": 1364,
+        "name_en": "CO2 Extracts",
+        "effect": 0
+    },
+    {
+        "id": 1365,
+        "name_en": "Coal",
+        "effect": 0
+    },
+    {
+        "id": 1366,
+        "name_en": "Cobblestone",
+        "effect": 0
+    },
+    {
+        "id": 1367,
+        "name_en": "Cocaine",
+        "effect": 6
+    },
+    {
+        "id": 1368,
+        "name_en": "Concrete",
+        "effect": 0
+    },
+    {
+        "id": 1369,
+        "name_en": "Copper",
+        "effect": 0
+    },
+    {
+        "id": 1370,
+        "name_en": "Coral Limestone",
+        "effect": 0
+    },
+    {
+        "id": 1371,
+        "name_en": "Coranol",
+        "effect": 0
+    },
+    {
+        "id": 1372,
+        "name_en": "Cork",
+        "effect": 0
+    },
+    {
+        "id": 1373,
+        "name_en": "Cosmone",
+        "effect": 0
+    },
+    {
+        "id": 1374,
+        "name_en": "Coumarin",
+        "effect": 2
+    },
+    {
+        "id": 1375,
+        "name_en": "Credit Cards",
+        "effect": 0
+    },
+    {
+        "id": 1376,
+        "name_en": "Crustaceans",
+        "effect": 0
+    },
+    {
+        "id": 1377,
+        "name_en": "Cuban Cigar",
+        "effect": 0
+    },
+    {
+        "id": 1378,
+        "name_en": "Cyclopidene",
+        "effect": 0
+    },
+    {
+        "id": 1379,
+        "name_en": "Damascone",
+        "effect": 0
+    },
+    {
+        "id": 1380,
+        "name_en": "Dew Drop",
+        "effect": 3
+    },
+    {
+        "id": 1381,
+        "name_en": "Dihydromyrcenol",
+        "effect": 3
+    },
+    {
+        "id": 1382,
+        "name_en": "Dirt",
+        "effect": 0
+    },
+    {
+        "id": 1383,
+        "name_en": "Diving Suit",
+        "effect": 0
+    },
+    {
+        "id": 1384,
+        "name_en": "Dodecanal",
+        "effect": 0
+    },
+    {
+        "id": 1385,
+        "name_en": "Dust",
+        "effect": 0
+    },
+    {
+        "id": 1386,
+        "name_en": "Earth Tincture",
+        "effect": 0
+    },
+    {
+        "id": 1387,
+        "name_en": "Earthy Notes",
+        "effect": 1
+    },
+    {
+        "id": 1388,
+        "name_en": "Egg",
+        "effect": 0
+    },
+    {
+        "id": 1389,
+        "name_en": "Ember",
+        "effect": 0
+    },
+    {
+        "id": 1390,
+        "name_en": "Ethyl Maltol",
+        "effect": 2
+    },
+    {
+        "id": 1391,
+        "name_en": "Eugenol",
+        "effect": 0
+    },
+    {
+        "id": 1392,
+        "name_en": "Evernyl",
+        "effect": 0
+    },
+    {
+        "id": 1393,
+        "name_en": "Fabric",
+        "effect": 0
+    },
+    {
+        "id": 1395,
+        "name_en": "Fior di Latte",
+        "effect": 0
+    },
+    {
+        "id": 1396,
+        "name_en": "Fire",
+        "effect": 6
+    },
+    {
+        "id": 1397,
+        "name_en": "Fish",
+        "effect": 0
+    },
+    {
+        "id": 1398,
+        "name_en": "Flint",
+        "effect": 0
+    },
+    {
+        "id": 1399,
+        "name_en": "Floralozone",
+        "effect": 3
+    },
+    {
+        "id": 1400,
+        "name_en": "Flour",
+        "effect": 0
+    },
+    {
+        "id": 1401,
+        "name_en": "Galaxolide",
+        "effect": 0
+    },
+    {
+        "id": 1402,
+        "name_en": "Gasoline",
+        "effect": 0
+    },
+    {
+        "id": 1403,
+        "name_en": "Georgywood",
+        "effect": 0
+    },
+    {
+        "id": 1404,
+        "name_en": "Geosmin",
+        "effect": 0
+    },
+    {
+        "id": 1405,
+        "name_en": "Gold",
+        "effect": 0
+    },
+    {
+        "id": 1406,
+        "name_en": "Graphite",
+        "effect": 0
+    },
+    {
+        "id": 1407,
+        "name_en": "Guaiacol",
+        "effect": 0
+    },
+    {
+        "id": 1408,
+        "name_en": "Gunpowder",
+        "effect": 0
+    },
+    {
+        "id": 1409,
+        "name_en": "Hair Pomade",
+        "effect": 0
+    },
+    {
+        "id": 1410,
+        "name_en": "Hand Cream",
+        "effect": 0
+    },
+    {
+        "id": 1411,
+        "name_en": "Head Space Waterfall",
+        "effect": 3
+    },
+    {
+        "id": 1412,
+        "name_en": "Healingwood",
+        "effect": 0
+    },
+    {
+        "id": 1413,
+        "name_en": "Hedione",
+        "effect": 2
+    },
+    {
+        "id": 1414,
+        "name_en": "Helvetolide",
+        "effect": 0
+    },
+    {
+        "id": 1415,
+        "name_en": "Hexenyl Green",
+        "effect": 0
+    },
+    {
+        "id": 1416,
+        "name_en": "Hexyl Acetate",
+        "effect": 3
+    },
+    {
+        "id": 1417,
+        "name_en": "Hina",
+        "effect": 0
+    },
+    {
+        "id": 1418,
+        "name_en": "Hindinol",
+        "effect": 0
+    },
+    {
+        "id": 1419,
+        "name_en": "Hivernal®",
+        "effect": 0
+    },
+    {
+        "id": 1420,
+        "name_en": "Holy Water",
+        "effect": 0
+    },
+    {
+        "id": 1421,
+        "name_en": "Hot Iron",
+        "effect": 0
+    },
+    {
+        "id": 1422,
+        "name_en": "Ice",
+        "effect": 3
+    },
+    {
+        "id": 1423,
+        "name_en": "Indole",
+        "effect": 0
+    },
+    {
+        "id": 1424,
+        "name_en": "Industrial Glue",
+        "effect": 0
+    },
+    {
+        "id": 1425,
+        "name_en": "Ink",
+        "effect": 0
+    },
+    {
+        "id": 1426,
+        "name_en": "Instant Film Accord",
+        "effect": 0
+    },
+    {
+        "id": 1427,
+        "name_en": "Iodine",
+        "effect": 0
+    },
+    {
+        "id": 1428,
+        "name_en": "Ionones",
+        "effect": 0
+    },
+    {
+        "id": 1429,
+        "name_en": "Iso E Super",
+        "effect": 0
+    },
+    {
+        "id": 1430,
+        "name_en": "Isobutyl Quinoline",
+        "effect": 0
+    },
+    {
+        "id": 1431,
+        "name_en": "Jasmolactone",
+        "effect": 0
+    },
+    {
+        "id": 1432,
+        "name_en": "Jasmone",
+        "effect": 1
+    },
+    {
+        "id": 1433,
+        "name_en": "Javanol",
+        "effect": 0
+    },
+    {
+        "id": 1434,
+        "name_en": "Jeans",
+        "effect": 0
+    },
+    {
+        "id": 1435,
+        "name_en": "Lacquered Wood",
+        "effect": 0
+    },
+    {
+        "id": 1436,
+        "name_en": "Lactones",
+        "effect": 0
+    },
+    {
+        "id": 1437,
+        "name_en": "Latex",
+        "effect": 0
+    },
+    {
+        "id": 1438,
+        "name_en": "Lava",
+        "effect": 0
+    },
+    {
+        "id": 1439,
+        "name_en": "Lilybelle",
+        "effect": 0
+    },
+    {
+        "id": 1440,
+        "name_en": "Linen",
+        "effect": 0
+    },
+    {
+        "id": 1441,
+        "name_en": "Lip Gloss",
+        "effect": 0
+    },
+    {
+        "id": 1442,
+        "name_en": "Lipstick",
+        "effect": 0
+    },
+    {
+        "id": 1443,
+        "name_en": "Little Doll Strawberry",
+        "effect": 2
+    },
+    {
+        "id": 1444,
+        "name_en": "Lorenox",
+        "effect": 0
+    },
+    {
+        "id": 1445,
+        "name_en": "Magnolan",
+        "effect": 0
+    },
+    {
+        "id": 1446,
+        "name_en": "Mascarpone Cheese",
+        "effect": 0
+    },
+    {
+        "id": 1447,
+        "name_en": "Mayonnaise Accord",
+        "effect": 0
+    },
+    {
+        "id": 1448,
+        "name_en": "Melonal",
+        "effect": 0
+    },
+    {
+        "id": 1449,
+        "name_en": "Metallic Notes",
+        "effect": 0
+    },
+    {
+        "id": 1450,
+        "name_en": "Mineral Notes",
+        "effect": 0
+    },
+    {
+        "id": 1451,
+        "name_en": "Mitti Attar",
+        "effect": 1
+    },
+    {
+        "id": 1452,
+        "name_en": "Molasses",
+        "effect": 0
+    },
+    {
+        "id": 1453,
+        "name_en": "Money",
+        "effect": 0
+    },
+    {
+        "id": 1454,
+        "name_en": "Motor Oil",
+        "effect": 0
+    },
+    {
+        "id": 1455,
+        "name_en": "Mountain Air",
+        "effect": 3
+    },
+    {
+        "id": 1456,
+        "name_en": "Mousse de Saxe",
+        "effect": 0
+    },
+    {
+        "id": 1457,
+        "name_en": "Mud",
+        "effect": 0
+    },
+    {
+        "id": 1458,
+        "name_en": "Mugane",
+        "effect": 0
+    },
+    {
+        "id": 1459,
+        "name_en": "Muscenone",
+        "effect": 0
+    },
+    {
+        "id": 1460,
+        "name_en": "Mystikal",
+        "effect": 0
+    },
+    {
+        "id": 1461,
+        "name_en": "Nail Polish",
+        "effect": 0
+    },
+    {
+        "id": 1462,
+        "name_en": "NaturalCalm",
+        "effect": 4
+    },
+    {
+        "id": 1463,
+        "name_en": "Neoprene",
+        "effect": 0
+    },
+    {
+        "id": 1464,
+        "name_en": "New Magazine",
+        "effect": 0
+    },
+    {
+        "id": 1465,
+        "name_en": "Norlimbanol",
+        "effect": 0
+    },
+    {
+        "id": 1466,
+        "name_en": "Nympheal",
+        "effect": 0
+    },
+    {
+        "id": 1467,
+        "name_en": "Old Books",
+        "effect": 0
+    },
+    {
+        "id": 1468,
+        "name_en": "Old House",
+        "effect": 0
+    },
+    {
+        "id": 1469,
+        "name_en": "Operanide",
+        "effect": 0
+    },
+    {
+        "id": 1470,
+        "name_en": "Orbitone",
+        "effect": 0
+    },
+    {
+        "id": 1471,
+        "name_en": "Orcanox",
+        "effect": 0
+    },
+    {
+        "id": 1472,
+        "name_en": "Osmasylk Natsublim",
+        "effect": 0
+    },
+    {
+        "id": 1473,
+        "name_en": "Oud Smoke",
+        "effect": 0
+    },
+    {
+        "id": 1474,
+        "name_en": "Ozonic Notes",
+        "effect": 3
+    },
+    {
+        "id": 1475,
+        "name_en": "Paper",
+        "effect": 0
+    },
+    {
+        "id": 1476,
+        "name_en": "Para-Cresyl Phenyl Acetate",
+        "effect": 0
+    },
+    {
+        "id": 1477,
+        "name_en": "Paradisone",
+        "effect": 0
+    },
+    {
+        "id": 1478,
+        "name_en": "Parchment",
+        "effect": 0
+    },
+    {
+        "id": 1479,
+        "name_en": "Pearadise",
+        "effect": 0
+    },
+    {
+        "id": 1480,
+        "name_en": "Pearls",
+        "effect": 0
+    },
+    {
+        "id": 1481,
+        "name_en": "Peat",
+        "effect": 0
+    },
+    {
+        "id": 1482,
+        "name_en": "Pebbles",
+        "effect": 0
+    },
+    {
+        "id": 1483,
+        "name_en": "Pencil",
+        "effect": 0
+    },
+    {
+        "id": 1484,
+        "name_en": "Petroleum",
+        "effect": 0
+    },
+    {
+        "id": 1485,
+        "name_en": "Pharaone",
+        "effect": 0
+    },
+    {
+        "id": 1486,
+        "name_en": "Pink Crystal",
+        "effect": 0
+    },
+    {
+        "id": 1487,
+        "name_en": "Pink Himalayan Sea Salt",
+        "effect": 0
+    },
+    {
+        "id": 1488,
+        "name_en": "Pizza",
+        "effect": 0
+    },
+    {
+        "id": 1489,
+        "name_en": "Plastic",
+        "effect": 0
+    },
+    {
+        "id": 1490,
+        "name_en": "Plastic Bag",
+        "effect": 0
+    },
+    {
+        "id": 1491,
+        "name_en": "Play-Doh",
+        "effect": 0
+    },
+    {
+        "id": 1492,
+        "name_en": "Poison",
+        "effect": 0
+    },
+    {
+        "id": 1493,
+        "name_en": "Poivrol",
+        "effect": 0
+    },
+    {
+        "id": 1494,
+        "name_en": "Pollen",
+        "effect": 0
+    },
+    {
+        "id": 1497,
+        "name_en": "Powdery Notes",
+        "effect": 4
+    },
+    {
+        "id": 1498,
+        "name_en": "Priest's Clothes",
+        "effect": 0
+    },
+    {
+        "id": 1499,
+        "name_en": "Propolis",
+        "effect": 0
+    },
+    {
+        "id": 1500,
+        "name_en": "Prunol",
+        "effect": 0
+    },
+    {
+        "id": 1501,
+        "name_en": "Rain Notes",
+        "effect": 3
+    },
+    {
+        "id": 1502,
+        "name_en": "RE Base",
+        "effect": 0
+    },
+    {
+        "id": 1503,
+        "name_en": "Rhodinol",
+        "effect": 0
+    },
+    {
+        "id": 1504,
+        "name_en": "Rice Powder",
+        "effect": 0
+    },
+    {
+        "id": 1505,
+        "name_en": "River Notes",
+        "effect": 3
+    },
+    {
+        "id": 1506,
+        "name_en": "Rose Oxide",
+        "effect": 2
+    },
+    {
+        "id": 1507,
+        "name_en": "Salicylic Acid",
+        "effect": 0
+    },
+    {
+        "id": 1508,
+        "name_en": "Salt",
+        "effect": 0
+    },
+    {
+        "id": 1509,
+        "name_en": "Sand",
+        "effect": 0
+    },
+    {
+        "id": 1510,
+        "name_en": "Satin",
+        "effect": 0
+    },
+    {
+        "id": 1511,
+        "name_en": "Sauna",
+        "effect": 3
+    },
+    {
+        "id": 1512,
+        "name_en": "Scent Trek®",
+        "effect": 0
+    },
+    {
+        "id": 1513,
+        "name_en": "Sclarene",
+        "effect": 0
+    },
+    {
+        "id": 1514,
+        "name_en": "Sea Water",
+        "effect": 3
+    },
+    {
+        "id": 1515,
+        "name_en": "Serenolide",
+        "effect": 0
+    },
+    {
+        "id": 1516,
+        "name_en": "Shamama Attar",
+        "effect": 0
+    },
+    {
+        "id": 1517,
+        "name_en": "Silk",
+        "effect": 0
+    },
+    {
+        "id": 1518,
+        "name_en": "Silver",
+        "effect": 0
+    },
+    {
+        "id": 1520,
+        "name_en": "Siren",
+        "effect": 0
+    },
+    {
+        "id": 1521,
+        "name_en": "Sisal Rope",
+        "effect": 0
+    },
+    {
+        "id": 1522,
+        "name_en": "Slate",
+        "effect": 0
+    },
+    {
+        "id": 1523,
+        "name_en": "Smoke",
+        "effect": 0
+    },
+    {
+        "id": 1524,
+        "name_en": "Snow",
+        "effect": 0
+    },
+    {
+        "id": 1525,
+        "name_en": "Soap",
+        "effect": 3
+    },
+    {
+        "id": 1527,
+        "name_en": "Solar Notes",
+        "effect": 6
+    },
+    {
+        "id": 1529,
+        "name_en": "Spiranol",
+        "effect": 0
+    },
+    {
+        "id": 1530,
+        "name_en": "Spray Paint",
+        "effect": 0
+    },
+    {
+        "id": 1531,
+        "name_en": "Steam accord",
+        "effect": 3
+    },
+    {
+        "id": 1532,
+        "name_en": "Stone",
+        "effect": 0
+    },
+    {
+        "id": 1533,
+        "name_en": "Straw",
+        "effect": 0
+    },
+    {
+        "id": 1534,
+        "name_en": "Suederal",
+        "effect": 0
+    },
+    {
+        "id": 1535,
+        "name_en": "Sulphur",
+        "effect": 0
+    },
+    {
+        "id": 1536,
+        "name_en": "Suntan Lotion",
+        "effect": 3
+    },
+    {
+        "id": 1537,
+        "name_en": "Sweat",
+        "effect": 0
+    },
+    {
+        "id": 1538,
+        "name_en": "T-Shirt accord",
+        "effect": 0
+    },
+    {
+        "id": 1539,
+        "name_en": "Talc",
+        "effect": 0
+    },
+    {
+        "id": 1540,
+        "name_en": "Tar",
+        "effect": 0
+    },
+    {
+        "id": 1541,
+        "name_en": "Tennis Ball",
+        "effect": 3
+    },
+    {
+        "id": 1542,
+        "name_en": "Terpineol",
+        "effect": 1
+    },
+    {
+        "id": 1543,
+        "name_en": "Terracotta",
+        "effect": 0
+    },
+    {
+        "id": 1544,
+        "name_en": "Terranol",
+        "effect": 0
+    },
+    {
+        "id": 1545,
+        "name_en": "Timbersilk",
+        "effect": 0
+    },
+    {
+        "id": 1546,
+        "name_en": "Tomato Sauce",
+        "effect": 0
+    },
+    {
+        "id": 1547,
+        "name_en": "Tonalide",
+        "effect": 0
+    },
+    {
+        "id": 1548,
+        "name_en": "Tonquitone",
+        "effect": 0
+    },
+    {
+        "id": 1549,
+        "name_en": "Toothpaste",
+        "effect": 3
+    },
+    {
+        "id": 1550,
+        "name_en": "Trimofix",
+        "effect": 0
+    },
+    {
+        "id": 1551,
+        "name_en": "Tuberolide",
+        "effect": 0
+    },
+    {
+        "id": 1552,
+        "name_en": "Tulle accord",
+        "effect": 0
+    },
+    {
+        "id": 1553,
+        "name_en": "Vanillin",
+        "effect": 2
+    },
+    {
+        "id": 1554,
+        "name_en": "Varnish Accord",
+        "effect": 0
+    },
+    {
+        "id": 1555,
+        "name_en": "Velvet",
+        "effect": 0
+    },
+    {
+        "id": 1556,
+        "name_en": "Verdox",
+        "effect": 0
+    },
+    {
+        "id": 1557,
+        "name_en": "Vinyl",
+        "effect": 0
+    },
+    {
+        "id": 1558,
+        "name_en": "Vinyl Guaiacol",
+        "effect": 0
+    },
+    {
+        "id": 1559,
+        "name_en": "Vitamin C",
+        "effect": 3
+    },
+    {
+        "id": 1560,
+        "name_en": "Water",
+        "effect": 3
+    },
+    {
+        "id": 1561,
+        "name_en": "Western Honey Bee",
+        "effect": 0
+    },
+    {
+        "id": 1562,
+        "name_en": "Wet Plaster",
+        "effect": 0
+    },
+    {
+        "id": 1563,
+        "name_en": "Wet Stone",
+        "effect": 0
+    },
+    {
+        "id": 1564,
+        "name_en": "White Leather",
+        "effect": 0
+    },
+    {
+        "id": 1565,
+        "name_en": "Wool",
+        "effect": 0
+    },
+    {
+        "id": 1566,
+        "name_en": "Yeast",
+        "effect": 0
+    },
+    {
+        "id": 1567,
+        "name_en": "Hookah",
+        "effect": 0
+    },
+    {
+        "id": 1568,
+        "name_en": "Sweet Alyssum",
+        "effect": 2
+    },
+    {
+        "id": 1569,
+        "name_en": "Umami",
+        "effect": 0
+    },
+    {
+        "id": 1570,
+        "name_en": "Green Apple",
+        "effect": 3
+    },
+    {
+        "id": 1571,
+        "name_en": "Williams Pear",
+        "effect": 3
+    },
+    {
+        "id": 1572,
+        "name_en": "Orange Flower",
+        "effect": 2
+    },
+    {
+        "id": 1573,
+        "name_en": "Mandarin",
+        "effect": 2
+    },
+    {
+        "id": 1574,
+        "name_en": "Green Mandarin",
+        "effect": 2
+    },
+    {
+        "id": 1575,
+        "name_en": "Ylang-Ylang",
+        "effect": 1
+    },
+    {
+        "id": 1576,
+        "name_en": "Grapefruit",
+        "effect": 3
+    },
+    {
+        "id": 1577,
+        "name_en": "Green Note",
+        "effect": 3
+    },
+    {
+        "id": 1578,
+        "name_en": "Nasturtium",
+        "effect": 0
+    },
+    {
+        "id": 1579,
+        "name_en": "Sicilian Lemon",
+        "effect": 3
+    },
+    {
+        "id": 1580,
+        "name_en": "White Musk",
+        "effect": 0
+    },
+    {
+        "id": 1581,
+        "name_en": "Balsam",
+        "effect": 0
+    },
+    {
+        "id": 1582,
+        "name_en": "Oakwood",
+        "effect": 0
+    },
+    {
+        "id": 1583,
+        "name_en": "Madagascar Vanilla",
+        "effect": 2
+    },
+    {
+        "id": 1584,
+        "name_en": "Rose de May Absolute",
+        "effect": 2
+    },
+    {
+        "id": 1585,
+        "name_en": "Ambrette Seed",
+        "effect": 1
+    },
+    {
+        "id": 1586,
+        "name_en": "Rose Absolute",
+        "effect": 2
+    },
+    {
+        "id": 1587,
+        "name_en": "Turkish Rose",
+        "effect": 2
+    },
+    {
+        "id": 1588,
+        "name_en": "Moss",
+        "effect": 0
+    },
+    {
+        "id": 1589,
+        "name_en": "Rose de May",
+        "effect": 2
+    },
+    {
+        "id": 1590,
+        "name_en": "Damask Rose",
+        "effect": 2
+    },
+    {
+        "id": 1591,
+        "name_en": "Naseberry",
+        "effect": 0
+    },
+    {
+        "id": 1592,
+        "name_en": "Spicy",
+        "effect": 6
+    },
+    {
+        "id": 1593,
+        "name_en": "Mexican Marigold",
+        "effect": 0
+    },
+    {
+        "id": 1594,
+        "name_en": "Bay Laurel",
+        "effect": 0
+    },
+    {
+        "id": 1595,
+        "name_en": "Fig Accord",
+        "effect": 2
+    },
+    {
+        "id": 1596,
+        "name_en": "Amalfi Lemon",
+        "effect": 3
+    },
+    {
+        "id": 1597,
+        "name_en": "Calabrian Mandarin",
+        "effect": 3
+    },
+    {
+        "id": 1598,
+        "name_en": "Calabrian Bergamot",
+        "effect": 3
+    },
+    {
+        "id": 1599,
+        "name_en": "African Orange Blossom",
+        "effect": 2
+    },
+    {
+        "id": 1600,
+        "name_en": "Black Pepper",
+        "effect": 6
+    },
+    {
+        "id": 1601,
+        "name_en": "Sicilian Mandarin",
+        "effect": 3
+    },
+    {
+        "id": 1602,
+        "name_en": "Turkish Rose Petal",
+        "effect": 2
+    },
+    {
+        "id": 1603,
+        "name_en": "Sicilian Orange",
+        "effect": 2
+    },
+    {
+        "id": 1604,
+        "name_en": "Sicilian Bergamot",
+        "effect": 3
+    },
+    {
+        "id": 1605,
+        "name_en": "Bulgarian Rose",
+        "effect": 2
+    },
+    {
+        "id": 1606,
+        "name_en": "White Bergamot",
+        "effect": 3
+    },
+    {
+        "id": 1607,
+        "name_en": "Rose Petal",
+        "effect": 2
+    },
+    {
+        "id": 1608,
+        "name_en": "Italian Cypress",
+        "effect": 3
+    },
+    {
+        "id": 1609,
+        "name_en": "Italian Mandarin",
+        "effect": 3
+    },
+    {
+        "id": 1610,
+        "name_en": "Pink Freesia",
+        "effect": 2
+    },
+    {
+        "id": 1611,
+        "name_en": "Manila Elemi",
+        "effect": 3
+    },
+    {
+        "id": 1612,
+        "name_en": "Green Mango",
+        "effect": 3
+    },
+    {
+        "id": 1613,
+        "name_en": "Caraway",
+        "effect": 0
+    },
+    {
+        "id": 1614,
+        "name_en": "Sea Salt",
+        "effect": 3
+    },
+    {
+        "id": 1615,
+        "name_en": "Fruit Note",
+        "effect": 2
+    },
+    {
+        "id": 1616,
+        "name_en": "Sea Notes",
+        "effect": 3
+    },
+    {
+        "id": 1617,
+        "name_en": "Red Pepper",
+        "effect": 6
+    },
+    {
+        "id": 1618,
+        "name_en": "Black Cardamom",
+        "effect": 5
+    },
+    {
+        "id": 1619,
+        "name_en": "Fig Nectar",
+        "effect": 0
+    },
+    {
+        "id": 1620,
+        "name_en": "Indian Mandarin",
+        "effect": 2
+    },
+    {
+        "id": 1621,
+        "name_en": "Spicy",
+        "effect": 0
+    },
+    {
+        "id": 1622,
+        "name_en": "Chinese Grapefruit",
+        "effect": 3
+    },
+    {
+        "id": 1623,
+        "name_en": "California Orange",
+        "effect": 2
+    },
+    {
+        "id": 1624,
+        "name_en": "Peppermint",
+        "effect": 3
+    },
+    {
+        "id": 1625,
+        "name_en": "Sichuan Pepper",
+        "effect": 0
+    },
+    {
+        "id": 1626,
+        "name_en": "Verbena",
+        "effect": 3
+    },
+    {
+        "id": 1627,
+        "name_en": "Tiaré Flower",
+        "effect": 2
+    },
+    {
+        "id": 1628,
+        "name_en": "Aniseed",
+        "effect": 0
+    },
+    {
+        "id": 1629,
+        "name_en": "Lychee Accord",
+        "effect": 2
+    },
+    {
+        "id": 1630,
+        "name_en": "Carrot Note",
+        "effect": 0
+    },
+    {
+        "id": 1631,
+        "name_en": "Tobacco Leaf",
+        "effect": 0
+    },
+    {
+        "id": 1632,
+        "name_en": "Mandarin Orange Blossom",
+        "effect": 2
+    },
+    {
+        "id": 1633,
+        "name_en": "Elemi Resin",
+        "effect": 3
+    },
+    {
+        "id": 1634,
+        "name_en": "Almond Milk",
+        "effect": 0
+    },
+    {
+        "id": 1635,
+        "name_en": "Ban Timur",
+        "effect": 0
+    },
+    {
+        "id": 1636,
+        "name_en": "Calabrian",
+        "effect": 0
+    },
+    {
+        "id": 1637,
+        "name_en": "White Flower",
+        "effect": 0
+    },
+    {
+        "id": 1638,
+        "name_en": "Rose Water",
+        "effect": 1
+    },
+    {
+        "id": 1639,
+        "name_en": "Green Leaf",
+        "effect": 3
+    },
+    {
+        "id": 1640,
+        "name_en": "Lavender Extra",
+        "effect": 4
+    },
+    {
+        "id": 1641,
+        "name_en": "Green Cardamom",
+        "effect": 5
+    },
+    {
+        "id": 1642,
+        "name_en": "White Peach",
+        "effect": 2
+    },
+    {
+        "id": 1643,
+        "name_en": "Blackcurrant Syrup",
+        "effect": 2
+    },
+    {
+        "id": 1644,
+        "name_en": "Green Almond",
+        "effect": 0
+    },
+    {
+        "id": 1645,
+        "name_en": "Woody",
+        "effect": 0
+    },
+    {
+        "id": 1646,
+        "name_en": "Lavender Flower",
+        "effect": 4
+    },
+    {
+        "id": 1647,
+        "name_en": "Coriander Seed",
+        "effect": 5
+    },
+    {
+        "id": 1648,
+        "name_en": "Green Leaves",
+        "effect": 3
+    },
+    {
+        "id": 1649,
+        "name_en": "Red Chili",
+        "effect": 6
+    },
+    {
+        "id": 1650,
+        "name_en": "Blue Grapefruit",
+        "effect": 3
+    },
+    {
+        "id": 1651,
+        "name_en": "Watery Notes",
+        "effect": 3
+    },
+    {
+        "id": 1652,
+        "name_en": "Red Berry",
+        "effect": 1
+    },
+    {
+        "id": 1653,
+        "name_en": "Red Tangerine",
+        "effect": 3
+    },
+    {
+        "id": 1654,
+        "name_en": "Green Accord",
+        "effect": 3
+    },
+    {
+        "id": 1655,
+        "name_en": "Lime Blossom",
+        "effect": 3
+    },
+    {
+        "id": 1656,
+        "name_en": "Citrus Reticulata",
+        "effect": 3
+    },
+    {
+        "id": 1657,
+        "name_en": "Himalayan Blue Poppy",
+        "effect": 0
+    },
+    {
+        "id": 1658,
+        "name_en": "Litchi Flower",
+        "effect": 2
+    },
+    {
+        "id": 1659,
+        "name_en": "White Thyme",
+        "effect": 0
+    },
+    {
+        "id": 1660,
+        "name_en": "Mirabelle Plum Accord",
+        "effect": 2
+    },
+    {
+        "id": 1661,
+        "name_en": "Sicilian Blood Orange Essence",
+        "effect": 2
+    },
+    {
+        "id": 1662,
+        "name_en": "Ginger Extract",
+        "effect": 6
+    },
+    {
+        "id": 1663,
+        "name_en": "Birch Leaf",
+        "effect": 0
+    },
+    {
+        "id": 1664,
+        "name_en": "Salty Caramel",
+        "effect": 2
+    },
+    {
+        "id": 1665,
+        "name_en": "Sichuan Pepper Absolute",
+        "effect": 0
+    },
+    {
+        "id": 1666,
+        "name_en": "Bergamot Oil",
+        "effect": 1
+    },
+    {
+        "id": 1667,
+        "name_en": "Lemon Oil",
+        "effect": 3
+    },
+    {
+        "id": 1668,
+        "name_en": "Lemon Leaf",
+        "effect": 3
+    },
+    {
+        "id": 1669,
+        "name_en": "Italian Orange",
+        "effect": 2
+    },
+    {
+        "id": 1670,
+        "name_en": "Silkwood Blossom",
+        "effect": 0
+    },
+    {
+        "id": 1671,
+        "name_en": "Rosewood",
+        "effect": 0
+    },
+    {
+        "id": 1672,
+        "name_en": "Rosewood Accord",
+        "effect": 0
+    },
+    {
+        "id": 1673,
+        "name_en": "Cacao",
+        "effect": 2
+    },
+    {
+        "id": 1674,
+        "name_en": "Jasmine Sambac",
+        "effect": 2
+    },
+    {
+        "id": 1675,
+        "name_en": "Floriental",
+        "effect": 0
+    },
+    {
+        "id": 1676,
+        "name_en": "Tunisian Neroli",
+        "effect": 1
+    },
+    {
+        "id": 1677,
+        "name_en": "Tunisian Orange Blossom",
+        "effect": 2
+    },
+    {
+        "id": 1678,
+        "name_en": "White Lily",
+        "effect": 0
+    },
+    {
+        "id": 1679,
+        "name_en": "Black Tea",
+        "effect": 1
+    },
+    {
+        "id": 1680,
+        "name_en": "Italian Lemon",
+        "effect": 3
+    },
+    {
+        "id": 1681,
+        "name_en": "Neroli Mandarin Orange",
+        "effect": 2
+    },
+    {
+        "id": 1682,
+        "name_en": "Green Tea",
+        "effect": 3
+    },
+    {
+        "id": 1683,
+        "name_en": "Citrus Weed",
+        "effect": 3
+    },
+    {
+        "id": 1684,
+        "name_en": "Coriander Leaf",
+        "effect": 5
+    },
+    {
+        "id": 1685,
+        "name_en": "Mandarin Leaf",
+        "effect": 3
+    },
+    {
+        "id": 1686,
+        "name_en": "Wild Flower",
+        "effect": 0
+    },
+    {
+        "id": 1687,
+        "name_en": "Stems Greens",
+        "effect": 3
+    },
+    {
+        "id": 1688,
+        "name_en": "Guatemala Cardamom",
+        "effect": 5
+    },
+    {
+        "id": 1689,
+        "name_en": "Brandy",
+        "effect": 0
+    },
+    {
+        "id": 1690,
+        "name_en": "Shaving Soap",
+        "effect": 0
+    },
+    {
+        "id": 1691,
+        "name_en": "Water Note",
+        "effect": 3
+    },
+    {
+        "id": 1692,
+        "name_en": "Sweet Orange",
+        "effect": 2
+    },
+    {
+        "id": 1693,
+        "name_en": "Fruit",
+        "effect": 3
+    },
+    {
+        "id": 1694,
+        "name_en": "Ice Accord",
+        "effect": 3
+    },
+    {
+        "id": 1695,
+        "name_en": "Ginger Flower",
+        "effect": 0
+    },
+    {
+        "id": 1696,
+        "name_en": "Wildberry",
+        "effect": 0
+    },
+    {
+        "id": 1697,
+        "name_en": "Seaweed",
+        "effect": 3
+    },
+    {
+        "id": 1698,
+        "name_en": "Blood Mandarin",
+        "effect": 2
+    },
+    {
+        "id": 1699,
+        "name_en": "Nutmeg Flower",
+        "effect": 0
+    },
+    {
+        "id": 1700,
+        "name_en": "Green",
+        "effect": 3
+    },
+    {
+        "id": 1701,
+        "name_en": "Black Pear",
+        "effect": 0
+    },
+    {
+        "id": 1702,
+        "name_en": "Green Lily",
+        "effect": 3
+    },
+    {
+        "id": 1703,
+        "name_en": "Watercress",
+        "effect": 3
+    },
+    {
+        "id": 1704,
+        "name_en": "Tea",
+        "effect": 3
+    },
+    {
+        "id": 1705,
+        "name_en": "Italian Violet",
+        "effect": 0
+    },
+    {
+        "id": 1706,
+        "name_en": "Virginia Cedar",
+        "effect": 0
+    },
+    {
+        "id": 1707,
+        "name_en": "Spicy Note",
+        "effect": 0
+    },
+    {
+        "id": 1708,
+        "name_en": "Orange Peel",
+        "effect": 3
+    },
+    {
+        "id": 1709,
+        "name_en": "Pine Needles",
+        "effect": 3
+    },
+    {
+        "id": 1710,
+        "name_en": "Patchouli Leaf",
+        "effect": 1
+    },
+    {
+        "id": 1711,
+        "name_en": "Woody Note",
+        "effect": 1
+    },
+    {
+        "id": 1712,
+        "name_en": "Pink Grapefruit",
+        "effect": 3
+    },
+    {
+        "id": 1713,
+        "name_en": "Orange Leaf",
+        "effect": 3
+    },
+    {
+        "id": 1715,
+        "name_en": "Marine Notes",
+        "effect": 3
+    },
+    {
+        "id": 1716,
+        "name_en": "Oak Leaf",
+        "effect": 0
+    },
+    {
+        "id": 1717,
+        "name_en": "Darjeeling Tea",
+        "effect": 3
+    },
+    {
+        "id": 1718,
+        "name_en": "Chypre Leaf",
+        "effect": 0
+    },
+    {
+        "id": 1719,
+        "name_en": "White Tea",
+        "effect": 3
+    },
+    {
+        "id": 1720,
+        "name_en": "Chinese Peony",
+        "effect": 2
+    },
+    {
+        "id": 1721,
+        "name_en": "Madagascar Pepper",
+        "effect": 0
+    },
+    {
+        "id": 1722,
+        "name_en": "Bergamot Essence",
+        "effect": 2
+    },
+    {
+        "id": 1723,
+        "name_en": "Tuscany Iris",
+        "effect": 0
+    },
+    {
+        "id": 1724,
+        "name_en": "Big Strawberry",
+        "effect": 2
+    },
+    {
+        "id": 1725,
+        "name_en": "Granny Smith Apple",
+        "effect": 3
+    },
+    {
+        "id": 1726,
+        "name_en": "Brazilian Orange",
+        "effect": 2
+    },
+    {
+        "id": 1727,
+        "name_en": "Chypre",
+        "effect": 0
+    },
+    {
+        "id": 1728,
+        "name_en": "Bitter Almond",
+        "effect": 0
+    },
+    {
+        "id": 1729,
+        "name_en": "Floral Note",
+        "effect": 2
+    },
+    {
+        "id": 1730,
+        "name_en": "Vanilla Orchid",
+        "effect": 2
+    },
+    {
+        "id": 1731,
+        "name_en": "Floral",
+        "effect": 2
+    },
+    {
+        "id": 1732,
+        "name_en": "Tea Leaf",
+        "effect": 3
+    },
+    {
+        "id": 1733,
+        "name_en": "Varnish",
+        "effect": 0
+    },
+    {
+        "id": 1734,
+        "name_en": "Citrusy Leaf",
+        "effect": 3
+    },
+    {
+        "id": 1735,
+        "name_en": "Java Vetiver",
+        "effect": 1
+    },
+    {
+        "id": 1736,
+        "name_en": "Sinus Mole",
+        "effect": 0
+    },
+    {
+        "id": 1737,
+        "name_en": "Pear Accord",
+        "effect": 2
+    },
+    {
+        "id": 1738,
+        "name_en": "Bergamot Leaf",
+        "effect": 3
+    },
+    {
+        "id": 1739,
+        "name_en": "Holly",
+        "effect": 0
+    },
+    {
+        "id": 1740,
+        "name_en": "Raspberry Leaf",
+        "effect": 0
+    },
+    {
+        "id": 1741,
+        "name_en": "Green Coyote Chola",
+        "effect": 0
+    },
+    {
+        "id": 1742,
+        "name_en": "Desert Pepper",
+        "effect": 0
+    },
+    {
+        "id": 1743,
+        "name_en": "Paprika",
+        "effect": 0
+    },
+    {
+        "id": 1744,
+        "name_en": "Apple Candy",
+        "effect": 2
+    },
+    {
+        "id": 1745,
+        "name_en": "Vanilla Absolute",
+        "effect": 2
+    },
+    {
+        "id": 1746,
+        "name_en": "Litsea",
+        "effect": 3
+    },
+    {
+        "id": 1747,
+        "name_en": "Cedrat",
+        "effect": 3
+    },
+    {
+        "id": 1748,
+        "name_en": "Blue Ginger",
+        "effect": 3
+    },
+    {
+        "id": 1749,
+        "name_en": "Myrte",
+        "effect": 0
+    },
+    {
+        "id": 1750,
+        "name_en": "Wild Thyme",
+        "effect": 0
+    },
+    {
+        "id": 1751,
+        "name_en": "Juniper Needles",
+        "effect": 3
+    },
+    {
+        "id": 1752,
+        "name_en": "Pineapple Leaf",
+        "effect": 3
+    },
+    {
+        "id": 1753,
+        "name_en": "Seagrass",
+        "effect": 0
+    },
+    {
+        "id": 1754,
+        "name_en": "Armoise",
+        "effect": 0
+    },
+    {
+        "id": 1755,
+        "name_en": "Cardamom Oil",
+        "effect": 5
+    },
+    {
+        "id": 1756,
+        "name_en": "Lime Flower",
+        "effect": 3
+    },
+    {
+        "id": 1757,
+        "name_en": "Coriander Seed",
+        "effect": 5
+    },
+    {
+        "id": 1758,
+        "name_en": "Mandarin Essence",
+        "effect": 2
+    },
+    {
+        "id": 1759,
+        "name_en": "Yellow Mandarin",
+        "effect": 3
+    },
+    {
+        "id": 1760,
+        "name_en": "Black Grape",
+        "effect": 0
+    },
+    {
+        "id": 1761,
+        "name_en": "Bouquet Garni",
+        "effect": 0
+    },
+    {
+        "id": 1762,
+        "name_en": "Ambretolide",
+        "effect": 0
+    },
+    {
+        "id": 1763,
+        "name_en": "Cedarwood",
+        "effect": 4
+    },
+    {
+        "id": 1764,
+        "name_en": "Vanilla Bean",
+        "effect": 2
+    },
+    {
+        "id": 1765,
+        "name_en": "Indonesian Patchouli Leaf",
+        "effect": 1
+    },
+    {
+        "id": 1766,
+        "name_en": "Moroccan",
+        "effect": 0
+    },
+    {
+        "id": 1767,
+        "name_en": "Mexican Chocolate",
+        "effect": 2
+    },
+    {
+        "id": 1768,
+        "name_en": "White Honey",
+        "effect": 2
+    },
+    {
+        "id": 1769,
+        "name_en": "White Rum",
+        "effect": 0
+    },
+    {
+        "id": 1770,
+        "name_en": "Sugarcane",
+        "effect": 2
+    },
+    {
+        "id": 1771,
+        "name_en": "Silk Musk",
+        "effect": 0
+    },
+    {
+        "id": 1772,
+        "name_en": "Haitian Vetiver",
+        "effect": 1
+    },
+    {
+        "id": 1773,
+        "name_en": "Atlas Cedar",
+        "effect": 1
+    },
+    {
+        "id": 1774,
+        "name_en": "Balsam Fir",
+        "effect": 3
+    },
+    {
+        "id": 1775,
+        "name_en": "Fresh Jasmine",
+        "effect": 2
+    },
+    {
+        "id": 1776,
+        "name_en": "Fir Resin",
+        "effect": 3
+    },
+    {
+        "id": 1777,
+        "name_en": "Bourbon Vanilla",
+        "effect": 2
+    },
+    {
+        "id": 1778,
+        "name_en": "Black Amber",
+        "effect": 0
+    },
+    {
+        "id": 1779,
+        "name_en": "Kyara Incense",
+        "effect": 1
+    },
+    {
+        "id": 1780,
+        "name_en": "Orris",
+        "effect": 0
+    },
+    {
+        "id": 1781,
+        "name_en": "Madagascar Vanilla Beans",
+        "effect": 2
+    },
+    {
+        "id": 1782,
+        "name_en": "Citrus Oil",
+        "effect": 3
+    },
+    {
+        "id": 1783,
+        "name_en": "White Cedar",
+        "effect": 0
+    },
+    {
+        "id": 1784,
+        "name_en": "French Labdanum",
+        "effect": 0
+    },
+    {
+        "id": 1785,
+        "name_en": "Tolu Balsam",
+        "effect": 0
+    },
+    {
+        "id": 1786,
+        "name_en": "Tonka",
+        "effect": 2
+    },
+    {
+        "id": 1787,
+        "name_en": "Cashmeran Wood",
+        "effect": 0
+    },
+    {
+        "id": 1788,
+        "name_en": "Coconut Milk",
+        "effect": 2
+    },
+    {
+        "id": 1789,
+        "name_en": "White Wood",
+        "effect": 0
+    },
+    {
+        "id": 1790,
+        "name_en": "Oak Moss",
+        "effect": 0
+    },
+    {
+        "id": 1791,
+        "name_en": "Rock Rose",
+        "effect": 0
+    },
+    {
+        "id": 1792,
+        "name_en": "Virginian Cedar",
+        "effect": 0
+    },
+    {
+        "id": 1793,
+        "name_en": "Tincture of Rose",
+        "effect": 2
+    },
+    {
+        "id": 1794,
+        "name_en": "Vanilla Cedar",
+        "effect": 2
+    },
+    {
+        "id": 1795,
+        "name_en": "Copaiba",
+        "effect": 0
+    },
+    {
+        "id": 1796,
+        "name_en": "Tahitian Vanilla",
+        "effect": 2
+    },
+    {
+        "id": 1797,
+        "name_en": "Cedar Essence",
+        "effect": 1
+    },
+    {
+        "id": 1798,
+        "name_en": "Upcycled Patchouli",
+        "effect": 1
+    },
+    {
+        "id": 1799,
+        "name_en": "Red Cedar",
+        "effect": 0
+    },
+    {
+        "id": 1800,
+        "name_en": "White Amber",
+        "effect": 0
+    },
+    {
+        "id": 1801,
+        "name_en": "Cedar Oak Moss",
+        "effect": 0
+    },
+    {
+        "id": 1802,
+        "name_en": "Australian Sandalwood",
+        "effect": 1
+    },
+    {
+        "id": 1803,
+        "name_en": "White Thyme Absolute",
+        "effect": 0
+    },
+    {
+        "id": 1804,
+        "name_en": "Oud",
+        "effect": 0
+    },
+    {
+        "id": 1805,
+        "name_en": "White Grapefruit",
+        "effect": 3
+    },
+    {
+        "id": 1806,
+        "name_en": "Oriental Notes",
+        "effect": 1
+    },
+    {
+        "id": 1807,
+        "name_en": "Siam Benzoin",
+        "effect": 1
+    },
+    {
+        "id": 1808,
+        "name_en": "Animal Musk",
+        "effect": 0
+    },
+    {
+        "id": 1809,
+        "name_en": "Roots",
+        "effect": 0
+    },
+    {
+        "id": 1810,
+        "name_en": "Madagascar Benzoin",
+        "effect": 1
+    },
+    {
+        "id": 1811,
+        "name_en": "Indian Patchouli",
+        "effect": 1
+    },
+    {
+        "id": 1812,
+        "name_en": "Orangewood",
+        "effect": 0
+    },
+    {
+        "id": 1813,
+        "name_en": "Frankincense Tree",
+        "effect": 1
+    },
+    {
+        "id": 1814,
+        "name_en": "Wood Amber",
+        "effect": 0
+    },
+    {
+        "id": 1815,
+        "name_en": "Silver Pine",
+        "effect": 3
+    },
+    {
+        "id": 1816,
+        "name_en": "Ambrox",
+        "effect": 0
+    },
+    {
+        "id": 1817,
+        "name_en": "Leaf Ambrox",
+        "effect": 0
+    },
+    {
+        "id": 1818,
+        "name_en": "Presius Wood",
+        "effect": 0
+    },
+    {
+        "id": 1819,
+        "name_en": "Tahitian Vetiver",
+        "effect": 0
+    },
+    {
+        "id": 1820,
+        "name_en": "Hibiscus Seeds",
+        "effect": 0
+    },
+    {
+        "id": 1821,
+        "name_en": "Tolu Balsam Myrrh",
+        "effect": 0
+    },
+    {
+        "id": 1823,
+        "name_en": "Black Vanilla Husk",
+        "effect": 2
+    },
+    {
+        "id": 1824,
+        "name_en": "Exotic Wood",
+        "effect": 0
+    },
+    {
+        "id": 1825,
+        "name_en": "Precious Wood",
+        "effect": 0
+    },
+    {
+        "id": 1826,
+        "name_en": "Cistus",
+        "effect": 0
+    },
+    {
+        "id": 1827,
+        "name_en": "Santalwood Accord",
+        "effect": 1
+    },
+    {
+        "id": 1828,
+        "name_en": "Somalia Patchouli",
+        "effect": 0
+    },
+    {
+        "id": 1829,
+        "name_en": "Virginia Cedarwood",
+        "effect": 1
+    },
+    {
+        "id": 1830,
+        "name_en": "Burning Wood",
+        "effect": 0
+    },
+    {
+        "id": 1831,
+        "name_en": "Black Locust Honey",
+        "effect": 0
+    },
+    {
+        "id": 1832,
+        "name_en": "Ambrette Seed Absolute",
+        "effect": 1
+    },
+    {
+        "id": 1834,
+        "name_en": "Animal Note",
+        "effect": 0
+    },
+    {
+        "id": 1835,
+        "name_en": "Dry Flower",
+        "effect": 0
+    },
+    {
+        "id": 1837,
+        "name_en": "White Sandalwood",
+        "effect": 4
+    },
+    {
+        "id": 1838,
+        "name_en": "Whipped Cream",
+        "effect": 2
+    },
+    {
+        "id": 1839,
+        "name_en": "Haitian Vetiver Oil",
+        "effect": 1
+    },
+    {
+        "id": 1840,
+        "name_en": "Burnt Oil",
+        "effect": 0
+    },
+    {
+        "id": 1841,
+        "name_en": "Brazilian Vetiver",
+        "effect": 1
+    },
+    {
+        "id": 1842,
+        "name_en": "Indonesian Patchouli Oil",
+        "effect": 1
+    },
+    {
+        "id": 1843,
+        "name_en": "Wood Oil",
+        "effect": 0
+    },
+    {
+        "id": 1844,
+        "name_en": "Powdery Accord",
+        "effect": 0
+    },
+    {
+        "id": 1845,
+        "name_en": "White Cedar Extra",
+        "effect": 0
+    },
+    {
+        "id": 1846,
+        "name_en": "Herbal Notes",
+        "effect": 3
+    },
+    {
+        "id": 1847,
+        "name_en": "Chinese Cedar",
+        "effect": 0
+    },
+    {
+        "id": 1848,
+        "name_en": "Texas Cedar",
+        "effect": 0
+    },
+    {
+        "id": 1849,
+        "name_en": "Water Musk",
+        "effect": 3
+    },
+    {
+        "id": 1850,
+        "name_en": "Creosote",
+        "effect": 0
+    },
+    {
+        "id": 1851,
+        "name_en": "Musk Ambrette",
+        "effect": 0
+    },
+    {
+        "id": 1852,
+        "name_en": "Leather Accord",
+        "effect": 0
+    },
+    {
+        "id": 1853,
+        "name_en": "Madagascar",
+        "effect": 0
+    },
+    {
+        "id": 1854,
+        "name_en": "Thibetone",
+        "effect": 0
+    },
+    {
+        "id": 1855,
+        "name_en": "Muscone",
+        "effect": 0
+    },
+    {
+        "id": 1857,
+        "name_en": "Cedarwood Atlas",
+        "effect": 1
+    },
+    {
+        "id": 1858,
+        "name_en": "Dark Wood Notes",
+        "effect": 0
+    },
+    {
+        "id": 1859,
+        "name_en": "Ambregris Infusion",
+        "effect": 0
+    },
+    {
+        "id": 1860,
+        "name_en": "Natural Musk",
+        "effect": 0
+    },
+    {
+        "id": 1861,
+        "name_en": "Patchouli Essence",
+        "effect": 1
+    },
+    {
+        "id": 1862,
+        "name_en": "Sweet Amber",
+        "effect": 2
+    },
+    {
+        "id": 1863,
+        "name_en": "Angelica Seed",
+        "effect": 0
+    },
+    {
+        "id": 1864,
+        "name_en": "Cassis",
+        "effect": 2
+    },
+    {
+        "id": 1865,
+        "name_en": "Tahitian Gardenia",
+        "effect": 2
+    },
+    {
+        "id": 1866,
+        "name_en": "Java Vetiver Oil",
+        "effect": 1
+    },
+    {
+        "id": 1868,
+        "name_en": "Pink Tulip",
+        "effect": 0
+    },
+    {
+        "id": 1869,
+        "name_en": "Fruity Note",
+        "effect": 2
+    },
+    {
+        "id": 1870,
+        "name_en": "Egyptian Jasmine",
+        "effect": 2
+    },
+    {
+        "id": 1871,
+        "name_en": "Pittosporum",
+        "effect": 0
+    },
+    {
+        "id": 1872,
+        "name_en": "Pelargonium",
+        "effect": 2
+    },
+    {
+        "id": 1873,
+        "name_en": "Pink Peony",
+        "effect": 2
+    },
+    {
+        "id": 1874,
+        "name_en": "Apricot",
+        "effect": 0
+    },
+    {
+        "id": 1875,
+        "name_en": "Calabria",
+        "effect": 0
+    },
+    {
+        "id": 1876,
+        "name_en": "White",
+        "effect": 0
+    },
+    {
+        "id": 1877,
+        "name_en": "Petal",
+        "effect": 0
+    },
+    {
+        "id": 1878,
+        "name_en": "Blossom",
+        "effect": 2
+    },
+    {
+        "id": 1879,
+        "name_en": "Violet Leaf",
+        "effect": 0
+    },
+    {
+        "id": 1880,
+        "name_en": "Petal",
+        "effect": 0
+    },
+    {
+        "id": 1881,
+        "name_en": "Almond Blossom",
+        "effect": 2
+    },
+    {
+        "id": 1882,
+        "name_en": "Citrus",
+        "effect": 3
+    },
+    {
+        "id": 1883,
+        "name_en": "Red Fruits",
+        "effect": 2
+    },
+    {
+        "id": 1884,
+        "name_en": "Fruity Notes",
+        "effect": 2
+    },
+    {
+        "id": 1885,
+        "name_en": "Indian Jasmine",
+        "effect": 1
+    },
+    {
+        "id": 1886,
+        "name_en": "Black Orchid",
+        "effect": 0
+    },
+    {
+        "id": 1887,
+        "name_en": "Rose de Grasse",
+        "effect": 2
+    },
+    {
+        "id": 1888,
+        "name_en": "Rose Water",
+        "effect": 3
+    },
+    {
+        "id": 1889,
+        "name_en": "Kiphrool",
+        "effect": 0
+    },
+    {
+        "id": 1890,
+        "name_en": "Benzoin C",
+        "effect": 0
+    },
+    {
+        "id": 1891,
+        "name_en": "Cedarwood Atlas",
+        "effect": 1
+    },
+    {
+        "id": 1892,
+        "name_en": "Water Lily",
+        "effect": 3
+    },
+    {
+        "id": 1893,
+        "name_en": "Chinese Jasmine",
+        "effect": 0
+    },
+    {
+        "id": 1894,
+        "name_en": "Milk Accord",
+        "effect": 0
+    },
+    {
+        "id": 1895,
+        "name_en": "Orris Butter",
+        "effect": 0
+    },
+    {
+        "id": 1896,
+        "name_en": "Black Violet",
+        "effect": 0
+    },
+    {
+        "id": 1897,
+        "name_en": "Floral Notes",
+        "effect": 2
+    },
+    {
+        "id": 1898,
+        "name_en": "Neroli Essence",
+        "effect": 2
+    },
+    {
+        "id": 1899,
+        "name_en": "African Geranium",
+        "effect": 1
+    },
+    {
+        "id": 1900,
+        "name_en": "Spicy",
+        "effect": 0
+    },
+    {
+        "id": 1901,
+        "name_en": "Leather Accord",
+        "effect": 0
+    },
+    {
+        "id": 1902,
+        "name_en": "Tuscan Iris",
+        "effect": 0
+    },
+    {
+        "id": 1903,
+        "name_en": "Soil Tincture",
+        "effect": 0
+    },
+    {
+        "id": 1904,
+        "name_en": "Rosa Centifolia",
+        "effect": 2
+    },
+    {
+        "id": 1905,
+        "name_en": "Bourbon Geranium",
+        "effect": 0
+    },
+    {
+        "id": 1906,
+        "name_en": "Styrax Tree",
+        "effect": 0
+    },
+    {
+        "id": 1907,
+        "name_en": "Pink Rose",
+        "effect": 2
+    },
+    {
+        "id": 1909,
+        "name_en": "Acacia Wood",
+        "effect": 0
+    },
+    {
+        "id": 1910,
+        "name_en": "Linen Accord",
+        "effect": 3
+    },
+    {
+        "id": 1911,
+        "name_en": "Tea",
+        "effect": 3
+    },
+    {
+        "id": 1912,
+        "name_en": "Spanish Labdanum",
+        "effect": 0
+    },
+    {
+        "id": 1913,
+        "name_en": "Cassis",
+        "effect": 1
+    },
+    {
+        "id": 1914,
+        "name_en": "Haiti Vetiver",
+        "effect": 1
+    },
+    {
+        "id": 1915,
+        "name_en": "Herbal Note",
+        "effect": 3
+    },
+    {
+        "id": 1916,
+        "name_en": "Mimosa Absolute",
+        "effect": 2
+    },
+    {
+        "id": 1917,
+        "name_en": "Upcycled Oakwood",
+        "effect": 0
+    },
+    {
+        "id": 1918,
+        "name_en": "White Frangipani",
+        "effect": 2
+    },
+    {
+        "id": 1919,
+        "name_en": "Rose Oil",
+        "effect": 1
+    },
+    {
+        "id": 1920,
+        "name_en": "Grasse Rose",
+        "effect": 2
+    },
+    {
+        "id": 1921,
+        "name_en": "Blue Chamomile",
+        "effect": 4
+    },
+    {
+        "id": 1922,
+        "name_en": "Cardamom Pure Jungle Essence",
+        "effect": 5
+    },
+    {
+        "id": 1923,
+        "name_en": "Mint Leaf",
+        "effect": 3
+    },
+    {
+        "id": 1924,
+        "name_en": "Madagascar Ylang Ylang",
+        "effect": 2
+    },
+    {
+        "id": 1925,
+        "name_en": "Casablanca Lily",
+        "effect": 0
+    },
+    {
+        "id": 1926,
+        "name_en": "Guaiacwood",
+        "effect": 0
+    },
+    {
+        "id": 1927,
+        "name_en": "White Lotus",
+        "effect": 0
+    },
+    {
+        "id": 1928,
+        "name_en": "White Lotus",
+        "effect": 0
+    },
+    {
+        "id": 1930,
+        "name_en": "Jasmine Opoponax",
+        "effect": 2
+    },
+    {
+        "id": 1931,
+        "name_en": "Rose de Dornano",
+        "effect": 0
+    },
+    {
+        "id": 1932,
+        "name_en": "Solar Note",
+        "effect": 6
+    },
+    {
+        "id": 1933,
+        "name_en": "Blue Lavender",
+        "effect": 1
+    },
+    {
+        "id": 1934,
+        "name_en": "Iris Note",
+        "effect": 0
+    },
+    {
+        "id": 1935,
+        "name_en": "Saffron Harmony",
+        "effect": 6
+    },
+    {
+        "id": 1936,
+        "name_en": "Rose Essential",
+        "effect": 2
+    },
+    {
+        "id": 1937,
+        "name_en": "Spice Note",
+        "effect": 0
+    },
+    {
+        "id": 1938,
+        "name_en": "Pine Tree",
+        "effect": 3
+    },
+    {
+        "id": 1939,
+        "name_en": "Lily of the Valley",
+        "effect": 0
+    },
+    {
+        "id": 1940,
+        "name_en": "Indian Tuberose Rose",
+        "effect": 2
+    },
+    {
+        "id": 1941,
+        "name_en": "Fir",
+        "effect": 3
+    },
+    {
+        "id": 1942,
+        "name_en": "White Pepper",
+        "effect": 0
+    },
+    {
+        "id": 1943,
+        "name_en": "Hedione",
+        "effect": 3
+    },
+    {
+        "id": 1945,
+        "name_en": "Broom",
+        "effect": 0
+    },
+    {
+        "id": 1946,
+        "name_en": "African Orange Blossom",
+        "effect": 2
+    },
+    {
+        "id": 1947,
+        "name_en": "Wild Rose",
+        "effect": 2
+    },
+    {
+        "id": 1948,
+        "name_en": "Dew Drop",
+        "effect": 3
+    },
+    {
+        "id": 1949,
+        "name_en": "Turkish Rose Oil",
+        "effect": 1
+    },
+    {
+        "id": 1950,
+        "name_en": "Oudebin",
+        "effect": 0
+    },
+    {
+        "id": 1951,
+        "name_en": "Muguet",
+        "effect": 3
+    },
+    {
+        "id": 1952,
+        "name_en": "Salt",
+        "effect": 0
+    },
+    {
+        "id": 1953,
+        "name_en": "Madagascar Vetiver",
+        "effect": 1
+    },
+    {
+        "id": 1954,
+        "name_en": "Milk",
+        "effect": 0
+    },
+    {
+        "id": 1955,
+        "name_en": "Damask Rose Oil",
+        "effect": 1
+    },
+    {
+        "id": 1956,
+        "name_en": "Black Rose",
+        "effect": 0
+    },
+    {
+        "id": 1957,
+        "name_en": "Fig Tree Bark",
+        "effect": 0
+    },
+    {
+        "id": 1958,
+        "name_en": "Date Palm",
+        "effect": 0
+    },
+    {
+        "id": 1959,
+        "name_en": "Orchid",
+        "effect": 0
+    },
+    {
+        "id": 1960,
+        "name_en": "Mastic",
+        "effect": 0
+    },
+    {
+        "id": 1961,
+        "name_en": "Dry Fruits",
+        "effect": 0
+    },
+    {
+        "id": 1962,
+        "name_en": "Budlea",
+        "effect": 0
+    },
+    {
+        "id": 1963,
+        "name_en": "Moroccan Rose",
+        "effect": 2
+    },
+    {
+        "id": 1964,
+        "name_en": "Palo Santo",
+        "effect": 1
+    },
+    {
+        "id": 1965,
+        "name_en": "Egyptian Geranium",
+        "effect": 2
+    },
+    {
+        "id": 1966,
+        "name_en": "Sandalwood",
+        "effect": 1
+    },
+    {
+        "id": 1967,
+        "name_en": "Carrot Seed",
+        "effect": 0
+    },
+    {
+        "id": 1968,
+        "name_en": "Blue Iris",
+        "effect": 0
+    },
+    {
+        "id": 1969,
+        "name_en": "Pomarose",
+        "effect": 0
+    },
+    {
+        "id": 1970,
+        "name_en": "Iris Flower",
+        "effect": 0
+    },
+    {
+        "id": 1971,
+        "name_en": "Red Lily",
+        "effect": 0
+    },
+    {
+        "id": 1972,
+        "name_en": "Pickled Ginger",
+        "effect": 3
+    },
+    {
+        "id": 1973,
+        "name_en": "Ceylon Tea",
+        "effect": 3
+    },
+    {
+        "id": 1974,
+        "name_en": "Raisin Sprout",
+        "effect": 0
+    },
+    {
+        "id": 1975,
+        "name_en": "Red Thyme",
+        "effect": 0
+    },
+    {
+        "id": 1976,
+        "name_en": "Black Elder",
+        "effect": 0
+    },
+    {
+        "id": 1977,
+        "name_en": "Cashew Nut",
+        "effect": 0
+    },
+    {
+        "id": 1978,
+        "name_en": "Hemerocallis",
+        "effect": 0
+    },
+    {
+        "id": 1979,
+        "name_en": "Dune Grass",
+        "effect": 3
+    },
+    {
+        "id": 1980,
+        "name_en": "Linden",
+        "effect": 4
+    },
+    {
+        "id": 1981,
+        "name_en": "Pumpkin Resin",
+        "effect": 0
+    },
+    {
+        "id": 1982,
+        "name_en": "Nerd Himalayan",
+        "effect": 0
+    },
+    {
+        "id": 1983,
+        "name_en": "Orange Blush",
+        "effect": 2
+    },
+    {
+        "id": 1984,
+        "name_en": "Retinoid",
+        "effect": 0
+    },
+    {
+        "id": 1985,
+        "name_en": "Olibanum Oil",
+        "effect": 1
+    },
+    {
+        "id": 1986,
+        "name_en": "Chamomile Tea",
+        "effect": 4
+    },
+    {
+        "id": 1987,
+        "name_en": "Green Branch",
+        "effect": 3
+    },
+    {
+        "id": 1988,
+        "name_en": "Texas Fig",
+        "effect": 0
+    },
+    {
+        "id": 1989,
+        "name_en": "Sagebrush",
+        "effect": 0
+    },
+    {
+        "id": 1990,
+        "name_en": "Cedar Leaf",
+        "effect": 3
+    },
+    {
+        "id": 1991,
+        "name_en": "Cypriol(Nagarmotha)",
+        "effect": 0
+    },
+    {
+        "id": 1992,
+        "name_en": "Tequila Straw",
+        "effect": 0
+    },
+    {
+        "id": 1993,
+        "name_en": "Cashmere Wood",
+        "effect": 0
+    },
+    {
+        "id": 1994,
+        "name_en": "Jasmine Yucatenco",
+        "effect": 2
+    },
+    {
+        "id": 1995,
+        "name_en": "Pea Blossom",
+        "effect": 0
+    },
+    {
+        "id": 1996,
+        "name_en": "Bell Pepper",
+        "effect": 0
+    },
+    {
+        "id": 1997,
+        "name_en": "White Floral Bouquet",
+        "effect": 2
+    },
+    {
+        "id": 1998,
+        "name_en": "Cinnamon Bark",
+        "effect": 2
+    },
+    {
+        "id": 1999,
+        "name_en": "Thyme Oil",
+        "effect": 0
+    },
+    {
+        "id": 2000,
+        "name_en": "Vanilla Infusion",
+        "effect": 2
+    },
+    {
+        "id": 2001,
+        "name_en": "Mixed Fruits",
+        "effect": 2
+    },
+    {
+        "id": 2002,
+        "name_en": "Lavandin",
+        "effect": 1
+    },
+    {
+        "id": 2003,
+        "name_en": "Moroccan Jasmine",
+        "effect": 2
+    },
+    {
+        "id": 2004,
+        "name_en": "Hyacinth Floral",
+        "effect": 2
+    },
+    {
+        "id": 2005,
+        "name_en": "Iris Root",
+        "effect": 0
+    },
+    {
+        "id": 2006,
+        "name_en": "Flower Note",
+        "effect": 2
+    },
+    {
+        "id": 2007,
+        "name_en": "Spanish",
+        "effect": 0
+    },
+    {
+        "id": 2008,
+        "name_en": "Blue Rose",
+        "effect": 0
+    },
+    {
+        "id": 2009,
+        "name_en": "Lavender Oil",
+        "effect": 4
+    },
+    {
+        "id": 2010,
+        "name_en": "Turkish Red",
+        "effect": 0
+    },
+    {
+        "id": 2011,
+        "name_en": "French Orange Flower",
+        "effect": 2
+    },
+    {
+        "id": 2012,
+        "name_en": "Jasmine Sambac Absolute",
+        "effect": 2
+    },
+    {
+        "id": 2013,
+        "name_en": "Water Fruit & Flower",
+        "effect": 3
+    },
+    {
+        "id": 2014,
+        "name_en": "Osmanthus Absolute",
+        "effect": 2
+    },
+    {
+        "id": 2015,
+        "name_en": "Pimento Leaf",
+        "effect": 0
+    },
+    {
+        "id": 2016,
+        "name_en": "White Floral",
+        "effect": 2
+    },
+    {
+        "id": 2017,
+        "name_en": "Italian Jasmine",
+        "effect": 2
+    },
+    {
+        "id": 2018,
+        "name_en": "Tiara Flower",
+        "effect": 0
+    },
+    {
+        "id": 2019,
+        "name_en": "White Jasmine",
+        "effect": 2
+    },
+    {
+        "id": 2020,
+        "name_en": "Ozone Note",
+        "effect": 3
+    },
+    {
+        "id": 2021,
+        "name_en": "Water Jasmine",
+        "effect": 0
+    },
+    {
+        "id": 2022,
+        "name_en": "Brunia",
+        "effect": 0
+    },
+    {
+        "id": 2023,
+        "name_en": "Moss Accord",
+        "effect": 0
+    },
+    {
+        "id": 2024,
+        "name_en": "Jasmine Super Infusion",
+        "effect": 2
+    },
+    {
+        "id": 2025,
+        "name_en": "Bourbon Vetiver",
+        "effect": 1
+    },
+    {
+        "id": 2026,
+        "name_en": "Milk Chocolate",
+        "effect": 2
+    },
+    {
+        "id": 2027,
+        "name_en": "Rose D'Ornano",
+        "effect": 2
+    },
+    {
+        "id": 2028,
+        "name_en": "French Narcissus",
+        "effect": 0
+    },
+    {
+        "id": 2029,
+        "name_en": "May Rose",
+        "effect": 2
+    },
+    {
+        "id": 2030,
+        "name_en": "Mignonnette",
+        "effect": 0
+    },
+    {
+        "id": 2031,
+        "name_en": "Blossom",
+        "effect": 2
+    },
+    {
+        "id": 2032,
+        "name_en": "Cyperus",
+        "effect": 0
+    },
+    {
+        "id": 2033,
+        "name_en": "Flower Petal",
+        "effect": 2
+    },
+    {
+        "id": 2034,
+        "name_en": "Spices",
+        "effect": 0
+    },
+    {
+        "id": 2035,
+        "name_en": "White Tea Accord",
+        "effect": 3
+    },
+    {
+        "id": 2036,
+        "name_en": "Italian Lemon Leaf",
+        "effect": 3
+    },
+    {
+        "id": 2037,
+        "name_en": "Italian Bergamot",
+        "effect": 2
+    },
+    {
+        "id": 2038,
+        "name_en": "Jasmine Petals",
+        "effect": 2
+    },
+    {
+        "id": 2039,
+        "name_en": "Marine Breeze",
+        "effect": 3
+    },
+    {
+        "id": 2040,
+        "name_en": "Jasmine Absolute",
+        "effect": 2
+    },
+    {
+        "id": 2041,
+        "name_en": "Damask Rose Absolute",
+        "effect": 2
+    },
+    {
+        "id": 2042,
+        "name_en": "Lentisque Absolute",
+        "effect": 0
+    },
+    {
+        "id": 2043,
+        "name_en": "Virginian Cedarwood",
+        "effect": 1
+    },
+    {
+        "id": 2044,
+        "name_en": "King William Pear",
+        "effect": 0
+    },
+    {
+        "id": 2045,
+        "name_en": "Italian Lemon Oil",
+        "effect": 3
+    },
+    {
+        "id": 2046,
+        "name_en": "Rosemary Oil",
+        "effect": 5
+    },
+    {
+        "id": 2047,
+        "name_en": "Lavandin Oil",
+        "effect": 1
+    },
+    {
+        "id": 2048,
+        "name_en": "Cedarwood Oil",
+        "effect": 1
+    },
+    {
+        "id": 2049,
+        "name_en": "Tuscan Tobacco Leaf",
+        "effect": 0
+    },
+    {
+        "id": 2050,
+        "name_en": "Birch Wood",
+        "effect": 0
+    },
+    {
+        "id": 2051,
+        "name_en": "Lacquer Tree",
+        "effect": 0
+    },
+    {
+        "id": 2052,
+        "name_en": "Dalwood Musk",
+        "effect": 0
+    },
+    {
+        "id": 2053,
+        "name_en": "Freesia Accord",
+        "effect": 2
+    },
+    {
+        "id": 2054,
+        "name_en": "Centifolia Rose Absolute",
+        "effect": 2
+    },
+    {
+        "id": 2055,
+        "name_en": "Moonflower",
+        "effect": 0
+    },
+    {
+        "id": 2056,
+        "name_en": "English Lavender",
+        "effect": 4
+    },
+    {
+        "id": 2057,
+        "name_en": "Orange Essential Oil",
+        "effect": 2
+    },
+    {
+        "id": 2058,
+        "name_en": "Lemon Essential Oil",
+        "effect": 3
+    },
+    {
+        "id": 2059,
+        "name_en": "Petitgrain Essential Oil",
+        "effect": 1
+    },
+    {
+        "id": 2060,
+        "name_en": "Neroli Essential Oil",
+        "effect": 1
+    },
+    {
+        "id": 2061,
+        "name_en": "Patchouli Essential Oil",
+        "effect": 1
+    },
+    {
+        "id": 2062,
+        "name_en": "Sweet Mint",
+        "effect": 3
+    },
+    {
+        "id": 2063,
+        "name_en": "Cabbage Rose(Centifolia Rose)",
+        "effect": 2
+    },
+    {
+        "id": 2064,
+        "name_en": "Rose Essence",
+        "effect": 2
+    },
+    {
+        "id": 2065,
+        "name_en": "Fig Sap",
+        "effect": 0
+    },
+    {
+        "id": 2066,
+        "name_en": "Oakmoss Absolute",
+        "effect": 0
+    },
+    {
+        "id": 2067,
+        "name_en": "Distilled Lime",
+        "effect": 3
+    },
+    {
+        "id": 2068,
+        "name_en": "Ceylon Cinnamon",
+        "effect": 0
+    },
+    {
+        "id": 2069,
+        "name_en": "Fresh Spicy",
+        "effect": 3
+    },
+    {
+        "id": 2070,
+        "name_en": "Pomegranate Accord",
+        "effect": 2
+    },
+    {
+        "id": 2071,
+        "name_en": "Aromatic Wood",
+        "effect": 0
+    },
+    {
+        "id": 2072,
+        "name_en": "Japanese Cedarwood",
+        "effect": 1
+    },
+    {
+        "id": 2073,
+        "name_en": "English Chamomile Leaf",
+        "effect": 4
+    },
+    {
+        "id": 2074,
+        "name_en": "Sandalwood Accord",
+        "effect": 1
+    },
+    {
+        "id": 2075,
+        "name_en": "Italian Sweet Orange",
+        "effect": 2
+    },
+    {
+        "id": 2076,
+        "name_en": "Caramel Musk",
+        "effect": 2
+    },
+    {
+        "id": 2077,
+        "name_en": "Italian Citrus Fruit",
+        "effect": 3
+    },
+    {
+        "id": 2078,
+        "name_en": "Haitian Amyris Oil",
+        "effect": 0
+    },
+    {
+        "id": 2079,
+        "name_en": "Russian Coriander",
+        "effect": 0
+    },
+    {
+        "id": 2080,
+        "name_en": "Agarwood Oil",
+        "effect": 0
+    },
+    {
+        "id": 2081,
+        "name_en": "Moroccan Cedarwood",
+        "effect": 1
+    },
+    {
+        "id": 2082,
+        "name_en": "Aquatic Note",
+        "effect": 3
+    },
+    {
+        "id": 2083,
+        "name_en": "Rum Absolute",
+        "effect": 0
+    },
+    {
+        "id": 2084,
+        "name_en": "Campion",
+        "effect": 0
+    },
+    {
+        "id": 2085,
+        "name_en": "White Iris",
+        "effect": 0
+    },
+    {
+        "id": 2086,
+        "name_en": "Balsamic Vetiver",
+        "effect": 0
+    },
+    {
+        "id": 2087,
+        "name_en": "Ambery Accord",
+        "effect": 0
+    },
+    {
+        "id": 2088,
+        "name_en": "Benzoin Resin",
+        "effect": 1
+    },
+    {
+        "id": 2089,
+        "name_en": "Black Fig",
+        "effect": 0
+    },
+    {
+        "id": 2090,
+        "name_en": "Pine",
+        "effect": 3
+    },
+    {
+        "id": 2091,
+        "name_en": "Chestnut Accord",
+        "effect": 0
+    },
+    {
+        "id": 2092,
+        "name_en": "Red Rose Accord",
+        "effect": 2
+    },
+    {
+        "id": 2093,
+        "name_en": "Black Currant Bud",
+        "effect": 0
+    },
+    {
+        "id": 2094,
+        "name_en": "Amla",
+        "effect": 0
+    },
+    {
+        "id": 2095,
+        "name_en": "Green Sap Note",
+        "effect": 3
+    },
+    {
+        "id": 2096,
+        "name_en": "Rosa Rugosa",
+        "effect": 2
+    }
+]
