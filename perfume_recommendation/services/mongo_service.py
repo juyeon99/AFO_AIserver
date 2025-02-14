@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 import numpy as np
 import logging
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +15,8 @@ class MongoService:
             self.db = self.client["banghyang"]
 
             # 컬렉션 설정
+            self.chat_history = self.db["chat_history"]  
+            self.chat_summary = self.db["chat_summary"]  
             self.image_embeddings = self.db["image_embeddings"]
             self.text_embeddings = self.db["text_embeddings"]
 
@@ -85,6 +88,31 @@ class MongoService:
         except Exception as e:
             logger.error(f"🚨 텍스트 임베딩 로드 실패: {e}")
             return None
+        
+
+    def get_recent_chat_history(self, user_id: str, limit: int = 3) -> list:
+        """MongoDB에서 최근 대화 기록을 가져옴 (최신 3개)"""
+        chats = (
+            self.chat_history.find({"user_id": user_id})
+            .sort("timestamp", -1)
+            .limit(limit)
+        )
+        return [chat["content"] for chat in chats if "content" in chat]
+
+    def save_chat_summary(self, user_id: str, summary: str):
+        """오래된 대화 내용을 요약하여 MongoDB에 저장"""
+        summary_data = {
+            "user_id": user_id,
+            "summary": summary,
+            "timestamp": datetime.utcnow()
+        }
+        self.chat_summary.update_one({"user_id": user_id}, {"$set": summary_data}, upsert=True)
+        logger.info(f"✅ 요약 저장 완료: {user_id} - {summary[:30]}...")
+
+    def get_chat_summary(self, user_id: str) -> str:
+        """MongoDB에서 사용자의 대화 요약을 가져옴"""
+        summary = self.chat_summary.find_one({"user_id": user_id})
+        return summary["summary"] if summary else ""
 
     def __del__(self):
         """소멸자: MongoDB 연결 종료"""

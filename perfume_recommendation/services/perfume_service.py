@@ -9,6 +9,7 @@ from services.db_service import DBService
 from services.image_generation_service import ImageGenerationService
 from services.llm_img_service import LLMImageService
 from services.prompt_loader import PromptLoader
+from services.mongo_service import MongoService
 from models.img_llm_client import GPTClient
 import logging
 
@@ -75,6 +76,7 @@ class PerfumeService:
         self.llm_service = LLMService(self.gpt_client, self.db_service, self.prompt_loader)
         self.image_service = ImageGenerationService()
         self.llm_img_service = LLMImageService(self.gpt_client)
+        self.mongo_service = MongoService()
 
         self.define_nodes()
         self.graph.set_entry_point("input_processor")
@@ -596,10 +598,30 @@ class PerfumeService:
 
     def chat_handler(self, state: PerfumeState) -> PerfumeState:
         try:
+            # ✅ 요청에서 user_id 가져오기 (없으면 anonymous_user 사용)
+            user_id = state.get("user_id", "anonymous_user")
             user_input = state["user_input"]
-            logger.info(f"💬 대화 응답 생성 시작 - 입력: {user_input}")
 
-            state["response"] = self.llm_service.generate_chat_response(user_input)
+            # ✅ MongoDB에서 최근 대화 기록 가져오기 (최신 3개)
+            chat_summary = self.mongo_service.get_chat_summary(user_id)  # 요약 가져오기
+            recent_chats = self.mongo_service.get_recent_chat_history(user_id, limit=3)  # 최근 대화 가져오기
+
+            # ✅ 문맥 구성
+            context = []
+            if chat_summary:
+                context.append(f"📌 사용자 요약: {chat_summary}")  # 요약 추가
+            context.extend(recent_chats)  # 최근 대화 추가
+
+            chat_prompt = (
+                "당신은 향수 전문가입니다. 다음 대화 맥락을 참고하여 자연스럽게 이어서 답변하세요.\n\n"
+                f"{'\n'.join(context)}\n\n"
+                f"사용자: {user_input}"
+            )
+
+            # ✅ GPT로 응답 생성
+            response = self.gpt_client.generate_response(chat_prompt)
+            state["response"] = response.strip()
+
             logger.info(f"✅ 대화 응답 생성 완료: {state['response']}")
 
         except Exception as e:
@@ -607,6 +629,7 @@ class PerfumeService:
             state["response"] = "죄송합니다. 요청을 처리하는 중 오류가 발생했습니다."
 
         return state
+
     
     def generate_chat_response(self, state: PerfumeState) -> PerfumeState:
         try:
