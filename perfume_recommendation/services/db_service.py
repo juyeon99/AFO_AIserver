@@ -2,6 +2,7 @@ import logging
 import json, os
 import pymysql
 import random
+from openai import OpenAI
 from typing import List, Dict, Optional
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -567,6 +568,72 @@ class DBService:
             logger.error(f"🚨 텍스트 기반 유사 제품 조회 실패: {e}")
             return []
 
+    def query_gpt_for_therapeutic_effect(self, spice_name):
+        # spice마다 6개 카테고리(스트레스 감소[1], 행복[2], 리프레시[3], 수면[4], 집중[5], 에너지[6]) 중 어떤 효능이 있는지 또는 관련 없는지[0] GPT에 확인 요청하여 response 저장 (특정 잘 알려진 향료만 추천되는 것을 방지하기 위함)
+        prompt = f"""
+        Given the perfumery spice "{spice_name}", determine its primary effect among the following categories:
+        1. Stress Reduction (스트레스 감소)
+        2. Happiness (행복)
+        3. Refreshing (리프레시)
+        4. Sleep Aid (수면)
+        5. Concentration (집중)
+        6. Energy Boost (에너지)
+        0. Neither
+        **If none of these apply, return 0.**
+        Respond with only the corresponding number.
+        """
+
+        response = self.gpt_client.invoke(prompt).content.strip()
+
+        try:
+            return int(response)
+        except:
+            return 0  # Default to 0 if parsing fails
+
+    def load_json(self, file_path):
+        if os.path.exists(file_path):
+            with open(file_path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        return []
+    
+    def save_json(self, file_path, data):
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+
+    def save_spice_therapeutic_effect_cache(self):
+        spice_therapeutic_effect_cache_file = self.cache_path_prefix / "spice_therapeutic_effect_cache.json"
+        
+        spice_data = self.load_cached_spice_data()
+        spice_therapeutic_effect_data = self.load_json(spice_therapeutic_effect_cache_file)
+        spice_therapeutic_effect_dict = {entry["id"]: entry for entry in spice_therapeutic_effect_data}
+        
+        updated = False
+        for spice in spice_data:
+            if spice["id"] not in spice_therapeutic_effect_dict:
+                spice_therapeutic_effect_value = self.query_gpt_for_therapeutic_effect(spice["name_en"])
+                spice_therapeutic_effect_entry = {"id": spice["id"], "name_en": spice["name_en"], "effect": spice_therapeutic_effect_value}
+                spice_therapeutic_effect_data.append(spice_therapeutic_effect_entry)
+                spice_therapeutic_effect_dict[spice["name_en"]] = spice_therapeutic_effect_entry
+                updated = True
+        
+        if updated:
+            self.save_json(spice_therapeutic_effect_cache_file, spice_therapeutic_effect_data)
+            print("spice_therapeutic_effect_cache.json has been updated.")
+        else:
+            print("All spices already have an entry in spice_therapeutic_effect_cache.json.")
+
+    def load_cached_spice_therapeutic_effect_data(self):
+        """Load spice therapeutic effect data from cache."""
+        try:
+            with open(self.cache_path_prefix / "spice_therapeutic_effect_cache.json", "r", encoding="utf-8") as f:
+                return json.load(f)
+        except FileNotFoundError:
+            logger.error("spice_therapeutic_effect_cache.json 파일을 찾을 수 없습니다.")
+            return []
+        except json.JSONDecodeError:
+            logger.error("spice_therapeutic_effect_cache.json 파일을 파싱하는 중 오류가 발생했습니다.")
+            return []
+    
 # 캐싱 생성 기능 실행
 if __name__ == "__main__":
     import os

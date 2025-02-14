@@ -1,4 +1,4 @@
-import json
+import json, random
 import logging, chromadb, json
 from typing import Optional, Tuple
 from models.img_llm_client import GPTClient
@@ -42,7 +42,7 @@ class LLMService:
                 f"예시) user_input = 나 오늘 기분이 너무 우울해. 그래서 이런 기분을 떨쳐낼 수 있는 플로럴 계열의 향수를 추천해줘 (1) 향수 추천 \n"
                 f"예시) user_input = 향수를 추천받고 싶은데 뭐 좋은 거 있어? (2) 일반 대화\n"
                 f"예시) user_input = 향수를 추천해주세요. 라면 (2) 일반 대화로 분류해야 합니다.\n\n"
-                f"의도: (1) 향수 추천, (2) 일반 대화, (3) 패션 향수 추천, (4) 인테리어 기반 디퓨저 추천"
+                f"의도: (1) 향수 추천, (2) 일반 대화, (3) 패션 향수 추천, (4) 인테리어 기반 디퓨저 추천, (5) 테라피 목적 향수/디퓨저 추천"
             )
 
             intent = self.gpt_client.generate_response(intent_prompt).strip()
@@ -61,6 +61,10 @@ class LLMService:
                 # TODO: Get image caption and remove sample_image_caption
                 sample_image_caption = "The image shows a modern living room with a large window on the right side. The room has white walls and wooden flooring. On the left side of the room, there is a gray sofa and a white coffee table with a black and white patterned rug in front of it. In the center of the image, there are six black chairs arranged around a wooden dining table. The table is set with a vase and other decorative objects on it. Above the table, two large windows let in natural light and provide a view of the city outside. A white floor lamp is placed on the floor next to the sofa."
                 return "recommendation", self.generate_interior_design_based_recommendation_response(user_input, sample_image_caption)
+            
+            if "5" in intent:
+                logger.info("🌏 테라피 목적 향수 추천 실행")
+                return "recommendation", self.generate_therapeutic_purpose_recommendation_response(user_input)
 
             return "chat", self.generate_chat_response(user_input)
 
@@ -833,6 +837,312 @@ Response:"""
                 logger.error(f"❌ 예상치 못한 오류: {e}")
                 raise HTTPException(status_code=500, detail="추천 생성 실패")
 
+        except json.JSONDecodeError as e:
+            logger.error(f"JSON 파싱 오류: {e}")
+            raise HTTPException(status_code=500, detail="추천 JSON 파싱 실패")
+        except Exception as e:
+            logger.error(f"추천 생성 오류: {str(e)}")
+            raise HTTPException(status_code=500, detail="추천 생성 실패")
+
+    def decide_product_category(self, user_input: str) -> int:
+        """
+        This function uses GPT to determine whether the user is asking for a diffuser (2) or a perfume (1).
+        It returns 2 (default) if the user asks for neither or if there is an error.
+        """
+        product_category_prompt = f"""
+        Given the user input "{user_input}", determine whether the user is asking for a diffuser or a perfume recommendation. 
+        1. Perfume (향수 추천)
+        2. Diffuser (디퓨저 추천)
+
+        If the user is asking for a diffuser recommendation, return 2.
+        If the user is asking for a perfume recommendation, return 1.
+        If the request is for neither, return 2 by default.
+
+        Respond with only a number: 1 or 2.
+
+        ### Example 1:
+        Input: "기분 좋은 향기가 나는 디퓨저를 추천해줘."
+        Output: 2
+
+        ### Example 2:
+        Input: "피로를 풀어주는 향수를 추천해줘."
+        Output: 1
+
+        ### Example 3:
+        Input: "스트레스 해소에 도움이 되는 향기를 추천해줘."
+        Output: 2
+        """
+
+        category_id = 2  # Default category_id is set to 2 (for diffuser)
+        product_category_response = self.gpt_client.generate_response(product_category_prompt).strip()
+
+        if product_category_response:
+            try:
+                category_id = int(product_category_response)
+            except ValueError:
+                category_id = 2
+        logger.info(f"🎀 카테고리 id: {category_id}")
+
+        return category_id
+
+    def analyze_user_input_effect(self, user_input: str) -> list:
+        """
+        This function uses GPT to analyze the user's input and return a list of primary effects (as integers).
+        It returns [3] (Refreshing) by default in case of an error or invalid response.
+        """
+        user_input_effect_prompt = f"""
+        Given the user input "{user_input}", identify the primary effect or effects the user is seeking among the following categories:
+        1. Stress Reduction (스트레스 감소)
+        2. Happiness (행복)
+        3. Refreshing (리프레시)
+        4. Sleep Aid (수면)
+        5. Concentration (집중)
+        6. Energy Boost (에너지)
+        Respond with only a number or numbers separated by commas.
+
+        ### Example 1:
+        Input: "요즘 잠을 잘 못자는데 수면에 도움이 될만한 디퓨저를 추천해줘."
+        Output: 4
+
+        ### Example 2:
+        Input: "기분전환에 도움이 될만한 향수를 추천해줘."
+        Output: 3, 6
+
+        ### Example 3:
+        Input: "요즘 스트레스를 받았더니 좀 기분이 쳐져. 기분을 업되게 할만한 향수를 추천해줘."
+        Output: 1"""
+
+        user_input_effect_response = self.gpt_client.generate_response(user_input_effect_prompt).strip()
+        try:
+            user_input_effect_list = [int(x) for x in user_input_effect_response.split(',')]
+        except ValueError:
+            user_input_effect_list = [3]  # Default to [3] (Refreshing) if there's an error
+        logger.info(f"🎀 사용자 요구 효능 리스트: {user_input_effect_list}")
+
+        return user_input_effect_list
+
+    def generate_therapeutic_purpose_recommendation_response(self, user_input: str) -> dict:
+        """테라피 기반 향수/디퓨저 추천"""
+        try:
+            logger.info(f"🌏 테라피 기반 향수/디퓨저 추천 시작: {user_input}")
+            
+            # Get the product category
+            category_id = self.decide_product_category(user_input)
+
+            # Analyze user input effects
+            user_input_effect_list = self.analyze_user_input_effect(user_input)
+
+            if category_id == 2:
+                all_products = self.all_diffusers
+                template = self.prompt_loader.get_prompt("diffuser_recommendation")
+            else:
+                all_products = self.db_service.load_cached_perfume_data()
+                template = self.prompt_loader.get_prompt("recommendation")
+                
+            # Load note cache and spice therapeutic effect cache
+            note_cache = self.db_service.load_cached_note_data()
+            spice_effect_cache = self.db_service.load_cached_spice_therapeutic_effect_data()
+            
+            # Create a map of spice_id to effect
+            spice_effect_map = {entry["id"]: entry["effect"] for entry in spice_effect_cache}
+            
+            # Filter notes that have note_type as "MIDDLE" or "SINGLE" and match user input effects
+            valid_notes = [note for note in note_cache 
+                        if note["note_type"] in ("MIDDLE", "SINGLE") 
+                        and spice_effect_map.get(note["spice_id"]) in user_input_effect_list]
+            
+            # Get product IDs that match the valid notes
+            valid_product_ids = {note["product_id"] for note in valid_notes}
+            
+            # Filter all_products based on valid product IDs
+            filtered_products = [product for product in all_products if product["id"] in valid_product_ids]
+            random.shuffle(filtered_products)
+            selected_products = filtered_products[:20]
+            
+            purposes = {
+                1: "Stress Reduction",
+                2: "Happiness",
+                3: "Refreshing",
+                4: "Sleep Aid",
+                5: "Concentration",
+                6: "Energy Boost"
+            }
+
+            purpose = ", ".join([purposes[i] for i in user_input_effect_list])
+
+            # Create a map of spice_id to name for easy lookup
+            spice_name_map = {entry["id"]: entry["name_en"] for entry in spice_effect_cache}
+
+            # Create a mapping of product_id to its MIDDLE/SINGLE spices
+            product_spice_map = {}
+
+            for note in note_cache:
+                if note["note_type"] in ("MIDDLE", "SINGLE") and note["product_id"] in {p["id"] for p in selected_products}:
+                    product_id = note["product_id"]
+                    spice_name = spice_name_map.get(note["spice_id"], "Unknown Spice")
+
+                    if product_id not in product_spice_map:
+                        product_spice_map[product_id] = []
+                    
+                    product_spice_map[product_id].append(spice_name)
+
+            products_text = "\n".join(
+                f"{product['id']}. {product['name_kr']} ({product['brand']}): {', '.join(product_spice_map.get(product['id'], []))}"
+                for product in selected_products
+            )
+
+            print("products_text",products_text)
+
+            if category_id == 2:
+                prompt = (
+                    f"{template['description']}\n"
+                    f"{template['rules']}\n"
+                    f"사용자의 user_input: {user_input}\n\n"
+                    f"디퓨저 추천 목적: {purpose}\n\n"
+                    f"user_input과 추천 목적을 고려하여 디퓨저를 추천하세요:\n"
+                    f"{user_input}\n\n"
+                    f"디퓨저 목록(id. name (brand): spices):\n{products_text}\n"
+                    f"디퓨저의 브랜드 이름은 포함하지 않은 id,name만 포함하여 디퓨저를 2개 추천해주세요.\n\n"
+                    f"- content: user_input과 추천 목적을 바탕으로 디퓨저를 추천 목적에 맞게 추천한 이유와 사용 상황, 디퓨저들의 추천 목적에 따른 공통적인 느낌을 함께 적어주세요.\n"
+                    "아래 예시는 디퓨저의 추천 목적이 스트레스 완화일 때의 예시 입니다.\n"
+                    "아래 JSON 형식으로만 응답하세요:\n"
+                    "```json\n"
+                    "{\n"
+                    '  "recommendations": [\n'
+                    '    {\n'
+                    '      "id": 1503,\n'
+                    '      "name": "레지오 디퓨저",\n'
+                    '      "reason": "라벤더와 베르가못의 조화로운 향이 마음을 편안하게 만들어 주며, 스트레스를 완화하는 데 도움을 줍니다. 은은한 자스민이 부드러운 플로럴 감각을 더해주고, 머스크의 포근한 잔향이 안정감을 선사하여 긴장된 몸과 마음을 편안하게 감싸줍니다. 하루의 피로를 풀고 휴식을 취하기에 적합한 향으로, 조용한 공간에서 마음을 진정시키고 싶을 때 추천합니다.",\n'
+                    '      "situation": "하루 일과를 마친 후 편안한 휴식을 취하고 싶을 때, 조용한 공간에서 명상이나 독서를 하며 마음을 안정시키고 싶을 때, 또는 스트레스로 인해 쉽게 잠들기 어려운 밤에 숙면을 돕기 위해 사용"\n'
+                    '    },\n'
+                    '    {\n'
+                    '      "id": 1478,\n'
+                    '      "name": "카페 소사이어트 퍼퓸 건",\n'
+                    '      "reason": "파촐리와 앰버의 따뜻하고 깊은 향이 몸과 마음을 편안하게 감싸주며, 라벤더의 부드럽고 허브 같은 향이 긴장을 완화하고 안정감을 줍니다. 은은하면서도 차분한 분위기를 연출하여 스트레스와 피로를 덜어주고 편안한 휴식을 돕습니다.",\n'
+                    '      "situation": "하루를 마무리하며 조용한 휴식을 취하고 싶을 때, 따뜻한 조명 아래에서 독서를 하거나 명상을 할 때 사용하면 마음이 차분해지고 안정감을 느낄 수 있습니다. 또한 스트레스로 지친 날, 편안한 분위기 속에서 나만의 시간을 즐기고 싶을 때 활용하면 좋습니다."\n'
+                    '    }\n'
+                    '  ],\n'
+                    '  "content": "부드럽고 따뜻한 향이 조화를 이루어 스트레스로 지친 마음을 편안하게 감싸줍니다. 포근하고 안정적인 잔향이 공간을 감싸며 긴장을 풀어주고, 차분하고 아늑한 분위기를 연출하여 하루의 피로를 덜어주는 데 도움을 주는 향입니다."'
+                    '}\n'
+                    "```"
+                )
+            else:
+                prompt = (
+                    f"{template['description']}\n"
+                    f"{template['rules']}\n"
+                    f"사용자의 user_input: {user_input}\n\n"
+                    f"향수 추천 목적: {purpose}\n\n"
+                    f"user_input과 추천 목적을 고려하여 향수를 추천하세요:\n"
+                    f"{user_input}\n\n"
+                    f"향수 목록(id. name (brand): spices):\n{products_text}\n"
+                    f"향수의 브랜드 이름은 포함하지 않은 id,name만 포함하여 향수를 3개 추천해주세요.\n\n"
+                    f"- content: user_input과 추천 목적을 바탕으로 향수를 추천 목적에 맞게 추천한 이유와 사용 상황, 향수들의 추천 목적에 따른 공통적인 느낌을 함께 적어주세요.\n"
+                    "아래 예시는 향수의 추천 목적이 스트레스 완화일 때의 예시 입니다.\n"
+                    "아래 JSON 형식으로만 응답하세요:\n"
+                    "```json\n"
+                    "{\n"
+                    '  "recommendations": [\n'
+                    '    {\n'
+                    '      "id": 403,\n'
+                    '      "name": "쟈도르 롤러 펄 오 드 퍼퓸",\n'
+                    '      "reason": "부드럽고 우아한 플로럴 향이 감각적으로 퍼지며, 긴장된 마음을 편안하게 진정시키는 데 도움을 줍니다. 풍성하고 따뜻한 꽃향기가 포근한 감성을 자아내어 스트레스 속에서도 안정감을 느낄 수 있도록 돕습니다. 자연스럽고 조화로운 향의 흐름이 마음을 부드럽게 어루만져 하루의 피로를 풀고 평온한 분위기를 연출합니다.",\n'
+                    '      "situation": "하루를 마무리하며 편안한 시간을 보내고 싶을 때 사용하면 좋습니다. 저녁 휴식 시간에 가볍게 발라 깊은 숨을 들이마시면, 부드러운 꽃향기가 마음을 차분하게 감싸주며 스트레스를 완화하는 데 도움을 줍니다. 또한 따뜻한 차 한 잔과 함께 조용한 시간을 보내거나, 스파나 목욕 후 몸과 마음을 안정시키고 싶을 때 사용하면 더욱 편안한 분위기를 느낄 수 있습니다."\n'
+                    '    },\n'
+                    '    {\n'
+                    '      "id": 765,\n'
+                    '      "name": "위스퍼 인 라이브러리 오 드 뚜왈렛",\n'
+                    '      "reason": "따뜻하고 부드러운 바닐라 향이 감각을 편안하게 감싸주며, 우디 노트와 시더우드의 차분한 깊이가 안정감을 더해줍니다. 은은한 페퍼의 가벼운 스파이시함이 부담스럽지 않게 조화를 이루어, 따뜻하면서도 고요한 분위기를 연출합니다. 이 향은 복잡한 생각을 정리하고 마음의 긴장을 풀어주는 데 도움을 주며, 조용한 순간을 더욱 편안하고 아늑하게 만들어줍니다.",\n'
+                    '      "situation": "고요한 분위기 속에서 마음을 차분하게 가라앉히고 싶을 때 사용하기 좋습니다. 독서하며 깊은 몰입감을 느끼고 싶을 때, 비 오는 날 창가에서 따뜻한 차 한 잔과 함께 여유로운 시간을 보내고 싶을 때, 혹은 하루를 마무리하며 조용한 음악과 함께 긴장을 풀고 편안한 휴식을 취하고 싶을 때 어울리는 향입니다."\n'
+                    '    }\n'
+                    '    {\n'
+                    '      "id": 694,\n'
+                    '      "name": "베르가못 22 오 드 퍼퓸",\n'
+                    '      "reason": "베르가못과 자몽의 상쾌하고 신선한 향이 기분을 전환시키고, 오렌지 블로섬과 페티그레인에서 느껴지는 부드러운 꽃향기가 마음을 편안하게 만들어 줍니다. 또한, 머스크와 앰버가 조화를 이루어 따뜻하고 안정적인 분위기를 조성하며, 시더와 베티버의 깊이 있는 향이 마음을 차분하게 안정시켜 스트레스를 해소하는 데 도움을 줍니다. 이 향수는 복잡한 생각을 정리하고 평온한 상태로 이끌어주는 효과가 있습니다.",\n'
+                    '      "situation": "업무나 중요한 일로 인한 스트레스를 해소하고 싶을 때 혹은 긴장을 풀고 싶을 때 사용하면 좋습니다. 또한, 차 한 잔과 함께 여유로운 시간을 보내고 싶을 때나, 편안한 휴식을 취하고 싶을 때 이 향수를 뿌리면, 상쾌하면서도 안정감 있는 향이 마음을 진정시키고 편안한 분위기를 만들어 줍니다."\n'
+                    '    }\n'
+                    '  ],\n'
+                    '  "content": "부드럽고 따뜻한 향들이 감각을 감싸며, 고요하고 차분한 분위기를 만들어 마음을 안정시킵니다. 향들이 자연스럽게 퍼지며 긴장을 풀어주고, 편안하고 평온한 시간을 만들어 줍니다. 이 디퓨저들은 복잡한 생각을 정리하고 마음을 진정시키는 데 도움을 주며, 하루의 스트레스를 해소할 수 있는 최적의 선택이 될 것입니다."'
+                    '}\n'
+                    "```"
+                )
+            
+            try:
+                logger.info("🔄 향수/디퓨저 추천 처리 시작")
+                
+                # 1. GPT 응답 받기
+                logger.info("🤖 GPT 응답 요청")
+                response_text = self.gpt_client.generate_response(prompt)
+                logger.debug(f"📝 GPT 원본 응답:\n{response_text}")
+
+                # 2. JSON 파싱
+                try:
+                    # 마크다운 코드 블록 제거
+                    if '```' in response_text:
+                        parts = response_text.split('```')
+                        for part in parts:
+                            if '{' in part and '}' in part:
+                                response_text = part.strip()
+                                if response_text.startswith('json'):
+                                    response_text = response_text[4:].strip()
+                                break
+
+                    # JSON 구조 추출
+                    start_idx = response_text.find('{')
+                    end_idx = response_text.rfind('}') + 1
+                    if (start_idx == -1 or end_idx <= start_idx):
+                        raise ValueError("JSON 구조를 찾을 수 없습니다")
+                        
+                    json_str = response_text[start_idx:end_idx]
+                    logger.debug(f"📋 추출된 JSON:\n{json_str}")
+                    
+                    gpt_response = json.loads(json_str)
+                    logger.info("✅ JSON 파싱 성공")
+
+                except json.JSONDecodeError as e:
+                    logger.error(f"❌ JSON 파싱 오류: {e}")
+                    logger.error(f"📄 파싱 시도한 텍스트:\n{json_str if 'json_str' in locals() else 'None'}")
+                    raise ValueError("JSON 파싱 실패")
+
+                # 3. 추천 목록 생성
+                recommendations = []
+                for rec in gpt_response.get("recommendations", []):
+                    matched_product = next(
+                        (d for d in selected_products if d["id"] == rec["id"]), 
+                        None
+                    )
+
+                    if matched_product:
+                        recommendations.append({
+                            "id": matched_product["id"],
+                            "name": matched_product["name_kr"], 
+                            "brand": matched_product["brand"],
+                            "reason": rec.get("reason", "추천 이유 없음"),
+                            "situation": rec.get("situation", "사용 상황 없음")
+                        })
+
+                if not recommendations:
+                    logger.error("❌ 유효한 추천 결과 없음")
+                    raise ValueError("유효한 추천 결과가 없습니다")
+
+                # 4. 공통 line_id 찾기
+                common_line_id = self.get_common_line_id(recommendations)
+                logger.info(f"✅ 공통 계열 ID: {common_line_id}")
+
+                response_data = {
+                    "recommendations": recommendations,
+                    "content": gpt_response.get("content", "추천 분석 실패"),
+                    "line_id": common_line_id
+                }
+
+                return response_data
+
+            except ValueError as ve:
+                logger.error(f"❌ 추천 처리 오류: {ve}")
+                raise HTTPException(status_code=400, detail=str(ve))
+            except Exception as e:
+                logger.error(f"❌ 예상치 못한 오류: {e}")
+                raise HTTPException(status_code=500, detail="추천 생성 실패")
+            
         except json.JSONDecodeError as e:
             logger.error(f"JSON 파싱 오류: {e}")
             raise HTTPException(status_code=500, detail="추천 JSON 파싱 실패")
