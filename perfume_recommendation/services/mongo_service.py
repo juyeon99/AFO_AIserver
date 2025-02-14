@@ -3,6 +3,7 @@ import numpy as np
 import logging
 from datetime import datetime
 from models.img_llm_client import GPTClient
+from services.prompt_loader import PromptLoader
 import os
 logger = logging.getLogger(__name__)
 
@@ -15,7 +16,8 @@ class MongoService:
         try:
             self.client = MongoClient(MONGO_URI)
             self.db = self.client["banghyang"]
-            self.gpt_client = GPTClient()
+            self.prompt_loader = PromptLoader("models/chat_prompt_template.json")
+            self.gpt_client = GPTClient(self.prompt_loader)
 
             # 컬렉션 설정
             self.chat_history = self.db["chat_history"]  
