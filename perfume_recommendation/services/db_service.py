@@ -13,9 +13,12 @@ from perfume_recommendation.models.base_model import Base, Product, Note, Spice,
 
 logger = logging.getLogger(__name__)
 
+database_url = os.getenv("DATABASE_URL")
+pool_recycle_prot = os.getenv("POOL_RECYCLE")
+
 # SQLAlchemy 설정
-DATABASE_URL = "mysql+pymysql://banghyang:banghyang@192.168.0.182:3306/banghyang"
-engine = create_engine(DATABASE_URL, pool_recycle=3600)
+DATABASE_URL = database_url
+engine = create_engine(DATABASE_URL, pool_recycle=pool_recycle_prot)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 def get_db():
