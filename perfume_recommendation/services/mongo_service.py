@@ -3,15 +3,15 @@ import numpy as np
 import logging
 from datetime import datetime
 from models.img_llm_client import GPTClient
-
-
+import os
 logger = logging.getLogger(__name__)
 
+mongouri = os.getenv("MONGO_URI")
 
 class MongoService:
     def __init__(self):
         # MongoDB 연결 설정
-        MONGO_URI = "mongodb://banghyang:banghyang@192.168.0.182:27017/banghyang?authSource=banghyang"
+        MONGO_URI = mongouri
         try:
             self.client = MongoClient(MONGO_URI)
             self.db = self.client["banghyang"]
