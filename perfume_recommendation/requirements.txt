@@ -1,21 +1,35 @@
 # FastAPI 및 웹 서버
 fastapi
 uvicorn
+httpx
+requests
+bcrypt
 
 # 데이터 처리 및 머신러닝
 pandas
 numpy
-scikit-learn
 torch
-transformers
 sentence-transformers
+transformers
+scikit-learn
+faiss
+
+# LangChain 관련
+langchain
+langchain_openai
+openai
+huggingface-hub
 
 # 이미지 및 HTTP 요청 처리
-Pillow
 requests
+opencv-python-headless
+rembg
+Pillow
 
 # 데이터베이스 ORM
 SQLAlchemy
+PyMySQL
+pymongo
 
 # 환경 변수 및 파일 처리
 python-multipart
@@ -32,5 +46,10 @@ pytest-cov
 black
 isort
 flake8
+
+# 데이터 처리
+pydantic
+jsonschema
+orjson
 
 # pip install -r requirements.txt
