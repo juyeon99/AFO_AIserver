@@ -84,6 +84,29 @@ class PerfumeRecommender:
             top_n
         )
    
+    def _get_threshold_values(self, product_count):
+        """
+        북마크 수에 따른 main accord 개수와 스파이스 임계값을 반환
+
+        Args:
+            product_count (int): 북마크된 향수 개수
+
+        Returns:
+            tuple: (accord_count, spice_threshold)
+                - accord_count (int): 선택할 main accord 개수
+                - spice_threshold (float): 스파이스 선택 임계 비율
+        """
+        product_count = int(product_count)
+        if product_count <= 3:
+            return 1, 0.5  # 1개 선택, 50% 이상 등장
+        elif product_count <= 6:
+            return 2, 0.4  # 2개 선택, 40% 이상 등장
+        elif product_count <= 10:
+            return 3, 0.3  # 3개 선택, 30% 이상 등장
+        else:
+            return 4, 0.2  # 4개 선택, 20% 이상 등장
+        
+
     def _extract_common_features(self, products, db):
         """
         북마크된 향수들의 공통 특성(향과 스파이스)을 추출
@@ -94,7 +117,7 @@ class PerfumeRecommender:
             
         Returns:
             dict: {
-                'main_accords': [상위 2개 main_accord],
+                'main_accords': [상위 N개 main_accord],
                 'spices': [자주 등장한 스파이스 리스트]
             }
         """
@@ -128,8 +151,13 @@ class PerfumeRecommender:
                 else:
                     spices[spice.name_kr] = 1
 
-        # 빈도수에 따른 임계값 설정 (전체 북마크된 향수 중 30% 이상에서 등장한 향료 선택)
-        threshold = len(products) * 0.3
+        # 북마크 수에 따른 임계값 설정
+        product_count = len(products)
+        accord_count, spice_threshold = self._get_threshold_values(product_count)
+        
+        # accord_count 최대값 제한
+        accord_count = min(accord_count, len(set(p.main_accord for p in products)))
+        threshold = product_count * spice_threshold
         
         # main_accord 빈도수 로깅
         logger.info(f"\n=== Main Accord 빈도수 ===")
@@ -142,15 +170,15 @@ class PerfumeRecommender:
             logger.info(f"- {spice}: {count}회")
         
         result = {
-            'main_accords': [k for k, v in sorted(main_accords.items(), key=lambda x: x[1], reverse=True)[:2]],
+            'main_accords': [k for k, v in sorted(main_accords.items(), key=lambda x: x[1], reverse=True)[:accord_count]],
             'spices': [k for k, v in sorted(spices.items(), key=lambda x: x[1], reverse=True) 
                     if v >= threshold]
         }
         
         # 최종 선택된 공통 특성 로깅
         logger.info(f"\n=== 선택된 공통 특성 ===")
-        logger.info(f"상위 Main Accords: {', '.join(result['main_accords'])}")
-        logger.info(f"주요 스파이스 (빈도수 {threshold:.1f} 이상): {', '.join(result['spices'])}")
+        logger.info(f"상위 {accord_count}개 Main Accords: {', '.join(result['main_accords'])}")
+        logger.info(f"주요 스파이스 (빈도수 {threshold:.1f}회({spice_threshold*100}%) 이상): {', '.join(result['spices'])}")
         logger.info("=====================\n")
         
         return result
@@ -167,7 +195,7 @@ class PerfumeRecommender:
             top_n (int): 추천할 향수 개수
             
         Returns:
-            list: 추천된 향수 정보 리스트 (유사도 점수 순으로 정렬됨)
+            list: 추천된 향수 정보 리스트 (최종 점수 순으로 정렬됨)
         """
         bookmarked_ids = [p.id for p in bookmarked_products]
         
@@ -198,11 +226,14 @@ class PerfumeRecommender:
         embeddings = []
         
         for product_data in grouped_products.values():
+            # 제품 정보 조회
             product = product_data['product']
             spice_info = sorted(product_data['spices'])  # set을 정렬된 리스트로 변환
             
             # 각 제품의 특성을 텍스트로 변환
             text = f"Main accords: {product.main_accord} Spices: {', '.join(spice_info)}"
+            
+            # 임베딩 생성
             embedding = self._get_embedding(text)
             
             texts.append(text)
@@ -219,21 +250,47 @@ class PerfumeRecommender:
         if not embeddings:
             return []
             
-        # 유사도 계산
+        # embeddings 리스트를 NumPy 배열로 변환
         product_embeddings = np.array(embeddings)
+        
+        # 코사인 유사도 계산
         similarities = cosine_similarity([target_embedding], product_embeddings)[0]
         
         # 각 제품에 대한 추천 정보 생성
         candidates = []
         for i, (similarity, info) in enumerate(zip(similarities, product_info)):
+            # 해당 향수의 특성이 얼마나 다양한지 계산
+            diversity_score = 0
+            
+            # 디버깅을 위한 로그 추가
+            logger.info(f"main_accord type: {type(info['main_accord'])}")
+            logger.info(f"main_accords type: {type(common_features['main_accords'])}")
+            logger.info(f"main_accord value: {info['main_accord']}")
+            logger.info(f"main_accords value: {common_features['main_accords']}")
+
+            # 타입 체크 추가
+            if info["main_accord"] is not None and info["main_accord"] not in common_features["main_accords"]:
+                diversity_score += 0.1
+                        
+            # 공통된 spices의 비율이 낮을수록 다양성 점수 증가
+            common_spices = set(info["spices"]) & set(common_features["spices"])
+            if common_spices:
+                spice_overlap_ratio = len(common_spices) / len(common_features["spices"])
+                diversity_score += 0.1 * (1 - spice_overlap_ratio)
+            
+            # 최종 점수는 유사도(75%)와 다양성(25%)의 가중 평균
+            final_score = (similarity * 0.75) + (diversity_score * 0.25)
+            
             candidates.append({
-                **info,
-                "similarity_score": float(similarity),
-                "common_features": {
-                    "main_accord": info["main_accord"] in common_features["main_accords"],
-                    "spices": [spice for spice in info["spices"] if spice in common_features["spices"]]
+            **info,
+            "similarity_score": float(similarity),
+            "diversity_score": float(diversity_score),
+            "final_score": float(final_score),
+            "common_features": {
+                "main_accord": str(info["main_accord"]) in [str(x) for x in common_features["main_accords"]],
+                "spices": [spice for spice in info["spices"] if str(spice) in [str(x) for x in common_features["spices"]]]
                 }
             })
         
-        # 유사도 점수가 높은 순으로 정렬하여 상위 n개 반환
-        return sorted(candidates, key=lambda x: x["similarity_score"], reverse=True)[:top_n]
+        # 최종 점수로 정렬하여 상위 n개 반환
+        return sorted(candidates, key=lambda x: x["final_score"], reverse=True)[:top_n]
