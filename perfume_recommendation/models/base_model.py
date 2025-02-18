@@ -84,5 +84,5 @@ class Bookmark(Base):
 
    id = Column(Integer, primary_key=True, index=True)
    time_stamp = Column(DateTime, nullable=False)
-   member_id = Column(String(255), nullable=False)
+   member_id = Column(Integer, nullable=False)
    product_id = Column(Integer, ForeignKey("product.id"), nullable=False)

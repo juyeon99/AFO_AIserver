@@ -15,7 +15,7 @@ from perfume_recommendation.models.base_model import Base, Product, Note, Spice,
 logger = logging.getLogger(__name__)
 
 database_url = os.getenv("DATABASE_URL")
-pool_recycle_prot = os.getenv("POOL_RECYCLE")
+pool_recycle_prot = int(os.getenv("POOL_RECYCLE"))
 
 # SQLAlchemy 설정
 DATABASE_URL = database_url

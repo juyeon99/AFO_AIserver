@@ -17,13 +17,12 @@ async def get_mongo_service():
 @router.get("/recommendations/{member_id}")
 async def get_recommendations(
     member_id: int,
-    limit: int = 5,
     db: Session = Depends(get_db),
     mongo_service: MongoService = Depends(get_mongo_service)
 ):
     try:
         recommender = PerfumeRecommender(mongo_service)
-        recommendations = recommender.get_recommendations(member_id, db, top_n=limit)
+        recommendations = recommender.get_recommendations(member_id, db, top_n=5)
         return recommendations
     except Exception as e:
         raise HTTPException(
