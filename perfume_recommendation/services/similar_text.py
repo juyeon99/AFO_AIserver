@@ -4,7 +4,10 @@ from functools import lru_cache
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from .db_service import Product, Note
-from perfume_recommendation.embedding_utils import save_text_embedding, load_text_embedding  # ✅ 캐시 추가
+from perfume_recommendation.embedding_utils import (
+    save_text_embedding,
+    load_text_embedding,
+)  # ✅ 캐시 추가
 
 # ✅ 텍스트 임베딩을 위한 모델 설정
 # mpnet: Microsoft의 MPNet 모델 (성능이 좋지만 상대적으로 느림)
@@ -12,8 +15,8 @@ from perfume_recommendation.embedding_utils import save_text_embedding, load_tex
 TEXT_MODEL_TYPE = "mpnet"
 # 각 모델의 Hugging Face 저장소 경로
 TEXT_MODEL_CONFIG = {
-    "mpnet": "sentence-transformers/all-mpnet-base-v2",     # 다국어 지원, SOTA 성능
-    "minilm": "sentence-transformers/all-MiniLM-L6-v2",     # 빠른 처리 속도
+    "mpnet": "sentence-transformers/all-mpnet-base-v2",  # 다국어 지원, SOTA 성능
+    "minilm": "sentence-transformers/all-MiniLM-L6-v2",  # 빠른 처리 속도
 }
 
 # 선택된 모델로 텍스트 임베딩 모델 초기화
@@ -23,17 +26,20 @@ text_model = SentenceTransformer(TEXT_MODEL_CONFIG[TEXT_MODEL_TYPE])
 def get_similar_text_embedding(text: str):
     """
     텍스트의 임베딩 벡터를 생성하는 함수
-    
+
     Args:
         text (str): 임베딩할 텍스트
-        
+
     Returns:
         numpy.ndarray: 텍스트의 임베딩 벡터
-        
+
     Note:
         - 캐시에서 먼저 임베딩을 찾아보고, 없으면 새로 생성
         - 생성된 임베딩은 자동으로 캐시에 저장됨
     """
+    # None이나 빈 문자열 처리
+    if not text:
+        text = ""  # 빈 문자열로 변환
 
     # ✅ 캐시에서 임베딩 확인
     cached_embedding = load_text_embedding(text)
@@ -52,12 +58,12 @@ def get_similar_text_embedding(text: str):
 def find_similar_texts(product_id: int, db: Session, top_n: int = 5):
     """
     텍스트 기반으로 유사한 향수를 찾는 함수
-    
+
     Args:
         product_id (int): 기준이 되는 향수의 ID
         db (Session): 데이터베이스 세션
         top_n (int): 반환할 유사 향수의 개수
-    
+
     Returns:
         list: 유사도가 높은 순으로 정렬된 향수 목록 [{product_id, similarity}, ...]
     """
@@ -68,17 +74,19 @@ def find_similar_texts(product_id: int, db: Session, top_n: int = 5):
 
     # ✅ 2. 기준 제품의 노트 정보 조회 (top, middle, base notes)
     notes = db.query(Note).filter(Note.product_id == product_id).all()
-    note_info = " ".join([note.note_type for note in notes])
+    note_info = " ".join([note.note_type for note in notes]) if notes else ""
 
     # ✅ 3. 기준 제품의 메인 어코드와 설명 정보 결합
-    product_info = f"{product.main_accord} {product.content if product.content else ''}"
+    main_accord = product.main_accord if product.main_accord else ""
+    content = product.content if product.content else ""
+    product_info = f"{main_accord} {content}".strip()
 
     # ✅ 4. 기준 제품의 임베딩 생성 (노트, 메인 어코드, 설명에 가중치 적용)
     target_embedding = np.mean(
         [
-            get_similar_text_embedding(note_info) * 2.0,            # 노트 정보 (2배 가중치)
-            get_similar_text_embedding(product.main_accord) * 1.5,  # 메인 어코드 (1.5배 가중치)
-            get_similar_text_embedding(product_info),               # 제품 설명 (기본 가중치)
+            get_similar_text_embedding(note_info) * 2.0,  # 노트 정보 (2배 가중치)
+            get_similar_text_embedding(main_accord)* 1.5,  # 메인 어코드 (1.5배 가중치)
+            get_similar_text_embedding(product_info),  # 제품 설명 (기본 가중치)
         ],
         axis=0,
     )
@@ -87,23 +95,27 @@ def find_similar_texts(product_id: int, db: Session, top_n: int = 5):
     similarities = []
     all_products = (
         db.query(Product)
-        .filter(Product.category_id == 1, Product.id != product_id)  # 향수 카테고리만, 대상 제품 제외
+        .filter(
+            Product.category_id == 1, Product.id != product_id
+        )  # 향수 카테고리만, 대상 제품 제외
         .all()
     )
 
     for other_product in all_products:
         # 다른 제품의 노트 정보
         other_notes = db.query(Note).filter(Note.product_id == other_product.id).all()
-        other_note_info = " ".join([note.note_type for note in other_notes])
+        other_note_info = " ".join([note.note_type for note in other_notes]) if other_notes else ""
 
         # 다른 제품의 메인 어코드와 설명 정보
-        other_product_info = f"{other_product.main_accord} {other_product.content if other_product.content else ''}"
+        other_main_accord = other_product.main_accord if other_product.main_accord else ""
+        other_content = other_product.content if other_product.content else ""
+        other_product_info = f"{other_main_accord} {other_content}".strip()
 
         # 다른 제품의 임베딩 생성 (동일한 가중치 적용)
         other_embedding = np.mean(
             [
                 get_similar_text_embedding(other_note_info) * 2.0,
-                get_similar_text_embedding(other_product.main_accord) * 1.5,
+                get_similar_text_embedding(other_main_accord) * 1.5,
                 get_similar_text_embedding(other_product_info),
             ],
             axis=0,
