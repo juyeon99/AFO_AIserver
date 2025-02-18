@@ -78,3 +78,11 @@ class Review(Base):
     time_stamp = Column(DateTime, nullable=False)
     member_id = Column(String(255), nullable=False)
     product_id = Column(Integer, ForeignKey("product.id"), nullable=False)
+    
+class Bookmark(Base):
+   __tablename__ = "bookmark"
+
+   id = Column(Integer, primary_key=True, index=True)
+   time_stamp = Column(DateTime, nullable=False)
+   member_id = Column(Integer, nullable=False)
+   product_id = Column(Integer, ForeignKey("product.id"), nullable=False)

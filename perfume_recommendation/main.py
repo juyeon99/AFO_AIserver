@@ -2,8 +2,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from fastapi import FastAPI
-from perfume_recommendation.routers import llm_router, image_processing_router, image_generation_router, image_generation_description_router, diffuser_router, similar , perfume_router
-from perfume_recommendation.routers import llm_router, image_processing_router, image_generation_router, image_generation_description_router, diffuser_router, similar, review_summary_router
+from perfume_recommendation.routers import llm_router, image_processing_router, image_generation_router, image_generation_description_router, diffuser_router, similar, review_summary_router, bookmark_router, perfume_router
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from fastapi.staticfiles import StaticFiles
@@ -45,6 +44,7 @@ app.include_router(diffuser_router.router, prefix="/diffuser", tags=["Diffuser"]
 app.include_router(similar.router, prefix="/similar", tags=["Similar"])
 app.include_router(perfume_router.router, prefix="/perfume", tags=["Perfume"])
 app.include_router(review_summary_router.router, prefix="/review", tags=["Review"])
+app.include_router(bookmark_router.router, prefix="/bookmark", tags=["Bookmark"])
 
 # Uvicorn 실행을 위한 엔트리 포인트
 if __name__ == "__main__":
