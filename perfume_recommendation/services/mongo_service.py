@@ -86,7 +86,7 @@ class MongoService:
         try:
             result = self.text_embeddings.find_one({"identifier": text})
             if result:
-                logger.info(f"✅ 텍스트 임베딩 로드 완료: {text}")
+                # logger.info(f"✅ 텍스트 임베딩 로드 완료: {text}")
                 return np.array(result["embedding"])
             logger.info(f"❌ 텍스트 임베딩 없음: {text}")
             return None
