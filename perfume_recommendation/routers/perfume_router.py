@@ -1,18 +1,20 @@
 from fastapi import APIRouter, Depends
-from services.perfume_service import PerfumeService
+from services.perfume_service import ProductService
 from pydantic import BaseModel
+from typing import Optional
 
 router = APIRouter()
 
 class UserRequest(BaseModel):
     user_input: str
+    image_caption: Optional[str] = None
 
-def get_perfume_service():
-    return PerfumeService()
+def get_product_service():
+    return ProductService()
 
 @router.post("/recommend")
-async def recommend_perfume(
+async def recommend_product(
     request: UserRequest, 
-    perfume_service: PerfumeService = Depends(get_perfume_service)
+    product_service: ProductService = Depends(get_product_service)
 ):
-    return perfume_service.run(request.user_input)
+    return product_service.run(request.user_input, request.image_caption)
