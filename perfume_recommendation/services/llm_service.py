@@ -882,7 +882,7 @@ Response:"""
         It returns 2 (default) if the user asks for neither or if there is an error.
         """
         product_category_prompt = f"""
-        Given the user input "{user_input}", determine whether the user is asking for a diffuser or a perfume recommendation. 
+        Given the user input, determine whether the user is asking for a diffuser or a perfume recommendation. 
         1. Perfume (향수 추천)
         2. Diffuser (디퓨저 추천)
 
@@ -893,16 +893,23 @@ Response:"""
         Respond with only a number: 1 or 2.
 
         ### Example 1:
-        Input: "기분 좋은 향기가 나는 디퓨저를 추천해줘."
-        Output: 2
+        User input: "기분 좋은 향기가 나는 디퓨저를 추천해줘."
+        Response: 2
 
         ### Example 2:
-        Input: "피로를 풀어주는 향수를 추천해줘."
-        Output: 1
+        User input: "피로를 풀어주는 향수를 추천해줘."
+        Response: 1
 
         ### Example 3:
-        Input: "스트레스 해소에 도움이 되는 향기를 추천해줘."
-        Output: 2
+        User input: "스트레스 해소에 도움이 되는 제품을 추천해줘."
+        Response: 2
+
+        ### Important Rule:
+        If the user input mentions 향수 (perfume), return 1.
+        If the input mentions 디퓨저 (diffuser) or does not mention either, return 2.
+
+        User input: {user_input}
+        Response: 
         """
 
         category_id = 2  # Default category_id is set to 2 (for diffuser)
