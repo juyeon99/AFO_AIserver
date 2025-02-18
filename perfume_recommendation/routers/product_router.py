@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from services.perfume_service import ProductService
+from services.product_service import ProductService
 from pydantic import BaseModel
 from typing import Optional
 

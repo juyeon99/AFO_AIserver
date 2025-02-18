@@ -51,6 +51,7 @@ class ProductState(TypedDict):
     processed_input: str  
     next_node: str
     recommendations: Optional[list]
+    recommendation_type: Optional[int]
     spices: Optional[list]
     image_path: Optional[str]
     response: Optional[str]
@@ -229,10 +230,10 @@ class ProductService:
 
             type_prompt = (
                 f"Please divide the perfume/diffuser recommendations based on the following criteria:\n\n"
-                f"1. **Fashion-based Recommendation (3)**: Recommend a fragrance that matches the style of clothes the person is wearing. This should be based on the image description of the outfit. If the image_caption describes mostly the person and their outfit, it should return 3.\n"
-                f"2. **General Recommendation (4)**: Recommend a fragrance based on the user's preferred scent.\n"
-                f"3. **Interior Description-based Recommendation (5)**: Recommend a fragrance based on the image description of the room or space. If the image_caption describes mostly the space or interior, it should return 5.\n"
-                f"4. **Therapy-based Recommendation (6)**: Recommend a fragrance based on the user's mood or emotional state. Categories include:\n"
+                f"1. **General Recommendation (1)**: Recommend a fragrance based on the user's preferred scent.\n"
+                f"2. **Fashion-based Recommendation (2)**: Recommend a fragrance that matches the style of clothes the person is wearing. This should be based on the image description of the outfit. If the image_caption describes mostly the person and their outfit, it should return 2.\n"
+                f"3. **Interior Description-based Recommendation (3)**: Recommend a fragrance based on the image description of the room or space. If the image_caption describes mostly the space or interior, it should return 3.\n"
+                f"4. **Therapy-based Recommendation (4)**: Recommend a fragrance based on the user's mood or emotional state. Categories include:\n"
                 f"    - 스트레스 감소 (Stress Relief)\n"
                 f"    - 행복 (Happiness)\n"
                 f"    - 리프레시 (Refreshment)\n"
@@ -241,22 +242,22 @@ class ProductService:
                 f"    - 에너지 (Energy)\n\n"
                 
                 f"### Examples)\n"
-                f"1) **Fashion-based Recommendation**: \n"
+                f"1) **General Recommendation**: \n"
+                f"    user_input = '상큼한 향이 나는 향수를 추천해줘'\n"
+                f"    response: 1\n\n"
+                f"2) **Fashion-based Recommendation**: \n"
                 f"    user_input = '오늘 입은 옷에 어울리는 향수가 필요해'\n"
                 f"    image_caption = 'The image shows a young man walking on a street. He is wearing a grey coat with a black and white checkered pattern, a navy blue shirt, beige trousers, and brown shoes. He has short dark hair and is looking off to the side with a serious expression on his face. The street is lined with buildings and there are cars parked on the side. The sky is overcast and the overall mood of the image is casual and relaxed.'\n"
-                f"    response: 3\n\n"
-                f"2) **General Recommendation**: \n"
-                f"    user_input = '상큼한 향이 나는 향수를 추천해줘'\n"
-                f"    response: 4\n\n"
+                f"    response: 2\n\n"
                 f"3) **Interior Description-based Recommendation**: \n"
                 f"    user_input = '시트러스 향이 나는 향수를 추천해주세요.'\n"
                 f"    image_caption = 'The image shows a modern living room with a large window on the right side. The room has white walls and wooden flooring. On the left side of the room, there is a gray sofa and a white coffee table with a black and white patterned rug in front of it. In the center of the image, there are six black chairs arranged around a wooden dining table. The table is set with a vase and other decorative objects on it. Above the table, two large windows let in natural light and provide a view of the city outside. A white floor lamp is placed on the floor next to the sofa.'\n"
-                f"    response: 5\n\n"
+                f"    response: 3\n\n"
                 f"4) **Therapy-based Recommendation**: \n"
                 f"    user_input = '스트레스 해소에 좋은 디퓨저를 추천해주세요'\n"
-                f"    response: 6\n\n"
+                f"    response: 4\n\n"
 
-                f"### Intention: (3) Fashion Recommendation, (4) General Recommendation, (5) Interior Description-based Recommendation, (6) Therapy-based Recommendation\n\n"
+                f"### Intention: (1) General Recommendation, (2) Fashion Recommendation, (3) Interior Description-based Recommendation, (4) Therapy-based Recommendation\n\n"
                 f"### user_input = {user_input}"
             )
 
@@ -267,27 +268,32 @@ class ProductService:
             recommendation_type = self.gpt_client.generate_response(type_prompt).strip()
             logger.info(f"Detected recommendation type: {recommendation_type}")
 
-            if "3" in recommendation_type:
+            if "2" in recommendation_type:
                 logger.info("👕 패션 기반 향수 추천 실행")
                 state["processed_input"] = "fashion_recommendation"
                 state["next_node"] = "fashion_recommendation_generator"
-            elif "5" in recommendation_type:
+                state["recommendation_type"] = 2
+            elif "3" in recommendation_type:
                 logger.info("🏠 인테리어 사진 기반 향수 추천 실행")
                 state["processed_input"] = "interior_recommendation"
                 state["next_node"] = "interior_recommendation_generator"
-            elif "6" in recommendation_type:
+                state["recommendation_type"] = 3
+            elif "4" in recommendation_type:
                 logger.info("🌏 테라피 기반 향수 추천 실행")
                 state["processed_input"] = "therapy_recommendation"
                 state["next_node"] = "therapy_recommendation_generator"
+                state["recommendation_type"] = 4
             else:
                 logger.info("✨ 일반 향수 추천 실행")
                 state["processed_input"] = "general_recommendation"
                 state["next_node"] = "recommendation_generator"
+                state["recommendation_type"] = 1
         
         except Exception as e:
             logger.error(f"Error processing recommendation type '{user_input}': {e}")
             state["processed_input"] = "general_recommendation"
             state["next_node"] = "recommendation_generator"
+            state["recommendation_type"] = 1
         
         return state
     
@@ -378,7 +384,8 @@ class ProductService:
                         "mode": "recommendation",
                         "recommendations": recommendations,
                         "content": content,
-                        "line_id": line_id
+                        "line_id": line_id,
+                        "recommendation_type": state["recommendation_type"]
                     }
 
                     # 이미지 생성 시도
@@ -414,7 +421,8 @@ class ProductService:
                             "mode": "recommendation",
                             "recommendations": filtered_products,
                             "content": "향료 기반으로 추천된 향수입니다.",
-                            "line_id": state.get("line_id", 1)
+                            "line_id": state.get("line_id", 1),
+                            "recommendation_type": state["recommendation_type"]
                         }
 
                         # 이미지 생성 시도
@@ -466,7 +474,8 @@ class ProductService:
                         "mode": "recommendation",
                         "recommendations": recommendations,
                         "content": content,
-                        "line_id": line_id
+                        "line_id": line_id,
+                        "recommendation_type": state["recommendation_type"]
                     }
 
                     # 이미지 생성 시도
@@ -503,7 +512,8 @@ class ProductService:
                             "mode": "fashion_recommendation",
                             "recommendation": filtered_products,
                             "content": "향료 기반으로 추천된 향수입니다.",
-                            "line_id": state.get("line_id", 1)
+                            "line_id": state.get("line_id", 1),
+                            "recommendation_type": state["recommendation_type"]
                         }
 
                         # 이미지 생성 시도
@@ -554,7 +564,8 @@ class ProductService:
                         "mode": "recommendation",
                         "recommendations": recommendations,
                         "content": content,
-                        "line_id": line_id
+                        "line_id": line_id,
+                        "recommendation_type": state["recommendation_type"]
                     }
 
                     # 이미지 생성 시도
@@ -605,7 +616,8 @@ class ProductService:
                         "mode": "recommendation",
                         "recommendations": recommendations,
                         "content": content,
-                        "line_id": line_id
+                        "line_id": line_id,
+                        "recommendation_type": state["recommendation_type"]
                     }
 
                     # 이미지 생성 시도
@@ -647,7 +659,8 @@ class ProductService:
     #         "mode": "recommendation",
     #         "recommendation": recommendations,
     #         "content": content,
-    #         "line_id": line_id
+    #         "line_id": line_id,
+    #         "recommendation_type": state["recommendation_type"]
     #     }
 
     #     # 이미지 생성 시도
@@ -886,6 +899,7 @@ class ProductService:
                 "processed_input": None,
                 "next_node": None,
                 "recommendations": None,
+                "recommendation_type": None,
                 "spices": None,
                 "image_path": None,
                 "response": None,
