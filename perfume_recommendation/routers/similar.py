@@ -8,7 +8,7 @@ from typing import Dict, List
 router = APIRouter()
 
 
-@router.get("/similar/{product_id}")
+@router.get("/{product_id}")
 def get_similar_products(
     product_id: int, db: Session = Depends(get_db), top_n: int = 5
 ):
