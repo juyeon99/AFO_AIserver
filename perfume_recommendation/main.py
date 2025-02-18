@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from fastapi import FastAPI
-from perfume_recommendation.routers import llm_router, image_processing_router, image_generation_router, image_generation_description_router, diffuser_router, similar, review_summary_router, bookmark_router, perfume_router
+from perfume_recommendation.routers import llm_router, image_processing_router, image_generation_router, image_generation_description_router, diffuser_router, similar, review_summary_router, bookmark_router, product_router
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from fastapi.staticfiles import StaticFiles
@@ -42,7 +42,7 @@ app.include_router(image_generation_router.router, prefix="/image-generation", t
 app.include_router(image_generation_description_router.router, prefix="/llm" , tags=["LLM-Image-Description"])
 app.include_router(diffuser_router.router, prefix="/diffuser", tags=["Diffuser"])
 app.include_router(similar.router, prefix="/similar", tags=["Similar"])
-app.include_router(perfume_router.router, prefix="/perfume", tags=["Perfume"])
+app.include_router(product_router.router, prefix="/perfume", tags=["Product"])
 app.include_router(review_summary_router.router, prefix="/review", tags=["Review"])
 app.include_router(bookmark_router.router, prefix="/bookmark", tags=["Bookmark"])
 

@@ -27,7 +27,7 @@ class LLMService:
         # Initialize vector database
         self.collection = self.initialize_vector_db(self.all_diffusers, self.diffuser_scent_descriptions)
 
-    def process_input(self, user_input: str) -> Tuple[str, Optional[int]]:
+    def process_input(self, user_input: str, image_caption: Optional[str] = None) -> Tuple[str, Optional[int]]:
         """
         사용자 입력을 분석하여 의도를 분류합니다.
         """
@@ -54,13 +54,11 @@ class LLMService:
 
             if "3" in intent:
                 logger.info("👕 패션 기반 향수 추천 실행 (mode는 recommendation 유지)")
-                return "recommendation", self.fashion_based_generate_recommendation_response(user_input)
+                return "recommendation", self.fashion_based_generate_recommendation_response(user_input, image_caption)
             
             if "4" in intent:
                 logger.info("🏡 공간 기반 디퓨저 추천 실행")
-                # TODO: Get image caption and remove sample_image_caption
-                sample_image_caption = "The image shows a modern living room with a large window on the right side. The room has white walls and wooden flooring. On the left side of the room, there is a gray sofa and a white coffee table with a black and white patterned rug in front of it. In the center of the image, there are six black chairs arranged around a wooden dining table. The table is set with a vase and other decorative objects on it. Above the table, two large windows let in natural light and provide a view of the city outside. A white floor lamp is placed on the floor next to the sofa."
-                return "recommendation", self.generate_interior_design_based_recommendation_response(user_input, sample_image_caption)
+                return "recommendation", self.generate_interior_design_based_recommendation_response(user_input, image_caption)
             
             if "5" in intent:
                 logger.info("🌏 테라피 목적 향수 추천 실행")
@@ -72,7 +70,7 @@ class LLMService:
             logger.error(f"Error processing input '{user_input}': {e}")
             raise HTTPException(status_code=500, detail="Failed to classify user intent.")
 
-    def extract_keywords_from_input(self, user_input: str) -> dict:
+    def extract_keywords_from_input(self, user_input: str, image_caption: Optional[str] = None) -> dict:
         """사용자 입력에서 계열과 브랜드를 분석하고 계열 ID와 브랜드 리스트를 반환하는 함수"""
         try:
             logger.info(f"🔍 입력된 텍스트에서 향 계열과 브랜드 분석 시작: {user_input}")
@@ -82,63 +80,97 @@ class LLMService:
             line_mapping = {line["name"]: line["id"] for line in line_data}
             brand_list = self.db_service.fetch_brands()
 
-            fashion_to_line_mapping = {
-                # 캐주얼 스타일
-                "캐주얼": "Fruity",
-                "댄디 캐주얼": "Woody",  # 댄디하면서도 세련된 스타일
-                "아메카지": "Green",  # 내추럴하면서 빈티지한 느낌  
+            # fashion_to_line_mapping = {
+            #     # 캐주얼 스타일
+            #     "캐주얼": "Fruity",
+            #     "댄디 캐주얼": "Woody",  # 댄디하면서도 세련된 스타일
+            #     "아메카지": "Green",  # 내추럴하면서 빈티지한 느낌  
 
-                # 클래식 & 포멀 스타일
-                "클래식": "Woody",
-                "비즈니스 포멀": "Musk",  # 정장 착장에 어울리는 차분한 향
-                "비즈니스 캐주얼": "Citrus",  # 가벼운 포멀 룩에 잘 맞는 시원한 향
-                "젠틀한 스타일": "Powdery",  # 부드러운 분위기를 주는 Powdery 향  
+            #     # 클래식 & 포멀 스타일
+            #     "클래식": "Woody",
+            #     "비즈니스 포멀": "Musk",  # 정장 착장에 어울리는 차분한 향
+            #     "비즈니스 캐주얼": "Citrus",  # 가벼운 포멀 룩에 잘 맞는 시원한 향
+            #     "젠틀한 스타일": "Powdery",  # 부드러운 분위기를 주는 Powdery 향  
 
-                # 스트릿 & 유니크 스타일
-                "스트릿": "스파이시",
-                "테크웨어": "아로마틱",  # SF적이고 미래적인 느낌의 패션과 어울림
-                "고프코어": "Green",  # 등산 및 아웃도어 느낌의 스타일과 자연스러운 향
-                "펑크 스타일": "Tobacco Leather",  # 강렬한 락 & 펑크 무드  
+            #     # 스트릿 & 유니크 스타일
+            #     "스트릿": "스파이시",
+            #     "테크웨어": "아로마틱",  # SF적이고 미래적인 느낌의 패션과 어울림
+            #     "고프코어": "Green",  # 등산 및 아웃도어 느낌의 스타일과 자연스러운 향
+            #     "펑크 스타일": "Tobacco Leather",  # 강렬한 락 & 펑크 무드  
 
-                # 스포티 & 액티브 스타일
-                "스포티": "Citrus",
-                "러너 스타일": "Aquatic",  # 활동적이고 신선한 느낌  
-                "테니스 룩": "Fougere",  # 클래식하면서도 깨끗한 향  
+            #     # 스포티 & 액티브 스타일
+            #     "스포티": "Citrus",
+            #     "러너 스타일": "Aquatic",  # 활동적이고 신선한 느낌  
+            #     "테니스 룩": "Fougere",  # 클래식하면서도 깨끗한 향  
 
-                # 빈티지 & 감성적인 스타일
-                "빈티지": "Oriental",
-                "로맨틱 스타일": "Floral",  # 부드럽고 달콤한 분위기의 스타일  
-                "보헤미안": "Musk",  # 자연스럽고 몽환적인 분위기  
-                "레트로 패션": "Aldehyde",  # 70~80년대 스타일과 어울리는 클래식한 향  
+            #     # 빈티지 & 감성적인 스타일
+            #     "빈티지": "Oriental",
+            #     "로맨틱 스타일": "Floral",  # 부드럽고 달콤한 분위기의 스타일  
+            #     "보헤미안": "Musk",  # 자연스럽고 몽환적인 분위기  
+            #     "레트로 패션": "Aldehyde",  # 70~80년대 스타일과 어울리는 클래식한 향  
 
-                # 모던 & 미니멀 스타일
-                "모던": "Woody",
-                "미니멀": "Powdery",  # 깨끗하고 단정한 분위기  
-                "올 블랙 룩": "Tobacco Leather",  # 강렬하면서 시크한 무드  
-                "화이트 톤 스타일": "Musk",  # 깨끗하고 부드러운 느낌  
+            #     # 모던 & 미니멀 스타일
+            #     "모던": "Woody",
+            #     "미니멀": "Powdery",  # 깨끗하고 단정한 분위기  
+            #     "올 블랙 룩": "Tobacco Leather",  # 강렬하면서 시크한 무드  
+            #     "화이트 톤 스타일": "Musk",  # 깨끗하고 부드러운 느낌  
 
-                # 독특한 컨셉 스타일
-                "아방가르드": "Tobacco Leather",  # 예술적인 스타일과 어울리는 가죽 향  
-                "고딕 스타일": "Oriental",  # 다크하면서 무게감 있는 향  
-                "코스프레": "Gourmand",  # 달콤하면서 개성 강한 스타일  
-            }
+            #     # 독특한 컨셉 스타일
+            #     "아방가르드": "Tobacco Leather",  # 예술적인 스타일과 어울리는 가죽 향  
+            #     "고딕 스타일": "Oriental",  # 다크하면서 무게감 있는 향  
+            #     "코스프레": "Gourmand",  # 달콤하면서 개성 강한 스타일  
+            # }
             
             # 2. GPT를 이용해 입력에서 향 계열과 브랜드 추출
             keywords_prompt = (
-                "다음은 향수 추천 요청입니다. 사용자의 입력에서 향 계열과 브랜드명을 추출하세요.\n"
-                f"향 계열 목록: {', '.join(line_mapping.keys())}\n"
-                f"브랜드 목록: {', '.join(brand_list)}\n\n"
-                f"사용자 입력: {user_input}\n\n"
-                "추가 규칙: 만약 사용자의 입력이 패션 스타일에 대한 설명이라면, 다음 패션 스타일과 어울리는 향 계열을 사용하세요.\n"
-                "추가 규칙: 만약 사용자의 입력이 데이트나 특정 상황에 대한 설명이라면, 다음 상황에 어울리는 향 계열을 사용하세요.\n"
-                f"{json.dumps(fashion_to_line_mapping, ensure_ascii=False, indent=2)}\n\n"
-                "출력 형식은 JSON이어야 합니다:\n"
+                "The following is a perfume recommendation request. Extract the fragrance family and brand names from the user_input and image_caption.\n"
+                f"Fragrance families: {', '.join(line_mapping.keys())}\n"
+                f"Brand list: {', '.join(brand_list)}\n\n"
+
+                "Additional rules: If the user_input and the image_caption is a description of a fashion style, use the corresponding fragrance family from the following fashion styles.\n"
+                "Additional rules: If the user_input is a description of a date or a specific situation, use the corresponding fragrance family for the situation.\n"
+                "Additional rules: Infer the user's style or vibe from the the user_input or image_caption (e.g., sporty, romantic, vintage, etc.) and recommend a fragrance family based on that.\n\n"
+                
+                "### Fashion style to fragrance family(line) mapping example:\n"
+                "1. Casual style -> line: Fruity\n"
+                "2. Dandy Casual -> line: Woody\n"
+                "3. American Casual -> line: Green\n"
+                "4. Classic -> line: Woody\n"
+                "5. Business Formal -> line: Musk\n"
+                "6. Business Casual -> line: Citrus\n"
+                "7. Gentle Style -> line: Powdery\n"
+                "8. Street -> line: Spicy\n"
+                "9. Techwear -> line: Aromatic\n"
+                "10. Gorp Core -> line: Green\n"
+                "11. Punk Style -> line: Tobacco Leather\n"
+                "12. Sporty -> line: Citrus\n"
+                "13. Runner Style -> line: Aquatic\n"
+                "14. Tennis Look -> line: Fougere\n"
+                "15. Vintage -> line: Oriental\n"
+                "16. Romantic Style -> line: Floral\n"
+                "17. Bohemian -> line: Musk\n"
+                "18. Retro Fashion -> line: Aldehyde\n"
+                "19. Modern -> line: Woody\n"
+                "20. Minimal -> line: Powdery\n"
+                "21. All Black Look -> line: Tobacco Leather\n"
+                "22. White Tone Style -> line: Musk\n"
+                "23. Avant-garde -> line: Tobacco Leather\n"
+                "24. Gothic Style -> line: Oriental\n"
+                "25. Cosplay -> line: Gourmand\n\n"
+
+                "### Important rule: The 'line' must **never** be null. It should always correspond to **one of the Fragrance families listed above**.\n\n"
+                "### The output format must be **JSON**:\n"
                 "{\n"
-                '  "line": "우디",\n'
+                '  "line": "Woody",\n'
                 '  "brands": ["샤넬", "딥티크"]\n'
                 "}"
+
+                f"\n\n### user_input: {user_input}"
             )
 
+            if keywords_prompt is not None:
+                keywords_prompt += f"\n### image_caption: {image_caption}"
+            
             response_text = self.gpt_client.generate_response(keywords_prompt).strip()
             logger.info(f"🤖 GPT 응답: {response_text}")
 
@@ -447,14 +479,14 @@ class LLMService:
             logger.error(f"❌ 예상치 못한 오류: {e}")
             return 1
         
-    def fashion_based_generate_recommendation_response(self, user_input: str) -> dict:
+    def fashion_based_generate_recommendation_response(self, user_input: str, image_caption: str) -> dict:
         """middle note를 포함한 향수 추천"""
         try:
             logger.info(f"🔄 추천 처리 시작 - 입력: {user_input}")
 
             # 1. 키워드 추출 
             logger.info("🔍 키워드 추출 시작")
-            extracted_data = self.extract_keywords_from_input(user_input)
+            extracted_data = self.extract_keywords_from_input(user_input, image_caption)
             line_id = extracted_data["line_id"]
             brand_filters = extracted_data["brands"]
             logger.info(f"✅ 추출된 키워드 - 계열ID: {line_id}, 브랜드: {brand_filters}")
@@ -493,13 +525,13 @@ class LLMService:
             names_prompt = (
                 f"{template['description']}\n"
                 f"{template['rules']}\n"
-                f"사용자의 원본 입력: {user_input}\n\n"
-                f"아래 입력을 한국어로 번역한 후 향수를 추천하세요:\n"
-                f"{user_input}\n\n"
-                f"추출된 키워드: {products_text}\n"
-                f"향수의 브랜드 이름은 포함하지 않은 이름만 최대 3개 추천해주세요.\n\n"
-                f"- content: 추천 이유와 사용 상황, 향수들의 공통적인 느낌을 함께 적어주세요.\n\n"
-                "아래 JSON 형식으로만 응답하세요:\n"
+                f"### user_input: {user_input}\n\n"
+                f"### image_caption: {image_caption}\n\n"
+                f"### Extracted keywords: {products_text}\n"
+                f"Recommend up to 3 perfume names without including the brand names.\n\n"
+                f"Note: The recommendations should refer to the user_input, image_caption, and extracted keywords. The image_caption describes the person's outfit, and the recommended perfumes should match the described outfit.\n"
+                f"- content: Please include the reason for the recommendation, the situation it suits, and the common feel of the perfumes.\n\n"
+                "Please respond only in the following JSON format:\n"
                 "```json\n"
                 "{\n"
                 '  "recommendations": [\n'
@@ -850,7 +882,7 @@ Response:"""
         It returns 2 (default) if the user asks for neither or if there is an error.
         """
         product_category_prompt = f"""
-        Given the user input "{user_input}", determine whether the user is asking for a diffuser or a perfume recommendation. 
+        Given the user input, determine whether the user is asking for a diffuser or a perfume recommendation. 
         1. Perfume (향수 추천)
         2. Diffuser (디퓨저 추천)
 
@@ -861,16 +893,23 @@ Response:"""
         Respond with only a number: 1 or 2.
 
         ### Example 1:
-        Input: "기분 좋은 향기가 나는 디퓨저를 추천해줘."
-        Output: 2
+        User input: "기분 좋은 향기가 나는 디퓨저를 추천해줘."
+        Response: 2
 
         ### Example 2:
-        Input: "피로를 풀어주는 향수를 추천해줘."
-        Output: 1
+        User input: "피로를 풀어주는 향수를 추천해줘."
+        Response: 1
 
         ### Example 3:
-        Input: "스트레스 해소에 도움이 되는 향기를 추천해줘."
-        Output: 2
+        User input: "스트레스 해소에 도움이 되는 제품을 추천해줘."
+        Response: 2
+
+        ### Important Rule:
+        If the user input mentions 향수 (perfume), return 1.
+        If the input mentions 디퓨저 (diffuser) or does not mention either, return 2.
+
+        User input: {user_input}
+        Response: 
         """
 
         category_id = 2  # Default category_id is set to 2 (for diffuser)
