@@ -160,36 +160,6 @@ class DBService:
             logger.error(f"🚨 향수 데이터 로드 실패: {e}")
             raise
     
-    # def cache_perfume_data(self, force: bool = False) -> None:
-    #     """
-    #     DB의 향수 데이터를 JSON 파일로 캐싱. `force=True` 또는 변경 사항이 있을 경우 갱신.
-    #     """
-    #     existing_products = self.load_cached_perfume_data(check_only=True)
-
-    #     query = """
-    #     SELECT 
-    #         p.id, p.name_kr, p.name_en, p.brand, p.main_accord, p.category_id
-    #     FROM product p
-    #     """
-    #     try:
-    #         with self.connection.cursor() as cursor:
-    #             cursor.execute(query)
-    #             new_products = cursor.fetchall()
-
-    #         # 데이터 변경 여부 확인
-    #         if not force and self.is_cache_up_to_date(existing_products, new_products):
-    #             logger.info(f"✅ 캐싱 데이터가 최신 상태입니다: {self.cache_path}")
-    #             return
-
-    #         # 캐싱 파일 저장
-    #         with open(self.cache_path, "w", encoding="utf-8") as f:
-    #             json.dump(new_products, f, ensure_ascii=False, indent=4)
-
-    #         logger.info(f"✅ 향수 데이터를 JSON으로 캐싱 완료: {self.cache_path}")
-
-    #     except pymysql.MySQLError as e:
-    #         logger.error(f"🚨 데이터베이스 오류 발생: {e}")
-
     def cache_data(self, query: str, cache_file: Path, key_field: str, force: bool = False) -> None:
         """
         DB 데이터를 JSON 파일로 캐싱. `force=True` 또는 변경 사항이 있을 경우 갱신.
@@ -215,22 +185,6 @@ class DBService:
         except pymysql.MySQLError as e:
             logger.error(f"🚨 데이터베이스 오류 발생: {e}")
 
-    # def load_cached_perfume_data(self, check_only: bool = False) -> List[Dict]:
-    #     """
-    #     캐싱된 데이터를 로드. 캐싱 파일이 없으면 check_only=False일 때 새로 생성.
-    #     """
-    #     if not self.cache_path.exists():
-    #         if check_only:
-    #             return []
-    #         logger.info("캐싱 파일이 존재하지 않아 새로 생성합니다.")
-    #         self.cache_perfume_data()
-
-    #     with open(self.cache_path, "r", encoding="utf-8") as f:
-    #         products = json.load(f)
-
-    #     logger.info(f"✅ 캐싱된 향수 데이터 {len(products)}개 로드")
-    #     return products
-    
     def load_cached_data(self, cache_file: Path, check_only: bool = False) -> List[Dict]:
         """
         캐싱된 데이터를 로드. 캐싱 파일이 없으면 check_only=False일 때 새로 생성.
@@ -283,6 +237,8 @@ class DBService:
         self.cache_diffuser_data()
         self.cache_note_data()
         self.cache_spice_data()
+        self.cache_product_image_data()
+
         logger.info("✅ 강제 캐싱 생성 완료.")
 
     def cache_note_data(self) -> None:
@@ -293,7 +249,7 @@ class DBService:
     
     def cache_perfume_data(self) -> None:
         query = """
-        SELECT p.id, p.name_kr, p.name_en, p.brand, p.main_accord, p.category_id FROM product p WHERE p.category_id = 1
+        SELECT p.id, p.name_kr, p.name_en, p.brand, p.main_accord, p.category_id, p.content FROM product p WHERE p.category_id = 1
         """
         self.cache_data(query, self.cache_path_prefix / "perfume_cache.json", key_field="id")
 
@@ -302,6 +258,12 @@ class DBService:
         SELECT p.id, p.name_kr, p.name_en, p.brand, p.category_id, p.content FROM product p WHERE p.category_id = 2
         """
         self.cache_data(query, self.cache_path_prefix / "diffuser_cache.json", key_field="id")
+    
+    def cache_product_image_data(self) -> None:
+        query = """
+        SELECT p.id, p.url, p.product_id FROM product_image p
+        """
+        self.cache_data(query, self.cache_path_prefix / "product_image_cache.json", key_field="id")
 
     def cache_spice_data(self) -> None:
         query = """
@@ -317,15 +279,21 @@ class DBService:
     
     def load_cached_perfume_data(self) -> List[Dict]:
         """
-        Load cached spice data from perfume_cache.json.
+        Load cached perfume data from perfume_cache.json.
         """
         return self.load_cached_data(self.cache_path_prefix / "perfume_cache.json")
     
     def load_cached_diffuser_data(self) -> List[Dict]:
         """
-        Load cached spice data from perfume_cache.json.
+        Load cached diffuser data from perfume_cache.json.
         """
         return self.load_cached_data(self.cache_path_prefix / "diffuser_cache.json")
+
+    def load_cached_product_image_data(self) -> List[Dict]:
+        """
+        Load cached product image data from product_image_cache.json.
+        """
+        return self.load_cached_data(self.cache_path_prefix / "product_image_cache.json")
 
     def load_cached_spice_data(self) -> List[Dict]:
         """
@@ -618,9 +586,9 @@ class DBService:
         
         if updated:
             self.save_json(spice_therapeutic_effect_cache_file, spice_therapeutic_effect_data)
-            print("spice_therapeutic_effect_cache.json has been updated.")
+            logger.info("spice_therapeutic_effect_cache.json has been updated.")
         else:
-            print("All spices already have an entry in spice_therapeutic_effect_cache.json.")
+            logger.info("All spices already have an entry in spice_therapeutic_effect_cache.json.")
 
     def load_cached_spice_therapeutic_effect_data(self):
         """Load spice therapeutic effect data from cache."""
