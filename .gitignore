@@ -7,3 +7,5 @@ generated_images/
 *.jpg
 cache_timestamp.txt
 chroma_db
+jina_embedding_cache
+product_image_cache

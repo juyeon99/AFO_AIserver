@@ -1030,8 +1030,6 @@ Response:"""
                 for product in selected_products
             )
 
-            print("products_text",products_text)
-
             if category_id == 2:
                 prompt = (
                     f"{template['description']}\n"
