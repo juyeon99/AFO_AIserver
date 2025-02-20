@@ -217,23 +217,37 @@ class PerfumeRecommender:
         try:
             bookmarked_ids = [p.id for p in bookmarked_products]
             
-            # 모든 향수 데이터를 한 번에 조회 (북마크된 향수 제외)
-            products_data = (
-                db.query(Product, ProductImage.url, Note, Spice)
+            # 모든 향수의 이미지를 별도로 조회
+            product_images = (
+                db.query(Product.id, ProductImage.url)
                 .join(ProductImage, Product.id == ProductImage.product_id)
+                .filter(Product.id.notin_(bookmarked_ids))
+                .all()
+            )
+
+            # 이미지 URL을 제품 ID별로 그룹화
+            product_images_by_id = {}
+            for product_id, url in product_images:
+                if product_id not in product_images_by_id:
+                    product_images_by_id[product_id] = []
+                product_images_by_id[product_id].append(url)
+
+            # 나머지 제품 정보 조회
+            products_data = (
+                db.query(Product, Note, Spice)
                 .join(Note, Product.id == Note.product_id)
                 .join(Spice, Note.spice_id == Spice.id)
                 .filter(Product.id.notin_(bookmarked_ids))
                 .all()
             )
-            
+
             # 제품별로 데이터 그룹화
             grouped_products = {}
-            for product, image_url, note, spice in products_data:
+            for product, note, spice in products_data:
                 if product.id not in grouped_products:
                     grouped_products[product.id] = {
                         'product': product,
-                        'image_url': image_url,
+                        'image_urls': product_images_by_id.get(product.id, []),  # 이미 그룹화된 이미지 URL 리스트 사용
                         'spices': set()  # 중복 제거를 위해 set 사용
                     }
                 grouped_products[product.id]['spices'].add(spice.name_kr)
@@ -257,11 +271,11 @@ class PerfumeRecommender:
                 texts.append(text)
                 embeddings.append(embedding)
                 product_info.append({
-                    "product_id": product.id,
-                    "name": product.name_kr,
+                    "productId": product.id,
+                    "nameKr": product.name_kr,
                     "brand": product.brand,
-                    "main_accord": product.main_accord,
-                    "image_url": product_data['image_url'],
+                    "mainAccord": product.main_accord,
+                    "imageUrls": product_data['image_urls'],
                     "spices": spice_info
                 })
             
@@ -281,8 +295,8 @@ class PerfumeRecommender:
                 diversity_score = 0
                 
                 # 타입 체크 추가 및 명시적 형변환 (None 확인 추가)
-                if info["main_accord"] is not None:
-                    main_accord_str = str(info["main_accord"])
+                if info["mainAccord"] is not None:
+                    main_accord_str = str(info["mainAccord"])
                     main_accords_str = [str(x) for x in common_features["main_accords"]]
                     if main_accord_str not in main_accords_str:
                         diversity_score += 0.1
@@ -313,11 +327,11 @@ class PerfumeRecommender:
             for candidate in sorted_candidates:
                 # final_score 필드 제거한 새 딕셔너리 생성
                 result = {
-                    "product_id": candidate["product_id"],
-                    "name": candidate["name"],
+                    "productId": candidate["productId"],
+                    "nameKr": candidate["nameKr"],
                     "brand": candidate["brand"],
-                    "main_accord": candidate["main_accord"],
-                    "image_url": candidate["image_url"],
+                    "mainAccord": candidate["mainAccord"],
+                    "imageUrls": candidate["imageUrls"],
                     "spices": candidate["spices"]
                 }
                 final_results.append(result)

@@ -14,7 +14,7 @@ async def get_mongo_service():
     finally:
         del mongo_service  # 연결 종료 보장
 
-@router.get("/recommendations/{member_id}")
+@router.get("/{member_id}")
 async def get_recommendations(
     member_id: int,
     db: Session = Depends(get_db),
