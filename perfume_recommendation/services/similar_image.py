@@ -1,13 +1,15 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import scoped_session, sessionmaker, Session
 import torch
 from torchvision.models import vit_b_16, swin_v2_b, Swin_V2_B_Weights
 from transformers import ConvNextModel, ConvNextImageProcessor
-from PIL import Image
-import requests
 from sklearn.metrics.pairwise import cosine_similarity
-from .db_service import Product, ProductImage
+from .db_service import Product, ProductImage, SessionLocal
 from perfume_recommendation.embedding_utils import save_embedding, load_embedding
 import logging
+from concurrent.futures import ThreadPoolExecutor
+import requests
+from PIL import Image
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
@@ -15,160 +17,119 @@ logger = logging.getLogger(__name__)
 # 'convnext': Meta AI의 최신 CNN 모델 (Hugging Face)
 # 'swin': torchvision의 Swin Transformer V2 모델 (이미지 분류 및 특징 추출 최적화)
 # 'vit': torchvision의 Vision Transformer 모델 (Transformer 기반 이미지 인식)
-IMAGE_MODEL_TYPE = "convnext"  # 'convnext', 'swin', 'vit' 중 하나
 
-# ✅ 모델 및 전처리기 초기화
+# ✅ GPU 사용 여부 확인
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+# ✅ 사용할 이미지 모델 타입 설정
+IMAGE_MODEL_TYPE = "convnext"
+
+# ✅ 선택된 모델 타입에 따른 모델과 전처리기 초기화
 if IMAGE_MODEL_TYPE == "convnext":
     # ConvNext 모델 설정 (Hugging Face에서 제공)
     model_path = "facebook/convnext-base-224"
-    image_model = ConvNextModel.from_pretrained(model_path)
+    image_model = ConvNextModel.from_pretrained(model_path).to(device)
     image_processor = ConvNextImageProcessor.from_pretrained(model_path)
 elif IMAGE_MODEL_TYPE == "swin":
     # Swin Transformer V2 모델 설정 (torchvision 제공)
-    weights = Swin_V2_B_Weights.IMAGENET1K_V1   # ImageNet으로 학습된 가중치
-    image_model = swin_v2_b(weights=weights)    # 모델 생성
-    image_processor = weights.transforms()      # 이미지 전처리 파이프라인
+    weights = Swin_V2_B_Weights.IMAGENET1K_V1  # ImageNet으로 학습된 가중치
+    image_model = swin_v2_b(weights=weights).to(device)
+    image_processor = weights.transforms()  # 이미지 전처리 파이프라인
 else:  # vit
-    image_model = vit_b_16(pretrained=True)
-    image_processor = ConvNextImageProcessor.from_pretrained("facebook/convnext-base-224")
+    # Vision Transformer 모델 설정 (torchvision 제공)
+    image_model = vit_b_16(pretrained=True).to(device)
+    image_processor = ConvNextImageProcessor.from_pretrained(
+        "facebook/convnext-base-224"
+    )
 
-image_model.eval()      # 모델을 평가 모드로 설정 (학습 비활성화)
+# ✅ 모델을 평가 모드로 설정 (학습 비활성화)
+image_model.eval()
+
+# ✅ 멀티스레딩을 위한 스레드 풀 생성
+executor = ThreadPoolExecutor(max_workers=4)
 
 
 def get_similar_image_embedding(image_url: str):
     """
     이미지 URL로부터 임베딩 벡터를 생성하는 함수
-    
+
     Args:
         image_url (str): 이미지의 URL 주소
-    
+
     Returns:
         numpy.ndarray: 이미지의 임베딩 벡터. 실패 시 None 반환
     """
-
     # ✅ 캐시된 임베딩이 있는지 확인
     cached_embedding = load_embedding(image_url)
     if cached_embedding is not None:
-        print(f"✅ 캐시에서 임베딩 불러옴: {image_url}")
-        return cached_embedding  # 캐시가 있으면 바로 반환
+        return cached_embedding
 
     try:
-        # ✅ 이미지 다운로드 및 전처리
+        # ✅ 이미지 다운로드 후 변환 필요
         response = requests.get(image_url, stream=True)
         response.raise_for_status()
         image = Image.open(response.raw).convert("RGB")
 
-        # ✅ 모델별 이미지 처리 및 임베딩 생성
-        inputs = image_processor(images=image, return_tensors="pt")
-
         with torch.no_grad():
-            if IMAGE_MODEL_TYPE == "convnext":
-                # ConvNext 모델의 특징 추출
-                outputs = image_model(**inputs)
-                embedding = outputs.last_hidden_state.mean(dim=1).squeeze().numpy()
+            inputs = image_processor(images=image, return_tensors="pt").to(device)
+            outputs = image_model(**inputs)
 
-            elif IMAGE_MODEL_TYPE == "swin":
-                # Swin V2의 특징 추출
-                features = image_model.forward_features(inputs["pixel_values"])
-                embedding = features.mean(dim=[2, 3]).squeeze().numpy()  # GAP 적용
+            # ✅ 차원 변환 추가 (1D → 2D 변환)
+            embedding = outputs.last_hidden_state.mean(dim=1).squeeze().cpu().numpy()
+            embedding = np.array(embedding).reshape(1, -1)  # ✅ 차원 변환 추가!
 
-            else:  # vit
-                # Vision Transformer의 특징 추출
-                outputs = image_model(inputs["pixel_values"])
-                embedding = outputs.squeeze().numpy()
-
-        # ✅ 임베딩 저장 및 반환
-        if embedding is not None:
-            save_embedding(image_url, embedding)    # MongoDB에 임베딩 저장
-            return embedding
-        else:
-            return None
-
-    except Exception:
+        save_embedding(image_url, embedding)
+        return embedding
+    except Exception as e:
+        logger.error(f"Error processing image {image_url}: {e}")
         return None
+    
+# ✅ 멀티스레딩 환경에서 SQLAlchemy 세션 충돌을 방지하는 스레드별 세션 팩토리 생성
+thread_local_session = scoped_session(sessionmaker(bind=SessionLocal().bind))
 
+def find_similar_images(product_id: int, top_n: int = 5):
+    """이미지 기반 유사 향수 추천"""
 
-def find_similar_images(product_id: int, db: Session, top_n: int = 5):
-    """
-    이미지 기반으로 유사한 향수를 찾는 함수
-    
-    Args:
-        product_id (int): 기준이 되는 향수의 ID
-        db (Session): 데이터베이스 세션
-        top_n (int): 반환할 유사 향수의 개수
-    
-    Returns:
-        list: 유사도가 높은 순으로 정렬된 향수 목록 [{product_id, similarity}, ...]
-    """
-    
+    # ✅ 새로운 DB 세션 생성
+    db = SessionLocal()
+
     try:
         # ✅ 대상 향수의 이미지 가져오기
-        target_image = (
-            db.query(ProductImage).filter(ProductImage.product_id == product_id).first()
-        )
+        target_image = db.query(ProductImage).filter(ProductImage.product_id == product_id).first()
         if not target_image:
             return []
 
-        # ✅ 대상 이미지의 임베딩 생성
         target_embedding = get_similar_image_embedding(target_image.url)
         if target_embedding is None:
             return []
 
-        # ✅ 임베딩을 1차원으로 변환 (유사도 계산을 위해)
-        target_embedding = target_embedding.flatten()
-
-        # ✅ 비교할 향수 이미지들 가져오기
         all_images = (
-            db.query(ProductImage)
+            db.query(ProductImage, Product)
             .join(Product, ProductImage.product_id == Product.id)
             .filter(Product.category_id == 1)
-            .filter(Product.id != product_id)   # 대상 향수 제외
-            .distinct(ProductImage.product_id)  # 향수당 하나의 이미지만
+            .filter(Product.id != product_id)
+            .distinct(ProductImage.product_id)
             .all()
         )
 
-        logger.info(f"Found {len(all_images)} images to compare")
+        def process_image(img, target_embedding):
+            img_embedding = get_similar_image_embedding(img.ProductImage.url)
+            if img_embedding is None:
+                return None
 
-        # ✅ 각 향수와의 유사도 계산
-        product_similarities = {}
-        for img in all_images:
-            try:
-                img_embedding = get_similar_image_embedding(img.url)
-                if img_embedding is None:
-                    continue
+            # ✅ 차원 변환 (1D → 2D 변환)
+            target_embedding = np.array(target_embedding).reshape(1, -1)  # 1D → 2D
+            img_embedding = np.array(img_embedding).reshape(1, -1)  # 1D → 2D
 
-                # 임베딩을 1차원으로 변환
-                img_embedding = img_embedding.flatten()
+            # ✅ 유사도 계산
+            similarity = cosine_similarity(target_embedding, img_embedding)[0][0]
+            return img.Product.id, similarity
 
-                # 코사인 유사도 계산 (0~1 사이 값)
-                similarity = float(
-                    cosine_similarity([target_embedding], [img_embedding])[0][0]
-                )
+        results = list(executor.map(lambda img: process_image(img, target_embedding), all_images))
+        results = [{"product_id": pid, "similarity": sim} for r in results if r is not None for pid, sim in [r]]
 
-                # 더 높은 유사도로 업데이트
-                if (
-                    img.product_id not in product_similarities
-                    or similarity > product_similarities[img.product_id]
-                ):
-                    product_similarities[img.product_id] = similarity
+        return sorted(results, key=lambda x: x["similarity"], reverse=True)[:top_n]
 
-            except Exception as e:
-                logger.error(
-                    f"Error calculating similarity for image {img.url}: {str(e)}"
-                )
-                continue
+    finally:
+        db.close()
 
-        # ✅ 유사도 기준으로 상위 N개 선택
-        sorted_similarities = [
-            {"product_id": pid, "similarity": float(sim)}
-            for pid, sim in sorted(
-                product_similarities.items(), key=lambda x: x[1], reverse=True
-            )
-        ][:top_n]
-
-        logger.info(f"Final results: {sorted_similarities}")
-        return sorted_similarities
-
-    except Exception as e:
-        logger.error(f"Error in find_similar_images: {str(e)}")
-        return []
