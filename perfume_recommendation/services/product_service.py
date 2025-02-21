@@ -16,11 +16,11 @@ import logging
 load_dotenv()
 logger = logging.getLogger(__name__)
 
+
 class ProductState(TypedDict):
-    
     """
     향수 추천 서비스의 상태를 관리하는 타입 정의
-    
+
     Attributes:
         user_input (str): 사용자의 입력 텍스트
             - Channel()을 통해 상태 그래프에서 데이터 흐름 관리
@@ -45,10 +45,10 @@ class ProductState(TypedDict):
         error (str): 오류 메시지
             - 처리 중 발생한 오류 정보
     """
-    
+
     user_input: Annotated[str, Channel()]
     image_caption: Annotated[str, Channel()]
-    processed_input: str  
+    processed_input: str
     next_node: str
     recommendations: Optional[list]
     recommendation_type: Optional[int]
@@ -58,6 +58,7 @@ class ProductState(TypedDict):
     line_id: Optional[int]
     translated_input: Optional[str]
     error: Optional[str]
+
 
 class ProductService:
     def __init__(self):
@@ -74,7 +75,9 @@ class ProductService:
         self.db_service = DBService(db_config)
         self.prompt_loader = PromptLoader("models/chat_prompt_template.json")
         self.gpt_client = GPTClient(self.prompt_loader)
-        self.llm_service = LLMService(self.gpt_client, self.db_service, self.prompt_loader)
+        self.llm_service = LLMService(
+            self.gpt_client, self.db_service, self.prompt_loader
+        )
         self.image_service = ImageGenerationService()
         self.llm_img_service = LLMImageService(self.gpt_client)
         self.mongo_service = MongoService()
@@ -86,11 +89,19 @@ class ProductService:
         # Add nodes
         self.graph.add_node("input_processor", self.input_processor)
         self.graph.add_node("process_input", self.process_input)
-        self.graph.add_node("recommendation_type_classifier", self.recommendation_type_classifier)  # 추가
+        self.graph.add_node(
+            "recommendation_type_classifier", self.recommendation_type_classifier
+        )  # 추가
         self.graph.add_node("recommendation_generator", self.recommendation_generator)
-        self.graph.add_node("fashion_recommendation_generator", self.fashion_recommendation_generator)
-        self.graph.add_node("interior_recommendation_generator", self.interior_recommendation_generator)
-        self.graph.add_node("therapy_recommendation_generator", self.therapy_recommendation_generator)
+        self.graph.add_node(
+            "fashion_recommendation_generator", self.fashion_recommendation_generator
+        )
+        self.graph.add_node(
+            "interior_recommendation_generator", self.interior_recommendation_generator
+        )
+        self.graph.add_node(
+            "therapy_recommendation_generator", self.therapy_recommendation_generator
+        )
         self.graph.add_node("chat_handler", self.chat_handler)
         self.graph.add_node("error_handler", self.error_handler)
         self.graph.add_node("end", lambda x: x)
@@ -123,7 +134,7 @@ class ProductService:
                 "interior_recommendation_generator": "interior_recommendation_generator",
                 "therapy_recommendation_generator": "therapy_recommendation_generator",
                 "recommendation_generator": "recommendation_generator",
-            }
+            },
         )
 
         # if_router_type
@@ -144,7 +155,7 @@ class ProductService:
                 "interior_recommendation_generator": "interior_recommendation_generator",
                 "therapy_recommendation_generator": "therapy_recommendation_generator",
                 "recommendation_generator": "recommendation_generator",
-            }
+            },
         )
 
         # Add_edge
@@ -159,7 +170,7 @@ class ProductService:
     def process_input(self, state: ProductState) -> ProductState:
         """사용자 입력을 분석하여 의도를 분류"""
         try:
-            user_input = state["user_input"]  
+            user_input = state["user_input"]
             image_caption = state["image_caption"]
             logger.info(f"Received user input: {user_input}")
 
@@ -170,7 +181,6 @@ class ProductService:
                 f"Classify the user's intent based on the given input.\n\n"
                 f"If the perfume recommendation request does not contain specific keywords or lacks clear intent, it should be classified as (2) General Conversation.\n"
                 f"Ensure that vague requests such as 'Can you recommend a perfume?' are classified as general conversation unless there is a specific context or detailed request provided.\n\n"
-                
                 f"### Example:\n"
                 f"1) user_input = '나 오늘 기분이 너무 우울해. 그래서 이런 기분을 떨쳐낼 수 있는 플로럴 계열의 향수를 추천해줘'\n"
                 f"    response: 1\n\n"
@@ -186,15 +196,11 @@ class ProductService:
                 f"6) user_input = '향수를 추천해주세요.'\n"
                 f"   image_caption = 'The image shows a modern living room with a large window on the right side. The room has white walls and wooden flooring. On the left side of the room, there is a gray sofa and a white coffee table with a black and white patterned rug in front of it. In the center of the image, there are six black chairs arranged around a wooden dining table. The table is set with a vase and other decorative objects on it. Above the table, two large windows let in natural light and provide a view of the city outside. A white floor lamp is placed on the floor next to the sofa.'\n"
                 f"    response: 1\n\n"
-                
                 f"To ensure accurate classification, consider whether the user has provided a clear purpose for the recommendation. If the input lacks context, assume it falls under general conversation.\n\n"
-                
                 f"### Intent Classification:\n"
                 f"(1) Perfume Recommendation - When the user provides specific details or a clear scenario where they need a recommendation.\n"
                 f"(2) General Conversation - When the user asks vaguely or without enough context to determine an actual recommendation need.\n\n"
-                
                 f"**If an image caption is provided and describes an outfit or interior design, the request SHOULD BE CLASSIFIED AS (1) Perfume Recommendation, EVEN IF THE user_input LACKS CLEAR INTENT.**\n\n"
-                
                 f"### user_input = {user_input}"
             )
 
@@ -207,13 +213,15 @@ class ProductService:
 
             if "1" in intent:
                 logger.info("💡 향수 추천 실행")
-                state["processed_input"] = "recommendation"  
-                state["next_node"] = "recommendation_type_classifier"  # 추천 유형 분류로 이동
+                state["processed_input"] = "recommendation"
+                state["next_node"] = (
+                    "recommendation_type_classifier"  # 추천 유형 분류로 이동
+                )
             else:
                 logger.info("💬 일반 대화 실행")
                 state["processed_input"] = "chat"
                 state["next_node"] = "chat_handler"
-        
+
         except Exception as e:
             logger.error(f"Error processing input '{user_input}': {e}")
             state["processed_input"] = "chat"
@@ -240,7 +248,6 @@ class ProductService:
                 f"    - 수면 (Sleep)\n"
                 f"    - 집중 (Focus)\n"
                 f"    - 에너지 (Energy)\n\n"
-                
                 f"### Examples)\n"
                 f"1) **General Recommendation**: \n"
                 f"    user_input = '상큼한 향이 나는 향수를 추천해줘'\n"
@@ -256,7 +263,6 @@ class ProductService:
                 f"4) **Therapy-based Recommendation**: \n"
                 f"    user_input = '스트레스 해소에 좋은 디퓨저를 추천해주세요'\n"
                 f"    response: 4\n\n"
-
                 f"### Intention: (1) General Recommendation, (2) Fashion Recommendation, (3) Interior Description-based Recommendation, (4) Therapy-based Recommendation\n\n"
                 f"### user_input = {user_input}\n"
             )
@@ -288,15 +294,15 @@ class ProductService:
                 state["processed_input"] = "general_recommendation"
                 state["next_node"] = "recommendation_generator"
                 state["recommendation_type"] = 1
-        
+
         except Exception as e:
             logger.error(f"Error processing recommendation type '{user_input}': {e}")
             state["processed_input"] = "general_recommendation"
             state["next_node"] = "recommendation_generator"
             state["recommendation_type"] = 1
-        
+
         return state
-    
+
     def error_handler(self, state: ProductState) -> ProductState:
         """에러 상태를 처리하고 적절한 응답을 생성하는 핸들러"""
         try:
@@ -307,9 +313,13 @@ class ProductService:
             user_message = (
                 "죄송합니다. "
                 + (
-                    "추천을 생성할 수 없습니다." if "추천" in error_msg
-                    else "요청을 처리할 수 없습니다." if "처리" in error_msg
-                    else "일시적인 오류가 발생했습니다."
+                    "추천을 생성할 수 없습니다."
+                    if "추천" in error_msg
+                    else (
+                        "요청을 처리할 수 없습니다."
+                        if "처리" in error_msg
+                        else "일시적인 오류가 발생했습니다."
+                    )
                 )
                 + " 다시 시도해 주세요."
             )
@@ -321,8 +331,8 @@ class ProductService:
                 "recommendations": [],
                 "debug_info": {
                     "original_error": error_msg,
-                    "timestamp": datetime.now().isoformat()
-                }
+                    "timestamp": datetime.now().isoformat(),
+                },
             }
             state["next_node"] = None  # 종료 노드로 설정
 
@@ -334,11 +344,11 @@ class ProductService:
             state["response"] = {
                 "status": "error",
                 "message": "시스템 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
-                "recommendations": []
+                "recommendations": [],
             }
             state["next_node"] = None
             return state
-    
+
     def input_processor(self, state: ProductState) -> ProductState:
         user_input = state["user_input"]
         image_caption = state["image_caption"]
@@ -348,7 +358,9 @@ class ProductService:
         return state
 
     def keyword_extractor(self, state: ProductState) -> ProductState:
-        extracted_data = self.llm_service.extract_keywords_from_input(state["user_input"], state["image_caption"])
+        extracted_data = self.llm_service.extract_keywords_from_input(
+            state["user_input"], state["image_caption"]
+        )
         logger.info(f"🔍 추출된 데이터: {extracted_data}")
 
         state["line_id"] = extracted_data.get("line_id", 1)
@@ -370,7 +382,9 @@ class ProductService:
 
             # LLM 서비스를 통한 직접 추천 생성
             try:
-                response = self.llm_service.generate_recommendation_response(state["user_input"])
+                response = self.llm_service.generate_recommendation_response(
+                    state["user_input"]
+                )
 
                 if response and isinstance(response, dict):
                     recommendations = response.get("recommendations", [])
@@ -385,7 +399,7 @@ class ProductService:
                         "recommendations": recommendations,
                         "content": content,
                         "line_id": line_id,
-                        "recommendation_type": state["recommendation_type"]
+                        "recommendation_type": state["recommendation_type"],
                     }
 
                     # 이미지 생성 시도
@@ -411,10 +425,14 @@ class ProductService:
             try:
                 if state.get("spices"):
                     spice_ids = [spice["id"] for spice in state["spices"]]
-                    filtered_products = self.db_service.get_perfumes_by_middle_notes(spice_ids)
+                    filtered_products = self.db_service.get_perfumes_by_middle_notes(
+                        spice_ids
+                    )
 
                     if filtered_products:
-                        logger.info(f"✅ DB 기반 추천 완료: {len(filtered_products)}개 찾음")
+                        logger.info(
+                            f"✅ DB 기반 추천 완료: {len(filtered_products)}개 찾음"
+                        )
 
                         state["response"] = {
                             "status": "success",
@@ -422,7 +440,7 @@ class ProductService:
                             "recommendations": filtered_products,
                             "content": "향료 기반으로 추천된 향수입니다.",
                             "line_id": state.get("line_id", 1),
-                            "recommendation_type": state["recommendation_type"]
+                            "recommendation_type": state["recommendation_type"],
                         }
 
                         # 이미지 생성 시도
@@ -430,7 +448,9 @@ class ProductService:
                             image_state = self.image_generator(state)
                             state["image_path"] = image_state.get("image_path")
                             if state["image_path"]:
-                                logger.info(f"✅ 이미지 생성 성공: {state['image_path']}")
+                                logger.info(
+                                    f"✅ 이미지 생성 성공: {state['image_path']}"
+                                )
                                 state["response"]["image_path"] = state["image_path"]
                             else:
                                 logger.warning("⚠️ 이미지 생성 실패")
@@ -460,7 +480,11 @@ class ProductService:
 
             # LLM 서비스를 통한 직접 추천 생성
             try:
-                response = self.llm_service.fashion_based_generate_recommendation_response(state["user_input"], state["image_caption"])
+                response = (
+                    self.llm_service.fashion_based_generate_recommendation_response(
+                        state["user_input"], state["image_caption"]
+                    )
+                )
 
                 if response and isinstance(response, dict):
                     recommendations = response.get("recommendations", [])
@@ -475,7 +499,7 @@ class ProductService:
                         "recommendations": recommendations,
                         "content": content,
                         "line_id": line_id,
-                        "recommendation_type": state["recommendation_type"]
+                        "recommendation_type": state["recommendation_type"],
                     }
 
                     # 이미지 생성 시도
@@ -502,10 +526,14 @@ class ProductService:
             try:
                 if state.get("spices"):
                     spice_ids = [spice["id"] for spice in state["spices"]]
-                    filtered_products = self.db_service.get_perfumes_by_middle_notes(spice_ids)
+                    filtered_products = self.db_service.get_perfumes_by_middle_notes(
+                        spice_ids
+                    )
 
                     if filtered_products:
-                        logger.info(f"✅ DB 기반 추천 완료: {len(filtered_products)}개 찾음")
+                        logger.info(
+                            f"✅ DB 기반 추천 완료: {len(filtered_products)}개 찾음"
+                        )
 
                         state["response"] = {
                             "status": "success",
@@ -513,7 +541,7 @@ class ProductService:
                             "recommendation": filtered_products,
                             "content": "향료 기반으로 추천된 향수입니다.",
                             "line_id": state.get("line_id", 1),
-                            "recommendation_type": state["recommendation_type"]
+                            "recommendation_type": state["recommendation_type"],
                         }
 
                         # 이미지 생성 시도
@@ -521,7 +549,9 @@ class ProductService:
                             image_state = self.image_generator(state)
                             state["image_path"] = image_state.get("image_path")
                             if state["image_path"]:
-                                logger.info(f"✅ 이미지 생성 성공: {state['image_path']}")
+                                logger.info(
+                                    f"✅ 이미지 생성 성공: {state['image_path']}"
+                                )
                                 state["response"]["image_path"] = state["image_path"]
                             else:
                                 logger.warning("⚠️ 이미지 생성 실패")
@@ -543,14 +573,16 @@ class ProductService:
             state["error"] = str(e)
             state["next_node"] = "error_handler"
             return state
-        
+
     def interior_recommendation_generator(self, state: ProductState) -> ProductState:
         """인테리어 사진 기반 디퓨저 추천 생성"""
         try:
             logger.info("🔄 향수 추천 시작")
-            
+
             try:
-                response = self.llm_service.generate_interior_design_based_recommendation_response(state["user_input"], state["image_caption"])
+                response = self.llm_service.generate_interior_design_based_recommendation_response(
+                    state["user_input"], state["image_caption"]
+                )
 
                 if response and isinstance(response, dict):
                     recommendations = response.get("recommendations", [])
@@ -565,7 +597,7 @@ class ProductService:
                         "recommendations": recommendations,
                         "content": content,
                         "line_id": line_id,
-                        "recommendation_type": state["recommendation_type"]
+                        "recommendation_type": state["recommendation_type"],
                     }
 
                     # 이미지 생성 시도
@@ -583,24 +615,26 @@ class ProductService:
 
                     state["next_node"] = "end"
                     return state
-                
+
             except Exception as e:
                 logger.error(f"❌ LLM 추천 생성 실패: {e}")
-        
+
         except Exception as e:
             logger.error(f"❌ 추천 생성 오류: {e}")
             state["error"] = str(e)
             state["next_node"] = "error_handler"
-        
+
         return state
-    
+
     def therapy_recommendation_generator(self, state: ProductState) -> ProductState:
         """테라피 목적 채팅 기반 디퓨저 추천 생성"""
         try:
             logger.info("🔄 향수 추천 시작")
-            
+
             try:
-                response = self.llm_service.generate_therapeutic_purpose_recommendation_response(state["user_input"])
+                response = self.llm_service.generate_therapeutic_purpose_recommendation_response(
+                    state["user_input"]
+                )
 
                 # if response and isinstance(response, dict):
                 #     state = self._process_response(state, response)
@@ -617,7 +651,7 @@ class ProductService:
                         "recommendations": recommendations,
                         "content": content,
                         "line_id": line_id,
-                        "recommendation_type": state["recommendation_type"]
+                        "recommendation_type": state["recommendation_type"],
                     }
 
                     # 이미지 생성 시도
@@ -635,15 +669,15 @@ class ProductService:
 
                     state["next_node"] = "end"
                     return state
-            
+
             except Exception as e:
                 logger.error(f"❌ LLM 추천 생성 실패: {e}")
-        
+
         except Exception as e:
             logger.error(f"❌ 추천 생성 오류: {e}")
             state["error"] = str(e)
             state["next_node"] = "error_handler"
-        
+
         return state
 
     # def _process_response(self, state: ProductState, response: dict) -> ProductState:
@@ -692,7 +726,9 @@ class ProductService:
                 "Output:"
             )
 
-            translated_text = self.llm_img_service.generate_image_description(translation_prompt).strip()
+            translated_text = self.llm_img_service.generate_image_description(
+                translation_prompt
+            ).strip()
             logger.info(f"✅ 번역된 텍스트: {translated_text}")
 
             state["translated_input"] = translated_text
@@ -704,17 +740,19 @@ class ProductService:
             state["next_node"] = "generate_image_description"
 
         return state
-    
+
     def image_generator(self, state: ProductState) -> ProductState:
         """추천된 향수 기반으로 이미지 생성"""
         try:
             # ✅ response 객체 내부의 "recommendations" 및 "content" 안전하게 검증
-            response = state.get("response") or {}  
-            recommendations = response.get("recommendations") or []  
+            response = state.get("response") or {}
+            recommendations = response.get("recommendations") or []
             content = response.get("content", "")
 
             if not recommendations:
-                logger.warning("⚠️ response 객체 내 추천 결과가 없어 이미지를 생성할 수 없습니다")
+                logger.warning(
+                    "⚠️ response 객체 내 추천 결과가 없어 이미지를 생성할 수 없습니다"
+                )
                 response["image_path"] = ""
                 state["next_node"] = "end"
                 return state
@@ -729,7 +767,9 @@ class ProductService:
                     content_state = {"user_input": content}
                     translated_content_state = self.text_translation(content_state)
                     if translated_content_state.get("translated_input"):
-                        prompt_parts.append(translated_content_state["translated_input"])
+                        prompt_parts.append(
+                            translated_content_state["translated_input"]
+                        )
                         logger.info("✅ Content 번역 완료")
 
                 # 각 추천 항목에 대해 영어로 번역
@@ -737,34 +777,44 @@ class ProductService:
                 for rec in recommendations[:3]:  # 최대 3개만 처리
                     if not isinstance(rec, dict):
                         continue
-                    
+
                     # 번역이 필요한 텍스트만 추출
-                    reason = rec.get('reason', '')
-                    situation = rec.get('situation', '')
-                    
+                    reason = rec.get("reason", "")
+                    situation = rec.get("situation", "")
+
                     if reason or situation:
-                        translation_text = f"Description: {reason}\nSituation: {situation}"
+                        translation_text = (
+                            f"Description: {reason}\nSituation: {situation}"
+                        )
                         translation_state = {"user_input": translation_text}
                         translated_state = self.text_translation(translation_state)
-                        
+
                         if translated_state.get("translated_input"):
                             translated_text = translated_state["translated_input"]
                             parts = translated_text.split("\n")
-                            
+
                             translated_rec = {
-                                "name": rec.get('name', ''),
-                                "brand": rec.get('brand', ''),
-                                "reason": parts[0].replace("Description:", "").strip() if len(parts) > 0 else "",
-                                "situation": parts[1].replace("Situation:", "").strip() if len(parts) > 1 else ""
+                                "name": rec.get("name", ""),
+                                "brand": rec.get("brand", ""),
+                                "reason": (
+                                    parts[0].replace("Description:", "").strip()
+                                    if len(parts) > 0
+                                    else ""
+                                ),
+                                "situation": (
+                                    parts[1].replace("Situation:", "").strip()
+                                    if len(parts) > 1
+                                    else ""
+                                ),
                             }
                             translated_recommendations.append(translated_rec)
 
                 # 번역된 정보로 프롬프트 구성
                 for rec in translated_recommendations:
-                    if rec['reason']:
-                        prompt_parts.append(rec['reason'])
-                    if rec['situation']:
-                        prompt_parts.append(rec['situation'])
+                    if rec["reason"]:
+                        prompt_parts.append(rec["reason"])
+                    if rec["situation"]:
+                        prompt_parts.append(rec["situation"])
 
                 logger.info("✅ 텍스트 번역 완료")
 
@@ -776,13 +826,11 @@ class ProductService:
                     "A refined and luxurious scent experience",
                     "Aesthetic and harmonious fragrance composition",
                     "An artistic representation of exquisite aromas",
-                    "A sensory journey of delicate and captivating scents"
+                    "A sensory journey of delicate and captivating scents",
                 ]
 
             # 이미지 프롬프트 구성 (나머지 코드는 동일)
-            image_prompt = (
-            f"{''.join(prompt_parts)}"
-            )
+            image_prompt = f"{''.join(prompt_parts)}"
             logger.info(f"📸 이미지 생성 시작\n프롬프트: {image_prompt}")
 
             # ✅ 이미지 저장 경로 지정 (generated_images 폴더)
@@ -796,7 +844,9 @@ class ProductService:
                     raise ValueError("❌ 이미지 생성 결과가 비어있습니다")
 
                 if not isinstance(image_result, dict):
-                    raise ValueError(f"❌ 잘못된 이미지 결과 형식: {type(image_result)}")
+                    raise ValueError(
+                        f"❌ 잘못된 이미지 결과 형식: {type(image_result)}"
+                    )
 
                 raw_output_path = image_result.get("output_path")
                 if not raw_output_path:
@@ -836,7 +886,9 @@ class ProductService:
 
             # ✅ MongoDB에서 최근 대화 기록 가져오기 (최신 3개)
             chat_summary = self.mongo_service.get_chat_summary(user_id)  # 요약 가져오기
-            recent_chats = self.mongo_service.get_recent_chat_history(user_id, limit=3)  # 최근 대화 가져오기
+            recent_chats = self.mongo_service.get_recent_chat_history(
+                user_id, limit=3
+            )  # 최근 대화 가져오기
 
             # ✅ 문맥 구성
             context = []
@@ -846,7 +898,7 @@ class ProductService:
 
             chat_prompt = (
                 "You are a perfume expert. Please continue the conversation naturally, taking into account the following conversation context.\n\n"
-                f"{'\n'.join(context)}\n\n"
+                f"{'\n'.join(context)}\n"
                 f"User: {user_input}\n"
                 "Response: "
             )
@@ -908,7 +960,7 @@ class ProductService:
 
             if image_caption is not None:
                 logger.info(f"🔄 이미지 캡션: {image_caption}")
-            
+
             # 초기 상태 설정
             initial_state = {
                 "user_input": user_input,
@@ -922,22 +974,22 @@ class ProductService:
                 "response": None,
                 "line_id": None,
                 "translated_input": None,
-                "error": None
+                "error": None,
             }
 
             # 그래프 컴파일 및 실행
             compiled_graph = self.graph.compile()
             result = compiled_graph.invoke(initial_state)
-            
+
             # 결과 검증 및 반환
             if result.get("error"):
                 logger.error(f"❌ 오류 발생: {result['error']}")
                 return {
                     "status": "error",
                     "message": result["error"],
-                    "recommendations": []
+                    "recommendations": [],
                 }
-                
+
             logger.info("✅ 서비스 실행 완료")
             return {
                 "response": result.get("response"),
@@ -948,5 +1000,5 @@ class ProductService:
             return {
                 "status": "error",
                 "message": "서비스 실행 중 오류가 발생했습니다",
-                "recommendations": []
+                "recommendations": [],
             }

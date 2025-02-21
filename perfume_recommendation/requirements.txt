@@ -12,16 +12,18 @@ torch
 sentence-transformers
 transformers
 scikit-learn
-faiss
+
+# FAISS-GPU는 Conda로 설치해야 합니다. 아래 명령어를 따로 실행하세요.
+# conda install -c pytorch -c nvidia faiss-gpu
 
 # LangChain 관련
 langchain
 langchain_openai
 openai
 huggingface-hub
+langgraph
 
 # 이미지 및 HTTP 요청 처리
-requests
 opencv-python-headless
 rembg
 Pillow
@@ -51,5 +53,9 @@ flake8
 pydantic
 jsonschema
 orjson
+
+chromadb
+einops
+timm
 
 # pip install -r requirements.txt
