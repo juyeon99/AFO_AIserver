@@ -22,7 +22,7 @@ class GPTClient:
 
         # ✅ `openai_api_base` 추가하여 API 서버 주소 명확히 설정
         self.text_llm = ChatOpenAI(
-            model="gpt-4o",
+            model="gpt-4o-mini",
             temperature=0.7,
             openai_api_key=api_key,
             openai_api_base=api_base  # ✅ API 주소 설정

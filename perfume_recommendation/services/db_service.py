@@ -137,7 +137,8 @@ class DBService:
                 SELECT DISTINCT
                     p.id, 
                     p.brand, 
-                    p.name_kr, 
+                    p.name_kr,
+                    p.main_accord,
                     p.size_option as volume,
                     COUNT(DISTINCT n.spice_id) as matching_count
                 FROM product p

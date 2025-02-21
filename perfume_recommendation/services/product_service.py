@@ -264,11 +264,11 @@ class ProductService:
                 f"    user_input = '스트레스 해소에 좋은 디퓨저를 추천해주세요'\n"
                 f"    response: 4\n\n"
                 f"### Intention: (1) General Recommendation, (2) Fashion Recommendation, (3) Interior Description-based Recommendation, (4) Therapy-based Recommendation\n\n"
-                f"### user_input = {user_input}"
+                f"### user_input = {user_input}\n"
             )
 
             if image_caption is not None:
-                type_prompt += f"\n### image_caption: {image_caption}"
+                type_prompt += f"\n### image_caption: {image_caption}\n"
             type_prompt += f"\n### response: "
 
             recommendation_type = self.gpt_client.generate_response(type_prompt).strip()
@@ -537,7 +537,7 @@ class ProductService:
 
                         state["response"] = {
                             "status": "success",
-                            "mode": "fashion_recommendation",
+                            "mode": "recommendation",
                             "recommendation": filtered_products,
                             "content": "향료 기반으로 추천된 향수입니다.",
                             "line_id": state.get("line_id", 1),
@@ -897,14 +897,22 @@ class ProductService:
             context.extend(recent_chats)  # 최근 대화 추가
 
             chat_prompt = (
-                "당신은 향수 전문가입니다. 다음 대화 맥락을 참고하여 자연스럽게 이어서 답변하세요."
-                f"{''.join(context)}"
-                f"사용자: {user_input}"
+                "You are a perfume expert. Please continue the conversation naturally, taking into account the following conversation context.\n\n"
+                f"{'\n'.join(context)}\n"
+                f"User: {user_input}\n"
+                "Response: "
             )
 
             # ✅ GPT로 응답 생성
-            response = self.gpt_client.generate_response(chat_prompt)
-            state["response"] = response.strip()
+            content = self.gpt_client.generate_response(chat_prompt)
+            state["content"] = content.strip()
+
+            state["response"] = {
+                "status": "success",
+                "mode": "chat",
+                "content": state["content"],
+                "recommendation_type": 0
+            }
 
             logger.info(f"✅ 대화 응답 생성 완료: {state['response']}")
 
@@ -920,13 +928,22 @@ class ProductService:
             logger.info(f"💬 대화 응답 생성 시작 - 입력: {user_input}")
 
             chat_prompt = (
-                "당신은 향수 전문가입니다. 다음 요청에 친절하고 전문적으로 답변해주세요.\n"
-                "반드시 한국어로 답변하세요.\n\n"
-                f"사용자: {user_input}"
+                "You are a perfume expert. Please respond to the following request based on the user_input kindly and professionally.\n"
+                "Make sure to answer in Korean.\n\n"
+                f"user_input: {user_input}\n"
+                "Response: "
             )
 
-            response = self.gpt_client.generate_response(chat_prompt)
-            state["content"] = response.strip()
+            content = self.gpt_client.generate_response(chat_prompt)
+            state["content"] = content.strip()
+
+            state["response"] = {
+                "status": "success",
+                "mode": "chat",
+                "content": state["content"],
+                "recommendation_type": 0
+            }
+            
             state["next_node"] = None  # ✅ 대화 종료
 
         except Exception as e:
