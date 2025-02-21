@@ -46,33 +46,40 @@ class ImageProcessingService:
             inputs = self.processor(text=prompt, images=image, return_tensors="pt")
 
             # 장치 및 데이터 타입 변환
-            inputs["input_ids"] = inputs["input_ids"].to(self.device, dtype=torch.long)
-            inputs["pixel_values"] = inputs["pixel_values"].to(self.device, dtype=torch.float16)
+            # inputs["input_ids"] = inputs["input_ids"].to(self.device, dtype=torch.long)
+            # inputs["pixel_values"] = inputs["pixel_values"].to(self.device, dtype=torch.float16)
 
-            # 모델 예측
-            generated_ids = self.model.generate(
-                input_ids=inputs["input_ids"],
-                pixel_values=inputs["pixel_values"],
-                max_new_tokens=512,
-                num_beams=5,
-                do_sample=True,
-                top_k=50,
-                temperature=0.7
-            )
+            # # 모델 예측
+            # generated_ids = self.model.generate(
+            #     input_ids=inputs["input_ids"],
+            #     pixel_values=inputs["pixel_values"],
+            #     max_new_tokens=512,
+            #     num_beams=5,
+            #     do_sample=True,
+            #     top_k=50,
+            #     temperature=0.7
+            # )
+
+            inputs["input_ids"] = inputs["input_ids"].to(self.device, dtype=torch.long)
+            inputs["pixel_values"] = inputs["pixel_values"].to(self.device)
+
+            # Automatic Mixed Precision 적용
+            with torch.cuda.amp.autocast():
+                generated_ids = self.model.generate(
+                    input_ids=inputs["input_ids"],
+                    pixel_values=inputs["pixel_values"],
+                    max_new_tokens=512,
+                    num_beams=5,
+                    do_sample=True,
+                    top_k=50,
+                    temperature=0.7
+                )
 
             # 텍스트 디코딩
             description = self.processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
             print("✅ 생성된 설명:", description)
 
-            # 간단한 감정 분석 추가 (예시)
-            if "happy" in description.lower() or "cheerful" in description.lower():
-                feeling = "Positive"
-            elif "dark" in description.lower() or "sad" in description.lower():
-                feeling = "Negative"
-            else:
-                feeling = "Neutral"
-
-            return {"description": description, "feeling": feeling}
+            return {"description": description}
 
         except Exception as e:
             print(f"🚨 이미지 처리 중 오류 발생: {e}")

@@ -18,13 +18,12 @@ async def process_image(file: UploadFile = File(...)):
         result = image_processing_service.process_image(image_data)
 
         # 반환값 확인
-        if "description" not in result or "feeling" not in result:
-            raise HTTPException(status_code=500, detail="🚨 'description' 또는 'feeling' 키가 존재하지 않습니다.")
+        if "description" not in result:
+            raise HTTPException(status_code=500, detail="🚨 'description' 키가 존재하지 않습니다.")
 
-        # 설명 + 감정 정보 반환
+        # 설명
         return {
-            "description": result["description"],
-            "feeling": result["feeling"]
+            "imageProcessResult": result["description"]
         }
 
     except ValueError as e:

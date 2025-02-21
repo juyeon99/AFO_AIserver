@@ -18,7 +18,7 @@ class GPTClient:
             raise ValueError("🚨 OPENAI_API_KEY가 설정되지 않았습니다!")
 
         self.text_llm = ChatOpenAI(
-            model="gpt-4",
+            model="gpt-4o-mini",
             temperature=0.7,
             openai_api_key=api_key,
             openai_api_base=api_base
