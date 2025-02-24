@@ -959,7 +959,7 @@ class ProductService:
                 "status": "success",
                 "mode": "chat",
                 "content": state["content"],
-                "recommendation_type": 0
+                "recommendation_type": 0,
             }
 
             logger.info(f"✅ 대화 응답 생성 완료: {state['response']}")
@@ -1012,9 +1012,9 @@ class ProductService:
                 "status": "success",
                 "mode": "chat",
                 "content": state["content"],
-                "recommendation_type": 0
+                "recommendation_type": 0,
             }
-            
+
             state["next_node"] = None  # ✅ 대화 종료
 
         except Exception as e:
