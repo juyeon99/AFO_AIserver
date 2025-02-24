@@ -178,7 +178,7 @@ class ProductService:
                 logger.info(f"Received image caption: {image_caption}")
 
             intent_prompt = (
-                f"Classify the user's intent based on the given input.\n\n"
+                f"Classify the user's intent based on the given user_input and image_caption if exists.\n\n"
                 f"If the perfume recommendation request does not contain specific keywords or lacks clear intent, it should be classified as (2) General Conversation.\n"
                 f"Ensure that vague requests such as 'Can you recommend a perfume?' are classified as general conversation unless there is a specific context or detailed request provided.\n\n"
                 f"### Example:\n"
@@ -196,14 +196,26 @@ class ProductService:
                 f"6) user_input = '향수를 추천해주세요.'\n"
                 f"   image_caption = 'The image shows a modern living room with a large window on the right side. The room has white walls and wooden flooring. On the left side of the room, there is a gray sofa and a white coffee table with a black and white patterned rug in front of it. In the center of the image, there are six black chairs arranged around a wooden dining table. The table is set with a vase and other decorative objects on it. Above the table, two large windows let in natural light and provide a view of the city outside. A white floor lamp is placed on the floor next to the sofa.'\n"
                 f"    response: 1\n\n"
+                f"7) image_caption = 'The image shows a modern living room with a large window on the right side. The room has white walls and wooden flooring. On the left side of the room, there is a gray sofa and a white coffee table with a black and white patterned rug in front of it. In the center of the image, there are six black chairs arranged around a wooden dining table. The table is set with a vase and other decorative objects on it. Above the table, two large windows let in natural light and provide a view of the city outside. A white floor lamp is placed on the floor next to the sofa.'\n"
+                f"    response: 1\n\n"
+                f"8) image_caption = 'The image shows a freshly made pizza with a golden crust, topped with cheese, tomatoes, and basil. The pizza is placed on a wooden table, and there are some utensils next to it.'\n"
+                f"    response: 2\n\n"
+                f"9) user_input = '사진처럼 달콤한 향이 나는 향수를 추천해주세요.'\n"
+                f"    image_caption = 'The image shows a rich chocolate cake with multiple layers, each generously filled with creamy chocolate ganache. The cake is topped with a dusting of cocoa powder and a few decorative chocolate shavings. It sits on a rustic wooden table with a delicate silver fork placed beside it. In the background, there are soft, warm light tones creating a cozy atmosphere. The cake looks indulgent and inviting, perfect for a sweet treat on a special occasion.'\n"
+                f"    response: 1\n\n"
                 f"To ensure accurate classification, consider whether the user has provided a clear purpose for the recommendation. If the input lacks context, assume it falls under general conversation.\n\n"
                 f"### Intent Classification:\n"
                 f"(1) Perfume Recommendation - When the user provides specific details or a clear scenario where they need a recommendation.\n"
                 f"(2) General Conversation - When the user asks vaguely or without enough context to determine an actual recommendation need.\n\n"
-                f"**If an image caption is provided and describes an outfit or interior design, the request SHOULD BE CLASSIFIED AS (1) Perfume Recommendation, EVEN IF THE user_input LACKS CLEAR INTENT.**\n\n"
-                f"### user_input = {user_input}"
+                
+                "### Note:\n"
+                f"**If an image_caption is provided and describes an outfit or interior design, the request SHOULD BE CLASSIFIED AS (1) Perfume Recommendation, EVEN IF THE user_input LACKS CLEAR INTENT.**\n"
+                f"**If the image_caption is not related to an outfit or interior design, but if the user_input has some clear intent (like a specific scent or fragrance request), it should still be classified as (1) Perfume Recommendation.**\n"
+                f"**If the user_input is missing, and the image_caption is not related to an outfit or interior design, the request should be classified as (2) General Conversation.**\n"
             )
 
+            if user_input is not None:
+                intent_prompt += f"\n### user_input: {user_input}"
             if image_caption is not None:
                 intent_prompt += f"\n### image_caption: {image_caption}"
             intent_prompt += f"\n### response: "
@@ -234,23 +246,30 @@ class ProductService:
         try:
             user_input = state["user_input"]
             image_caption = state["image_caption"]
+            
             logger.info(f"향수 추천 유형 분류 시작 - 입력: {user_input}")
 
             type_prompt = (
                 f"Please divide the perfume/diffuser recommendations based on the following criteria:\n\n"
                 f"1. **General Recommendation (1)**: Recommend a fragrance based on the user's preferred scent.\n"
+                f"   - If `image_caption` exists but `image_caption` is not strictly related to fashion or interior design, it should still be considered a general recommendation.\n\n"
                 f"2. **Fashion-based Recommendation (2)**: Recommend a fragrance that matches the style of clothes the person is wearing. This should be based on the image description of the outfit. If the image_caption describes mostly the person and their outfit, it should return 2.\n"
                 f"3. **Interior Description-based Recommendation (3)**: Recommend a fragrance based on the image description of the room or space. If the image_caption describes mostly the space or interior, it should return 3.\n"
-                f"4. **Therapy-based Recommendation (4)**: Recommend a fragrance based on the user's mood or emotional state. Categories include:\n"
+                f"4. **Therapy-based Recommendation (4)**: Recommend a fragrance when user_input mentions therapy-related intent based on the user's mood or emotional state. Categories include:\n"
                 f"    - 스트레스 감소 (Stress Relief)\n"
                 f"    - 행복 (Happiness)\n"
                 f"    - 리프레시 (Refreshment)\n"
                 f"    - 수면 (Sleep)\n"
                 f"    - 집중 (Focus)\n"
                 f"    - 에너지 (Energy)\n\n"
+                f"   - If `image_caption` exists but the `user_input` explicitly mentions something related to one of the six therapy categories, it should still be classified as therapy-based.\n\n"
                 f"### Examples)\n"
                 f"1) **General Recommendation**: \n"
                 f"    user_input = '상큼한 향이 나는 향수를 추천해줘'\n"
+                f"    response: 1\n\n"
+                f"1-1) **General Recommendation (When image_caption exists but is not about fashion or interior design)**: \n"
+                f"    user_input = '달콤한 향이 나는 향수를 추천해줘'\n"
+                f"    image_caption = 'The image shows a dog sitting in a park. The grass is green, and the sky is clear. There are trees in the background, and the dog looks happy while playing with a ball.'\n"
                 f"    response: 1\n\n"
                 f"2) **Fashion-based Recommendation**: \n"
                 f"    user_input = '오늘 입은 옷에 어울리는 향수가 필요해'\n"
@@ -263,12 +282,17 @@ class ProductService:
                 f"4) **Therapy-based Recommendation**: \n"
                 f"    user_input = '스트레스 해소에 좋은 디퓨저를 추천해주세요'\n"
                 f"    response: 4\n\n"
+                f"4-1) **Therapy-based Recommendation (When image_caption exists but user_input mentions therapy-related intent)**:\n"
+                f"    user_input = '에너지를 높여줄 향을 추천해줘'\n"
+                f"    image_caption = 'The image shows a cityscape with people walking on the street. The buildings have bright billboards, and there is a bustling crowd in the area.'\n"
+                f"    response: 4\n\n"
                 f"### Intention: (1) General Recommendation, (2) Fashion Recommendation, (3) Interior Description-based Recommendation, (4) Therapy-based Recommendation\n\n"
-                f"### user_input = {user_input}\n"
             )
 
+            if user_input is not None:
+                type_prompt += f"### user_input: {user_input}\n"
             if image_caption is not None:
-                type_prompt += f"\n### image_caption: {image_caption}\n"
+                type_prompt += f"### image_caption: {image_caption}\n"
             type_prompt += f"\n### response: "
 
             recommendation_type = self.gpt_client.generate_response(type_prompt).strip()
@@ -383,7 +407,7 @@ class ProductService:
             # LLM 서비스를 통한 직접 추천 생성
             try:
                 response = self.llm_service.generate_recommendation_response(
-                    state["user_input"]
+                    state["user_input"], state["image_caption"], 
                 )
 
                 if response and isinstance(response, dict):
@@ -406,7 +430,7 @@ class ProductService:
                     try:
                         image_state = self.image_generator(state)
                         state["image_path"] = image_state.get("image_path")
-                        if state["image_path"]:
+                        if state["image_path"] and state["image_path"] != "failed":
                             logger.info(f"✅ 이미지 생성 성공: {state['image_path']}")
                             state["response"]["image_path"] = state["image_path"]
                         else:
@@ -447,7 +471,7 @@ class ProductService:
                         try:
                             image_state = self.image_generator(state)
                             state["image_path"] = image_state.get("image_path")
-                            if state["image_path"]:
+                            if state["image_path"] and state["image_path"] != "failed":
                                 logger.info(
                                     f"✅ 이미지 생성 성공: {state['image_path']}"
                                 )
@@ -507,7 +531,7 @@ class ProductService:
                         image_state = self.image_generator(state)
                         state["image_path"] = image_state.get("image_path")
 
-                        if state["image_path"]:
+                        if state["image_path"] and state["image_path"] != "failed":
                             logger.info(f"✅ 이미지 생성 성공: {state['image_path']}")
                             state["response"]["image_path"] = state["image_path"]
                         else:
@@ -548,7 +572,7 @@ class ProductService:
                         try:
                             image_state = self.image_generator(state)
                             state["image_path"] = image_state.get("image_path")
-                            if state["image_path"]:
+                            if state["image_path"] and state["image_path"] != "failed":
                                 logger.info(
                                     f"✅ 이미지 생성 성공: {state['image_path']}"
                                 )
@@ -581,7 +605,7 @@ class ProductService:
 
             try:
                 response = self.llm_service.generate_interior_design_based_recommendation_response(
-                    state["user_input"], state["image_caption"]
+                    state["image_caption"], state["user_input"]
                 )
 
                 if response and isinstance(response, dict):
@@ -604,7 +628,7 @@ class ProductService:
                     try:
                         image_state = self.image_generator(state)
                         state["image_path"] = image_state.get("image_path")
-                        if state["image_path"]:
+                        if state["image_path"] and state["image_path"] != "failed":
                             logger.info(f"✅ 이미지 생성 성공: {state['image_path']}")
                             state["response"]["image_path"] = state["image_path"]
                         else:
@@ -633,7 +657,7 @@ class ProductService:
 
             try:
                 response = self.llm_service.generate_therapeutic_purpose_recommendation_response(
-                    state["user_input"]
+                    state["user_input"], state["image_caption"]
                 )
 
                 # if response and isinstance(response, dict):
@@ -658,7 +682,7 @@ class ProductService:
                     try:
                         image_state = self.image_generator(state)
                         state["image_path"] = image_state.get("image_path")
-                        if state["image_path"]:
+                        if state["image_path"] and state["image_path"] != "failed":
                             logger.info(f"✅ 이미지 생성 성공: {state['image_path']}")
                             state["response"]["image_path"] = state["image_path"]
                         else:
@@ -701,7 +725,7 @@ class ProductService:
     #     try:
     #         image_state = self.image_generator(state)
     #         state["image_path"] = image_state.get("image_path")
-    #         if state["image_path"]:
+    #         if state["image_path"] and state["image_path"] != "failed":
     #             logger.info(f"✅ 이미지 생성 성공: {state['image_path']}")
     #             state["response"]["image_path"] = state["image_path"]
     #         else:
@@ -868,6 +892,7 @@ class ProductService:
             except Exception as img_err:
                 logger.error(f"🚨 이미지 생성 실패: {img_err}")
                 response["image_path"] = "failed"  # ✅ 실패 시 "failed"로 설정
+                state["image_path"] = "failed"
 
             state["next_node"] = "end"
             return state
@@ -883,6 +908,7 @@ class ProductService:
             # ✅ 요청에서 user_id 가져오기 (없으면 anonymous_user 사용)
             user_id = state.get("user_id", "anonymous_user")
             user_input = state["user_input"]
+            image_caption = state["image_caption"]
 
             # ✅ MongoDB에서 최근 대화 기록 가져오기 (최신 3개)
             chat_summary = self.mongo_service.get_chat_summary(user_id)  # 요약 가져오기
@@ -896,12 +922,34 @@ class ProductService:
                 context.append(f"📌 사용자 요약: {chat_summary}")  # 요약 추가
             context.extend(recent_chats)  # 최근 대화 추가
 
+            template = self.prompt_loader.get_prompt("chat")
+
             chat_prompt = (
-                "You are a perfume expert. Please continue the conversation naturally, taking into account the following conversation context."
-                f"{''.join(context)}"
-                f"User: {user_input}"
-                "Response: "
+                f"{template['description']}\n"
+                "### Rules: \n"
+                f"{template['rules']}\n\n"
+                "### Examples: \n"
+                f"{template['examples']}\n\n"
             )
+
+            chat_prompt += (
+                "You are a perfume expert."
+                "Please respond to the following request based on the user_input and image_caption(if exists) kindly and professionally."
+                "Please continue the conversation naturally, ensuring that the discussion is directed towards **conversation about fragrance and perfumes**, taking into account the following conversation context.\n\n"
+                "If the user mentions something unrelated to fragrance, like food or an image of something not related to perfumes, redirect the conversation back to fragrance in a natural way, using the context as a bridge.\n\n"
+                "### Example:\n"
+                "If the image or user input refers to something like pizza or chocolate, bring up a fragrance that might evoke similar sensory experiences, but don't immediately recommend a specific perfume.\n"
+                "Instead, gently ask the user about their fragrance preferences or what kinds of scents they enjoy, guiding the conversation toward fragrance naturally.\n\n"
+                f"{'\n'.join(context)}\n\n"
+                "### Important Rule: You must respond only **in Korean**\n\n"
+            )
+
+            if user_input is not None:
+                chat_prompt += f"### user_input: {user_input}\n"
+            if image_caption is not None:
+                chat_prompt += f"### image_caption: {image_caption}\n"
+
+            chat_prompt += "Response: "
 
             # ✅ GPT로 응답 생성
             content = self.gpt_client.generate_response(chat_prompt)
@@ -924,15 +972,38 @@ class ProductService:
 
     def generate_chat_response(self, state: ProductState) -> ProductState:
         try:
-            user_input = state["user_input"]
             logger.info(f"💬 대화 응답 생성 시작 - 입력: {user_input}")
 
+            user_input = state["user_input"]
+            image_caption = state["image_caption"]
+
+            template = self.prompt_loader.get_prompt("chat")
+            
             chat_prompt = (
-                "You are a perfume expert. Please respond to the following request based on the user_input kindly and professionally.\n"
-                "Make sure to answer in Korean.\n\n"
-                f"user_input: {user_input}\n"
-                "Response: "
+                f"{template['description']}\n"
+                "### Rules: \n"
+                f"{template['rules']}\n\n"
+                "### Examples: \n"
+                f"{template['examples']}\n\n"
             )
+
+            chat_prompt += (
+                "You are a perfume expert."
+                "Please respond to the following request based on the user_input and image_caption(if exists) kindly and professionally."
+                "Please continue the conversation naturally, ensuring that the discussion is directed towards **conversation about fragrance and perfumes**.\n\n"
+                "If the user mentions something unrelated to fragrance, like food or an image of something not related to perfumes, redirect the conversation back to fragrance in a natural way, using the context as a bridge.\n\n"
+                "### Example:\n"
+                "If the image or user input refers to something like pizza or chocolate, bring up a fragrance that might evoke similar sensory experiences, but don't immediately recommend a specific perfume.\n"
+                "Instead, gently ask the user about their fragrance preferences or what kinds of scents they enjoy, guiding the conversation toward fragrance naturally.\n\n"
+                "### Important Rule: You must respond only **in Korean**\n\n"
+            )
+
+            if user_input is not None:
+                chat_prompt += f"### user_input: {user_input}\n"
+            if image_caption is not None:
+                chat_prompt += f"### image_caption: {image_caption}\n"
+
+            chat_prompt += "Response: "
 
             content = self.gpt_client.generate_response(chat_prompt)
             state["content"] = content.strip()
@@ -953,10 +1024,11 @@ class ProductService:
 
         return state
 
-    def run(self, user_input: str, image_caption: Optional[str] = None) -> dict:
+    def run(self, user_input: Optional[str] = None, image_caption: Optional[str] = None) -> dict:
         """그래프 실행 및 결과 반환"""
         try:
-            logger.info(f"🔄 서비스 실행 시작 - 입력: {user_input}")
+            if user_input is not None:
+                logger.info(f"🔄 서비스 실행 시작 - 입력: {user_input}")
 
             if image_caption is not None:
                 logger.info(f"🔄 이미지 캡션: {image_caption}")

@@ -6,7 +6,7 @@ from typing import Optional
 router = APIRouter()
 
 class UserRequest(BaseModel):
-    user_content: str
+    user_content: Optional[str] = None
     image_process_result: Optional[str] = None
 
 def get_product_service():
