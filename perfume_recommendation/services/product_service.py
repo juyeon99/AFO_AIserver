@@ -897,9 +897,9 @@ class ProductService:
             context.extend(recent_chats)  # 최근 대화 추가
 
             chat_prompt = (
-                "You are a perfume expert. Please continue the conversation naturally, taking into account the following conversation context.\n\n"
-                f"{'\n'.join(context)}\n"
-                f"User: {user_input}\n"
+                "You are a perfume expert. Please continue the conversation naturally, taking into account the following conversation context."
+                f"{''.join(context)}"
+                f"User: {user_input}"
                 "Response: "
             )
 
@@ -911,7 +911,7 @@ class ProductService:
                 "status": "success",
                 "mode": "chat",
                 "content": state["content"],
-                "recommendation_type": 0
+                "recommendation_type": 0,
             }
 
             logger.info(f"✅ 대화 응답 생성 완료: {state['response']}")
@@ -941,9 +941,9 @@ class ProductService:
                 "status": "success",
                 "mode": "chat",
                 "content": state["content"],
-                "recommendation_type": 0
+                "recommendation_type": 0,
             }
-            
+
             state["next_node"] = None  # ✅ 대화 종료
 
         except Exception as e:
