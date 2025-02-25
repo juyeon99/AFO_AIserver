@@ -87,13 +87,16 @@ class LLMService:
             # 2. GPT를 이용해 입력에서 향 계열과 브랜드 추출
             keywords_prompt = (
                 "The following is a perfume recommendation request. Extract the fragrance family and brand names from the user_input and image_caption.\n"
-                f"Fragrance families: {', '.join(line_mapping.keys())}\n"
-                f"Brand list: {', '.join(brand_list)}\n\n"
+                f"### Fragrance families(line): {', '.join(line_mapping.keys())}\n\n"
+                f"### Brand list: {', '.join(brand_list)}\n\n"
 
-                "Additional rules: If the user_input and the image_caption is a description of a fashion style, use the corresponding fragrance family from the following fashion styles.\n"
-                "Additional rules: If the user_input is a description of a date or a specific situation, use the corresponding fragrance family for the situation.\n"
-                "Additional rules: Infer the user's style or vibe from the the user_input or image_caption (e.g., sporty, romantic, vintage, etc.) and recommend a fragrance family(line) based on that.\n\n"
-                
+                "### Additional rules:\n"
+                "- If the user_input and the image_caption is a description of a fashion style, use the corresponding fragrance family from the following fashion styles.\n"
+                "- If the user_input is a description of a date or a specific situation, use the corresponding fragrance family for the situation.\n"
+                "- Infer the user's style or vibe from the user_input or image_caption (e.g., sporty, romantic, vintage, etc.) and recommend a fragrance family(line) based on that.\n"
+                "- If the user specifies a brand, include it only if it exists in the Brand list. If the mentioned brand is not in the Brand list, do not include it in the output.\n"
+                "- Exclude any brands that the user explicitly does not want.\n\n"
+
                 "### Fashion style to output fragrance family(line) mapping example:\n"
                 "1. Fashion style: Casual style -> line: **Fruity**\n"
                 "2. Fashion style: Dandy Casual -> line: **Woody**\n"
@@ -121,8 +124,49 @@ class LLMService:
                 "24. Fashion style: Gothic Style -> line: **Oriental**\n"
                 "25. Fashion style: Cosplay -> line: **Gourmand**\n\n"
 
-                "### Important rule: The 'line' must **never** be null. It should always correspond to **one of [{', '.join(line_mapping.keys())}]**.\n"
-                "### NOTE: The 'brands' list can be empty.\n\n"
+                "### Few-shot examples:\n"
+                "#### Example 1:\n"
+                "user_input: '비즈니스 미팅에 어울리는 향수가 뭐가 있나요? 주로 샤넬 제품을 선호합니다.'\n"
+                "Expected Output:\n"
+                "{\n"
+                '  "line": "Musk",\n'
+                '  "brands": ["샤넬"]\n'
+                "}\n\n"
+
+                "#### Example 2:\n"
+                "user_input: '아침 조깅할 때 사용할 시원하고 깨끗한 향을 찾고 있어요.'\n"
+                "Expected Output:\n"
+                "{\n"
+                '  "line": "Aquatic",\n'
+                '  "brands": []\n'
+                "}\n\n"
+
+                "#### Example 3:\n"
+                "user_input: '빈티지한 패션을 즐겨 입어요. 고풍스럽고 우아한 향수를 추천해 주세요.'\n"
+                "Expected Output:\n"
+                "{\n"
+                '  "line": "Oriental",\n'
+                '  "brands": []\n'
+                "}\n\n"
+
+                "#### Example 4:\n"
+                "user_input: '로맨틱한 분위기의 데이트에 어울리는 향수를 추천해 주세요. 조말론과 딥디크 제품을 좋아해요.'\n"
+                "Expected Output:\n"
+                "{\n"
+                '  "line": "Floral",\n'
+                '  "brands": ["조 말론", "딥티크"]\n'
+                "}\n\n"
+
+                "#### Example 5:\n"
+                "user_input: '나는 디올 향수는 별로 안 좋아해. 포멀한 수트와 어울리는 여성스러운 향을 추천해 줘.'\n"
+                "Expected Output:\n"
+                "{\n"
+                '  "line": "Musk",\n'
+                '  "brands": []\n'
+                "}\n\n"
+
+                "### Important rule: The 'line' must **never** be null. It should always correspond to **one of Fragrance families(line)**.\n"
+                "### NOTE: The 'brands' list contains the brands the user wants. It can be empty if the user does not specify any brand. Exclude any brands that the user explicitly does not want. If a brand is mentioned but is not in the Brand list, do not include it in the output. If a brand is included, it must exactly match the name as listed in the Brand list.\n\n"
             )
 
             if user_input is not None:
@@ -135,7 +179,7 @@ class LLMService:
                 "### The output format must be **JSON**:\n"
                 "{\n"
                 '  "line": "Woody",\n'
-                '  "brands": ["샤넬", "딥티크"]\n'
+                '  "brands": []\n'
                 "}"
             )
             
@@ -233,34 +277,11 @@ class LLMService:
             
             logger.info(f"✅ 향료 ID 목록: {spice_ids}")
 
-            # 3. 향수 필터링
-            logger.info("🔍 향수 필터링 시작")
-            filtered_perfumes = self.db_service.get_perfumes_by_middle_notes(spice_ids)
-            logger.debug(f"📋 미들노트 기준 필터링: {len(filtered_perfumes)}개")
-
-            if brand_filters:
-                filtered_perfumes = [p for p in filtered_perfumes if p["brand"] in brand_filters]
-                logger.debug(f"📋 브랜드 필터링 후: {len(filtered_perfumes)}개")
-
-            if not filtered_perfumes:
-                logger.error("❌ 필터링 결과 없음")
-                raise HTTPException(status_code=404, detail="조건에 맞는 향수를 찾을 수 없습니다")
-
-            # 4. GPT 프롬프트 생성
-            products_text = "\n".join([
-                f"{p['id']}. {p['name_kr']} ({p['brand']}): {p.get('main_accord', '향 정보 없음')}"
-                for p in filtered_perfumes[:50]  # 최대 50개로 제한
-            ])
-
+            # 프롬프트 생성
             template = self.prompt_loader.get_prompt("recommendation")
             names_prompt = (
                 f"{template['description']}\n"
                 f"{template['rules']}"
-            )
-
-            names_prompt = (
-                f"{template['description']}\n"
-                f"{template['rules']}\n"
             )
 
             if user_input is not None:
@@ -269,8 +290,45 @@ class LLMService:
             if image_caption is not None:
                 names_prompt += f"\n### image_caption: {image_caption}\n"
 
+            # 3. 향수 필터링
+            logger.info("🔍 향수 필터링 시작")
+            filtered_perfumes = self.db_service.get_perfumes_by_middle_notes(spice_ids)
+            logger.debug(f"📋 미들노트 기준 필터링: {len(filtered_perfumes)}개")
+
+            if brand_filters:
+                brand_filtered_perfumes = [p for p in filtered_perfumes if p["brand"] in brand_filters]
+                logger.debug(f"📋 브랜드 필터링 후: {len(brand_filtered_perfumes)}개")
+
+                if len(brand_filtered_perfumes) < 3:
+                    logger.debug("📋 브랜드 필터링 결과가 3개 미만이므로 브랜드 필터링을 하지 않은 미들노트 기준 결과를 사용합니다.")
+                    random.shuffle(filtered_perfumes)
+                    filtered_perfumes = filtered_perfumes[:25]
+
+                    names_prompt += f"\n### Preferred brand: {brand_filters}\n"
+                    names_prompt += (
+                        "- If a brand in 'Preferred brand' matches a brand from the database, recommend perfumes from that brand.\n"
+                        "- If no matching brand is found, recommend based on user_input and image_caption(if exists) without considering the brand.\n\n"
+                    )
+
+                    for perfume in brand_filtered_perfumes:
+                        if perfume not in filtered_perfumes:
+                            filtered_perfumes.append(perfume)   # 브랜드 필터링을 하지 않은 미들노트 기준 결과에 brand_filtered_perfumes의 제품이 포함되지 않은 경우 포함
+                else:
+                    random.shuffle(brand_filtered_perfumes)
+                    filtered_perfumes = brand_filtered_perfumes[:25]
+
+            if not filtered_perfumes:
+                logger.error("❌ 필터링 결과 없음")
+                raise HTTPException(status_code=404, detail="조건에 맞는 향수를 찾을 수 없습니다.")
+
+            # 4. GPT 프롬프트 생성
+            products_text = "\n".join([
+                f"{p['id']}. {p['name_kr']} ({p['brand']}): {p.get('main_accord', '향 정보 없음')}"
+                for p in filtered_perfumes
+            ])
+
             names_prompt += (
-                f"extracted keywords: {products_text}\n"
+                f"### Products list (id. name (brand): main_accord): \n{products_text}\n\n"
                 f"Recommend up to 3 fragrance names that do not include brand names.\n\n"
                 f"- content: Please include the reason for the recommendation, the situation it suits, and the common feel of the perfumes in korean.\n\n"
 
@@ -489,25 +547,7 @@ class LLMService:
             
             logger.info(f"✅ 향료 ID 목록: {spice_ids}")
 
-            # 3. 향수 필터링
-            logger.info("🔍 향수 필터링 시작")
-            filtered_perfumes = self.db_service.get_perfumes_by_middle_notes(spice_ids)
-            logger.debug(f"📋 미들노트 기준 필터링: {len(filtered_perfumes)}개")
-
-            if brand_filters:
-                filtered_perfumes = [p for p in filtered_perfumes if p["brand"] in brand_filters]
-                logger.debug(f"📋 브랜드 필터링 후: {len(filtered_perfumes)}개")
-
-            if not filtered_perfumes:
-                logger.error("❌ 필터링 결과 없음")
-                raise HTTPException(status_code=404, detail="조건에 맞는 향수를 찾을 수 없습니다")
-
-            # 4. GPT 프롬프트 생성
-            products_text = "\n".join([
-                f"{p['id']}. {p['name_kr']} ({p['brand']}): {p.get('main_accord', '향 정보 없음')}"
-                for p in filtered_perfumes[:30]  # 최대 10개로 제한
-            ])
-
+            # 프롬프트 생성
             template = self.prompt_loader.get_prompt("recommendation")
             names_prompt = (
                 f"{template['description']}\n"
@@ -519,9 +559,48 @@ class LLMService:
             if image_caption is not None:
                 names_prompt += f"### image_caption: {image_caption}\n"
 
+            # 3. 향수 필터링
+            logger.info("🔍 향수 필터링 시작")
+            filtered_perfumes = self.db_service.get_perfumes_by_middle_notes(spice_ids)
+            logger.debug(f"📋 미들노트 기준 필터링: {len(filtered_perfumes)}개")
+
+            if brand_filters:
+                brand_filtered_perfumes = [p for p in filtered_perfumes if p["brand"] in brand_filters]
+                logger.debug(f"📋 브랜드 필터링 후: {len(brand_filtered_perfumes)}개")
+
+                if len(brand_filtered_perfumes) < 3:
+                    logger.debug("📋 브랜드 필터링 결과가 3개 미만이므로 브랜드 필터링을 하지 않은 미들노트 기준 결과를 사용합니다.")
+                    random.shuffle(filtered_perfumes)
+                    filtered_perfumes = filtered_perfumes[:25]
+
+                    names_prompt += f"\n### Preferred brand: {brand_filters}\n"
+                    names_prompt += (
+                        "- If a brand in 'Preferred brand' matches a brand from the database, recommend perfumes from that brand.\n"
+                        "- If no matching brand is found, recommend based on user_input and image_caption(if exists) without considering the brand.\n\n"
+                    )
+
+                    for perfume in brand_filtered_perfumes:
+                        if perfume not in filtered_perfumes:
+                            filtered_perfumes.append(perfume)   # 브랜드 필터링을 하지 않은 미들노트 기준 결과에 brand_filtered_perfumes의 제품이 포함되지 않은 경우 포함
+                else:
+                    random.shuffle(brand_filtered_perfumes)
+                    filtered_perfumes = brand_filtered_perfumes[:25]
+
+            if not filtered_perfumes:
+                logger.error("❌ 필터링 결과 없음")
+                raise HTTPException(status_code=404, detail="조건에 맞는 향수를 찾을 수 없습니다.")
+
+            # 4. GPT 프롬프트 생성
+            products_text = "\n".join([
+                f"{p['id']}. {p['name_kr']} ({p['brand']}): {p.get('main_accord', '향 정보 없음')}"
+                for p in filtered_perfumes
+            ])
+
+            
+
             names_prompt += (
-                f"### Extracted keywords: {products_text}\n"
-                f"Recommend 3 perfume names without including the brand names.\n\n"
+                f"### Products list (id. name (brand): main_accord): \n{products_text}\n\n"
+                f"Recommend up to 3 perfume names without including the brand names.\n\n"
                 f"Note: The recommendations should refer to the user_input, image_caption, and extracted keywords. The image_caption describes the person's outfit, and the recommended perfumes should match the described outfit.\n"
                 f"- content: Please include the reason for the recommendation, the situation it suits, and the common feel of the perfumes in korean.\n\n"
                 "### Important Rule: You must respond only **in Korean**\n\n"
@@ -770,7 +849,7 @@ Scent Description: 우디한 베이스에 따뜻하고 자연스러운 분위기
 
             diffuser_prompt += (
                 f"Diffusers List (id. name (brand): scent_description):\n{diffusers_text}\n"
-                f"Recommend 2 diffusers, including only the id and name, excluding the brand name.\n\n"
+                f"Recommend up to 2 diffusers, including only the id and name, excluding the brand name.\n\n"
                 f"Note: The recommendations should refer to the user_input, image_caption(if exists). The image_caption describes the interior design or a space, and the recommended diffusers should match the described interior design.\n"
                 f"- content: Based on the user_input and image_caption, please include the reason for the recommendation, the situation it suits, and the common feel of the diffusers in korean.\n\n"
                 "### Important Rule: You must respond only **in Korean**\n\n"
