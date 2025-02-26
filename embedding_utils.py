@@ -1,5 +1,5 @@
 import numpy as np
-from .services.mongo_service import MongoService
+from services.mongo_service import MongoService
 
 # MongoDB 서비스 인스턴스 생성
 mongo_service = MongoService()

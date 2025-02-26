@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, UploadFile, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 import requests, faiss, json, torch, io, os, logging
 import numpy as np
-from ..services.db_service import DBService
+from services.db_service import DBService
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
 
@@ -62,7 +62,8 @@ def scentlens_init():
 # 이미지 다운로드를 위한 배치 요청을 전송하고 응답을 반환
 def download_images(product_image_data):
     try:
-        response = requests.post("http://localhost:8001/download_images/", json=product_image_data)
+        download_images_url = os.getenv("SCENTLENS_SERVER_URL") + "/download_images/"
+        response = requests.post(download_images_url, json=product_image_data)
         if response.status_code == 200:
             logger.info("Successfully downloaded images.")
             return response.json()
@@ -76,7 +77,8 @@ def download_images(product_image_data):
 # 다운로드된 이미지에 대해 임베딩 계산을 위한 배치 요청을 전송
 def compute_embeddings(downloaded_images):
     try:
-        response = requests.post("http://localhost:8001/get_or_compute_embeddings/", json=downloaded_images)
+        get_or_compute_embeddings_url = os.getenv("SCENTLENS_SERVER_URL") + "/get_or_compute_embeddings/"
+        response = requests.post(get_or_compute_embeddings_url, json=downloaded_images)
         if response.status_code == 200:
             logger.info("Successfully computed embeddings.")
             return response.json()
@@ -180,7 +182,7 @@ async def search_image(file: UploadFile = File(...)):
         # GPU 임베딩 서비스 호출
         image_bytes = await file.read()
 
-        compute_url = "http://localhost:8001/compute_embedding_of_uploaded_file/"
+        compute_url = os.getenv("SCENTLENS_SERVER_URL") + "/compute_embedding_of_uploaded_file/"
         response = requests.post(
             compute_url, files={"file": ("uploaded_image.png", image_bytes)}
         )

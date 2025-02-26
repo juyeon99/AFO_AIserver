@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from ..services.db_service import get_db, Product, ProductImage
-from ..services.similar_text import find_similar_texts
-from ..services.similar_image import find_similar_images
+from services.db_service import get_db, Product, ProductImage
+from services.similar_text import find_similar_texts
+from services.similar_image import find_similar_images
 from concurrent.futures import ThreadPoolExecutor
 import asyncio
 

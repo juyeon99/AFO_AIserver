@@ -2,7 +2,7 @@ import json, random
 import logging, chromadb, json
 from typing import Optional, Tuple
 from models.img_llm_client import GPTClient
-from .db_service import DBService
+from services.db_service import DBService
 from services.prompt_loader import PromptLoader
 from fastapi import HTTPException
 from chromadb.utils import embedding_functions

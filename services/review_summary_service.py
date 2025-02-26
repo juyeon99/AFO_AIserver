@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from perfume_recommendation.models.base_model import Review
+from models.base_model import Review
 from models.client import GPTClient
 from cachetools import TTLCache # 캐시 만료 시간 설정을 위한 라이브러리
 from datetime import datetime
