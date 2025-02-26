@@ -17,7 +17,7 @@ class ImageGenerationService:
     def __init__(self):
         self.stability_api_key = os.getenv("STABILITY_API_KEY")
         self.image_folder = os.getenv("IMAGE_FOLDER", "generated_images")  # ./ 제거
-        self.base_url = os.getenv("BASE_URL", "http://localhost:8000")
+        self.base_url = os.getenv("BASE_URL")
         os.makedirs(self.image_folder, exist_ok=True)
 
         if not self.stability_api_key:
