@@ -2,11 +2,11 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from fastapi import FastAPI
-from perfume_recommendation.routers import llm_router, image_processing_router, image_generation_router, image_generation_description_router, diffuser_router, similar, review_summary_router, bookmark_router, product_router, scentlens, image_fetch_router
+from routers import llm_router, image_processing_router, image_generation_router, image_generation_description_router, diffuser_router, similar, review_summary_router, bookmark_router, product_router, scentlens, image_fetch_router
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from fastapi.staticfiles import StaticFiles
-from perfume_recommendation.routers.scentlens import scentlens_init  # Import the init function from scentlens.py
+from routers.scentlens import scentlens_init  # Import the init function from scentlens.py
 from contextlib import asynccontextmanager
 
 @asynccontextmanager

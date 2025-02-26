@@ -10,7 +10,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from collections import defaultdict
 from langchain_openai import ChatOpenAI
-from perfume_recommendation.models.base_model import Base, Product, Note, Spice, ProductImage, Similar, SimilarText, SimilarImage
+from models.base_model import Base, Product, Note, Spice, ProductImage, Similar, SimilarText, SimilarImage
 
 logger = logging.getLogger(__name__)
 

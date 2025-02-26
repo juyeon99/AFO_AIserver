@@ -3,8 +3,8 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from sqlalchemy.orm import sessionmaker
-from .db_service import Product, Note, SessionLocal
-from perfume_recommendation.embedding_utils import save_text_embedding, load_text_embedding
+from services.db_service import Product, Note, SessionLocal
+from embedding_utils import save_text_embedding, load_text_embedding
 
 # ✅ 텍스트 임베딩을 위한 모델 설정
 # mpnet: Microsoft의 MPNet 모델 (성능이 좋지만 상대적으로 느림)

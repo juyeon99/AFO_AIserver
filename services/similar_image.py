@@ -3,8 +3,8 @@ import torch
 from torchvision.models import vit_b_16, swin_v2_b, Swin_V2_B_Weights
 from transformers import ConvNextModel, ConvNextImageProcessor
 from sklearn.metrics.pairwise import cosine_similarity
-from .db_service import Product, ProductImage, SessionLocal
-from perfume_recommendation.embedding_utils import save_embedding, load_embedding
+from services.db_service import Product, ProductImage, SessionLocal
+from embedding_utils import save_embedding, load_embedding
 import logging
 from concurrent.futures import ThreadPoolExecutor
 import requests

@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, UploadFile, APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 import requests, faiss, json, torch, io, os, logging
 import numpy as np
-from ..services.db_service import DBService
+from services.db_service import DBService
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
 
