@@ -43,19 +43,30 @@ class PerfumeRecommender:
         return self._model
 
     def _get_threshold_values(self, product_count):
-        """북마크 수에 따른 임계값 설정"""
+        """북마크 수에 따른 임계값 설정
+        
+        북마크 수가 적을수록 엄격한 기준을, 많을수록 느슨한 기준을 적용합니다.
+        
+        Args:
+            product_count (int): 사용자가 북마크한 상품의 개수
+            
+        Returns:
+            tuple: (최소_일치_항목_수, 유사도_임계값)
+                - 첫 번째 값: 추천을 위해 필요한 최소 일치 항목 수
+                - 두 번째 값: 항목 간 유사성을 판단하는 임계값(0~1 사이 값)
+        """
         try:
             product_count = int(product_count)
             
             # 북마크 수에 따라 다른 임계값 반환
             if product_count <= 3:
-                return 1, 0.5  # 적은 수의 북마크: 엄격한 기준
+                return 1, 0.5  # 적은 수의 북마크: 엄격한 기준 (최소 1개 항목 일치, 유사도 0.5 이상)
             elif product_count <= 6:
-                return 2, 0.4  # 중간 수의 북마크
+                return 2, 0.4  # 중간 수의 북마크 (최소 2개 항목 일치, 유사도 0.4 이상)
             elif product_count <= 10:
-                return 3, 0.3  # 다수의 북마크
+                return 3, 0.3  # 다수의 북마크 (최소 3개 항목 일치, 유사도 0.3 이상)
             else:
-                return 4, 0.2  # 많은 수의 북마크: 느슨한 기준
+                return 4, 0.2  # 많은 수의 북마크: 느슨한 기준 (최소 4개 항목 일치, 유사도 0.2 이상)
                 
         except Exception as e:
             logger.error(f"임계값 설정 오류: {str(e)}", exc_info=True)
