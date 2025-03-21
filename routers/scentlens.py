@@ -1,5 +1,6 @@
-from fastapi import FastAPI, File, UploadFile, APIRouter
+from fastapi import FastAPI, File, UploadFile, APIRouter, Form
 from fastapi.middleware.cors import CORSMiddleware
+from models.client import GPTClient
 import requests, faiss, json, torch, io, os, logging
 import numpy as np
 from services.db_service import DBService
@@ -15,12 +16,13 @@ db_images = []
 db_embeddings = []
 index = None
 product_data = []
+brand_en_dict = {}
 
 router = APIRouter()
 
 # 서버 시작 전 미리 실행할 코드; 서버를 initialize하여 데이터 로드, 이미지 다운로드, 임베딩 계산, FAISS 인덱스 생성을 미리 수행
 def scentlens_init():
-    global db_images, db_embeddings, index, product_data
+    global db_images, db_embeddings, index, product_data, brand_en_dict
 
     db_config = {
         "host": os.getenv("DB_HOST"),
@@ -40,6 +42,9 @@ def scentlens_init():
     if not product_image_data or not product_data:
         logger.error("Initialization failed due to missing or invalid data.")
         return
+    
+    # 브랜드 영문명 사전 로드
+    brand_en_dict = db_service.load_brand_en_dict()
 
     # 이미지 다운로드
     downloaded_images = download_images(product_image_data)
@@ -110,15 +115,15 @@ def create_faiss_index():
         db_embeddings = db_embeddings / db_embeddings.norm(dim=1, keepdim=True)
 
         dimension = db_embeddings.shape[1]
-        index = faiss.GpuIndexFlatIP(faiss.StandardGpuResources(), dimension)
+        index = faiss.IndexFlatIP(dimension)
         index.add(db_embeddings.numpy())
         logger.info("FAISS index created successfully.")
     else:
         logger.info("No embeddings available. Initializing an empty FAISS index.")
-        index = faiss.GpuIndexFlatIP(faiss.StandardGpuResources(), 1)
+        index = faiss.IndexFlatIP(1)
 
 # 임베딩값으로 향수 매칭
-def get_matching_products(embedding, db_images, db_embeddings, product_data, threshold=0.3, k=10, max_results=10):
+def get_matching_products(language, embedding, db_images, db_embeddings, product_data, threshold=0.3, k=10, max_results=10):
     # FAISS 인덱스에서 검색
     results = []
     product_ids_set = set()  # 이미 처리된 제품 ID를 추적
@@ -160,8 +165,8 @@ def get_matching_products(embedding, db_images, db_embeddings, product_data, thr
     matching_products = [
         {
             "id": item["id"],
-            "name": item["name_kr"],
-            "brand": item["brand"],
+            "name": item["name_en"] if language == "english" else item["name_kr"],
+            "brand": brand_en_dict.get(item["brand"], item["brand"]) if language == "english" else item["brand"],
             "content": item["content"],
             "similarity": next(
                 (result["similarity"] for result in results if result["product_id"] == item["id"]), None
@@ -176,8 +181,18 @@ def get_matching_products(embedding, db_images, db_embeddings, product_data, thr
     # 유사도 기준으로 내림차순 정렬
     return sorted(matching_products, key=lambda x: x["similarity"], reverse=True)[:max_results]
 
+def get_english_translated_content(content):
+    prompt = (
+        f"Translate the following fragrance description to English."
+        f"Only return the translated text with no additional explanation or formatting:\n\n{content}"
+    )
+
+    gpt_client = GPTClient()
+
+    return gpt_client.generate_response(prompt)
+
 @router.post("/get_image_search_result")
-async def search_image(file: UploadFile = File(...)):
+async def search_image(file: UploadFile = File(...), language: str = Form(...)): 
     try:
         # GPU 임베딩 서비스 호출
         image_bytes = await file.read()
@@ -191,8 +206,12 @@ async def search_image(file: UploadFile = File(...)):
             embedding = response.json().get("embedding")
             
             if embedding is not None:
-                matching_products = get_matching_products(embedding, db_images, db_embeddings, product_data)
+                matching_products = get_matching_products(language, embedding, db_images, db_embeddings, product_data)
 
+                if language == "english":
+                    for product in matching_products:
+                        product["content"] = await get_english_translated_content(product["content"])
+                    
                 return {"products": sorted(matching_products, key=lambda x: x["similarity"], reverse=True)}
             else:
                 return {"error": "No embedding found in the response"}

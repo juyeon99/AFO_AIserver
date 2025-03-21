@@ -302,6 +302,16 @@ class DBService:
         """
         return self.load_cached_data(self.cache_path_prefix / "spice_cache.json")
     
+    def load_brand_en_dict(self) -> List[Dict]:
+        """
+        Load brand dictionary from brands_en.json.
+        """
+        with open(self.cache_path_prefix / "brands_en.json", "r", encoding="utf-8") as f:
+            brand_data = json.load(f)
+        
+        brand_en_dict = {brand["brand_kr"]: brand["brand_en"] for brand in brand_data}
+        return brand_en_dict
+    
     def get_product_details(self, product_id, products):
         for product in products:
             if product["id"] == product_id:

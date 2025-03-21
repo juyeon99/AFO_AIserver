@@ -1,0 +1,11 @@
+[
+    {"id": 1, "grade_kr": "오 드 퍼퓸", "grade_en": "Eau de Parfum"},
+    {"id": 2, "grade_kr": "오 드 뚜왈렛", "grade_en": "Eau de Toilette"},
+    {"id": 3, "grade_kr": "오 드 코롱", "grade_en": "Eau de Cologne"},
+    {"id": 4, "grade_kr": "퍼퓸", "grade_en": "Perfume"},
+    {"id": 5, "grade_kr": "솔리드 퍼퓸", "grade_en": "Solid Perfume"},
+    {"id": 6, "grade_kr": "오 트리쁠", "grade_en": "Eau Tripple"},
+    {"id": 7, "grade_kr": "엑스트레 드 퍼퓸", "grade_en": "Extrait de Parfum"},
+    {"id": 8, "grade_kr": "엑스트레 드 코롱", "grade_en": "Extrait de Cologne"},
+    {"id": 9, "grade_kr": "None", "grade_en": "None"}
+]
