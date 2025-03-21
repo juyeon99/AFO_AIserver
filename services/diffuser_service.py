@@ -7,14 +7,14 @@ from fastapi import HTTPException
 
 logger = logging.getLogger(__name__)
 
-# Define therapy titles
-THERAPY_TITLES = {
-    "수면 & 회복": "#숙면 유도 #깊은 휴식",
-    "집중 & 마인드풀니스": "#업무 효율 #생산성 증진",
-    "활력 & 에너지": "#상쾌한 아침 #활기찬 하루",
-    "평온 & 스트레스 해소": "#마음의 평화 #내적 안정",
-    "기쁨 & 긍정": "#감정 균형 #안정적인 마음",
-    "리프레시 & 클린 에어": "#공기 청정 #깨끗한 환경"
+# Define therapy titles for each category
+THERAPY_HASHTAGS = {
+    0: {"korean": "#숙면_유도 #깊은_휴식", "english": "#inducing_deep_sleep #deep_rest"},
+    1: {"korean": "#업무_효율 #생산성_증진", "english": "#work_efficiency #productivity_boost"},
+    2: {"korean": "#상쾌한_아침 #활기찬_하루", "english": "#refreshing_mornings #energetic_day"},
+    3: {"korean": "#마음의_평화 #내적_안정", "english": "#inner_peace #mental_stability"},
+    4: {"korean": "#감정_균형 #안정적인_마음", "english": "#emotional_balance #stable_mind"},
+    5: {"korean": "#공기_청정 #깨끗한_환경", "english": "#air_purification #clean_environment"}
 }
 
 class DiffuserRecommendationService:
@@ -24,22 +24,39 @@ class DiffuserRecommendationService:
         self.DIFFUSER_CATEGORY_ID = 2
         
         # 카테고리별 기본 향료 정보 (GPT 프롬프트용)
-        self.user_input_info = {
-            "수면 & 회복": "수면과 휴식에 도움을 주는 진정 효과가 있는 향료들입니다. 라벤더, 캐모마일 등이 대표적입니다.",
-            "집중 & 마인드풀니스": "집중력 향상과 맑은 정신에 도움을 주는 향료들입니다. 로즈마리, 페퍼민트 등이 효과적입니다.",
-            "활력 & 에너지": "활력과 에너지를 북돋아주는 상쾌한 향료들입니다. 시트러스 계열이 대표적입니다.",
-            "평온 & 스트레스 해소": "스트레스 해소와 마음의 안정에 도움을 주는 향료들입니다. 라벤더, 일랑일랑 등이 효과적입니다.",
-            "기쁨 & 긍정": "긍정적인 기분과 행복감을 고취시키는 향료들입니다. 오렌지, 바닐라 등이 대표적입니다.",
-            "리프레시 & 클린 에어": "공간을 상쾌하고 깨끗하게 만들어주는 향료들입니다. 유칼립투스, 레몬 등이 효과적입니다."
+        # self.user_input_info = {
+        #     "수면 & 회복": "수면과 휴식에 도움을 주는 진정 효과가 있는 향료들입니다. 라벤더, 캐모마일 등이 대표적입니다.",
+        #     "집중 & 마인드풀니스": "집중력 향상과 맑은 정신에 도움을 주는 향료들입니다. 로즈마리, 페퍼민트 등이 효과적입니다.",
+        #     "활력 & 에너지": "활력과 에너지를 북돋아주는 상쾌한 향료들입니다. 시트러스 계열이 대표적입니다.",
+        #     "평온 & 스트레스 해소": "스트레스 해소와 마음의 안정에 도움을 주는 향료들입니다. 라벤더, 일랑일랑 등이 효과적입니다.",
+        #     "기쁨 & 긍정": "긍정적인 기분과 행복감을 고취시키는 향료들입니다. 오렌지, 바닐라 등이 대표적입니다.",
+        #     "리프레시 & 클린 에어": "공간을 상쾌하고 깨끗하게 만들어주는 향료들입니다. 유칼립투스, 레몬 등이 효과적입니다."
+        # }
+        self.category = {
+            0: "Sleep & Recovery",
+            1: "Focus & Mindfulness",
+            2: "Vitality & Energy",
+            3: "Calm & Stress Relief",
+            4: "Joy & Positivity",
+            5: "Refresh & Clean Air"
         }
 
-    async def get_recommended_notes(self, user_input: str) -> List[str]:
+        self.description = {
+            0: "Ingredients that promote sleep and relaxation, such as lavender, chamomile, etc.",
+            1: "Ingredients that help improve concentration and mental clarity, such as rosemary, peppermint, etc.",
+            2: "Refreshing ingredients that boost vitality and energy, such as spices in the citrus family.",
+            3: "Ingredients that help relieve stress and calm the mind, such as lavender, ylang-ylang, etc.",
+            4: "Ingredients that promote positive emotions and happiness, such as orange, vanilla, etc.",
+            5: "Ingredients that help refresh and clean the air, such as eucalyptus, lemon, etc."
+        }
+
+    async def get_recommended_notes(self, category_index: int) -> List[str]:
         """GPT를 통해 유저 입력에 맞는 최적의 향료 조합 추천"""
         prompt = f"""
         당신은 아로마테라피와 디퓨저 전문가입니다. 주어진 목적에 가장 적합한 향료 조합을 추천해주세요.
 
-        목적: {user_input}
-        설명: {self.user_input_info[user_input]}
+        목적: {self.category[category_index]}
+        설명: {self.description[category_index]}
 
         다음 사항들을 고려하여 향료 조합을 추천해주세요:
         1. 주요 효과: 해당 목적을 달성하는데 가장 효과적인 향료들
@@ -66,13 +83,13 @@ class DiffuserRecommendationService:
             logger.error(f"향료 추천 생성 실패: {str(e)}")
             raise
 
-    async def get_usage_routine(self, user_input: str) -> str:
+    async def get_usage_routine(self, category_index: int) -> str:
         """GPT를 통해 사용 루틴 생성"""
         prompt = f"""
         당신은 디퓨저 전문가입니다. 다음 상황에 가장 적합한 구체적인 사용 루틴을 제안해주세요.
 
-        카테고리: {user_input}
-        설명: {self.user_input_info[user_input]}
+        카테고리: {self.category[category_index]}
+        설명: {self.description[category_index]}
 
         다음을 포함하여 구체적인 사용 루틴을 작성해주세요:
         1. 사용 시점 (언제)
@@ -89,16 +106,17 @@ class DiffuserRecommendationService:
         result = json.loads(response.strip())
         return result["usage_routine"]
 
-    async def recommend_diffusers(self, user_input: str) -> Dict:
+    async def recommend_diffusers(self, language: str, category_index: int) -> Dict:
         """카테고리에 맞는 디퓨저 추천"""
         try:
-            logger.info(f"Generating recommendation for: {user_input}")
+            logger.info(f"language: {language}")
+            logger.info(f"Generating recommendation for: {category_index}")
             
-            if user_input not in self.user_input_info:
-                raise ValueError("유효하지 않은 카테고리입니다")
+            if category_index not in (0, 1, 2, 3, 4, 5):
+                raise ValueError("Invalid category")
             
             # 1. GPT를 통해 향료 조합 추천 받기
-            recommended_notes = await self.get_recommended_notes(user_input)
+            recommended_notes = await self.get_recommended_notes(category_index)
             
             # 2. 추천받은 향료들로 디퓨저 검색
             spices = self.db_service.get_spices_by_names(recommended_notes)
@@ -113,7 +131,7 @@ class DiffuserRecommendationService:
                 raise ValueError("추천할 수 있는 디퓨저가 없습니다")
             
             # 4. 사용 루틴 생성
-            usage_routine = await self.get_usage_routine(user_input)
+            usage_routine = await self.get_usage_routine(category_index)
 
             # 5. 최종 응답 구성
             recommendations = [
@@ -129,7 +147,7 @@ class DiffuserRecommendationService:
             return {
                 'recommendations': recommendations,
                 'usage_routine': usage_routine,
-                'therapy_title': THERAPY_TITLES[user_input]
+                'therapy_title': THERAPY_HASHTAGS[category_index][language]
             }
 
         except Exception as e:

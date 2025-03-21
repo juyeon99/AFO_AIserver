@@ -12,7 +12,8 @@ router = APIRouter()
 
 # 요청 바디 모델 정의
 class DiffuserRecommendRequest(BaseModel):
-    user_input: str
+    language: str
+    category_index: int
 
 def get_diffuser_service() -> DiffuserRecommendationService:
     try:
@@ -47,7 +48,7 @@ async def recommend_diffusers(
 ) -> dict:
     """디퓨저 추천 엔드포인트"""
     try:
-        result = await diffuser_service.recommend_diffusers(request.user_input)
+        result = await diffuser_service.recommend_diffusers(request.language, request.category_index)
         return result
     except Exception as e:
         logger.error(f"추천 처리 중 오류 발생: {e}")
