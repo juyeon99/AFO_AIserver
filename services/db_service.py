@@ -72,7 +72,7 @@ class DBService:
             openai_api_base=api_base
         )
     
-    def fetch_brands(self) -> List[str]:
+    def fetch_kr_brands(self) -> List[str]:
         """DB에서 브랜드 목록을 가져옵니다."""
         query = "SELECT DISTINCT brand FROM product;"
         try:
@@ -138,6 +138,7 @@ class DBService:
                     p.id, 
                     p.brand, 
                     p.name_kr,
+                    p.name_en,
                     p.main_accord,
                     p.size_option as volume,
                     COUNT(DISTINCT n.spice_id) as matching_count
@@ -311,6 +312,16 @@ class DBService:
         
         brand_en_dict = {brand["brand_kr"]: brand["brand_en"] for brand in brand_data}
         return brand_en_dict
+    
+    def load_brand_en_list(self) -> List[str]:
+        """
+        Load English brand names from brands_en.json and return them as a list.
+        """
+        with open(self.cache_path_prefix / "brands_en.json", "r", encoding="utf-8") as f:
+            brand_data = json.load(f)
+
+        # Return a list of brand names
+        return [brand["brand_en"] for brand in brand_data]
     
     def get_product_details(self, product_id, products):
         for product in products:

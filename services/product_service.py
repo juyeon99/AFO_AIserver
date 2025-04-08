@@ -48,6 +48,7 @@ class ProductState(TypedDict):
 
     user_input: Annotated[str, Channel()]
     image_caption: Annotated[str, Channel()]
+    language: Annotated[str, Channel()]
     processed_input: str
     next_node: str
     recommendations: Optional[list]
@@ -172,6 +173,8 @@ class ProductService:
         try:
             user_input = state["user_input"]
             image_caption = state["image_caption"]
+            language = state["language"]
+
             logger.info(f"Received user input: {user_input}")
 
             if image_caption is not None:
@@ -246,48 +249,89 @@ class ProductService:
         try:
             user_input = state["user_input"]
             image_caption = state["image_caption"]
+            language = state["language"]
             
             logger.info(f"향수 추천 유형 분류 시작 - 입력: {user_input}")
-
-            type_prompt = (
-                f"Please divide the perfume/diffuser recommendations based on the following criteria:\n\n"
-                f"1. **General Recommendation (1)**: Recommend a fragrance based on the user's preferred scent.\n"
-                f"   - If `image_caption` exists but `image_caption` is not strictly related to fashion or interior design, it should still be considered a general recommendation.\n\n"
-                f"2. **Fashion-based Recommendation (2)**: Recommend a fragrance that matches the style of clothes the person is wearing. This should be based on the image description of the outfit. If the image_caption describes mostly the person and their outfit, it should return 2.\n"
-                f"3. **Interior Description-based Recommendation (3)**: Recommend a fragrance based on the image description of the room or space. If the image_caption describes mostly the space or interior, it should return 3.\n"
-                f"4. **Therapy-based Recommendation (4)**: Recommend a fragrance when user_input mentions therapy-related intent based on the user's mood or emotional state. Categories include:\n"
-                f"    - 스트레스 감소 (Stress Relief)\n"
-                f"    - 행복 (Happiness)\n"
-                f"    - 리프레시 (Refreshment)\n"
-                f"    - 수면 (Sleep)\n"
-                f"    - 집중 (Focus)\n"
-                f"    - 에너지 (Energy)\n\n"
-                f"   - If `image_caption` exists but the `user_input` explicitly mentions something related to one of the six therapy categories, it should still be classified as therapy-based.\n\n"
-                f"### Examples)\n"
-                f"1) **General Recommendation**: \n"
-                f"    user_input = '상큼한 향이 나는 향수를 추천해줘'\n"
-                f"    response: 1\n\n"
-                f"1-1) **General Recommendation (When image_caption exists but is not about fashion or interior design)**: \n"
-                f"    user_input = '달콤한 향이 나는 향수를 추천해줘'\n"
-                f"    image_caption = 'The image shows a dog sitting in a park. The grass is green, and the sky is clear. There are trees in the background, and the dog looks happy while playing with a ball.'\n"
-                f"    response: 1\n\n"
-                f"2) **Fashion-based Recommendation**: \n"
-                f"    user_input = '오늘 입은 옷에 어울리는 향수가 필요해'\n"
-                f"    image_caption = 'The image shows a young man walking on a street. He is wearing a grey coat with a black and white checkered pattern, a navy blue shirt, beige trousers, and brown shoes. He has short dark hair and is looking off to the side with a serious expression on his face. The street is lined with buildings and there are cars parked on the side. The sky is overcast and the overall mood of the image is casual and relaxed.'\n"
-                f"    response: 2\n\n"
-                f"3) **Interior Description-based Recommendation**: \n"
-                f"    user_input = '시트러스 향이 나는 향수를 추천해주세요.'\n"
-                f"    image_caption = 'The image shows a modern living room with a large window on the right side. The room has white walls and wooden flooring. On the left side of the room, there is a gray sofa and a white coffee table with a black and white patterned rug in front of it. In the center of the image, there are six black chairs arranged around a wooden dining table. The table is set with a vase and other decorative objects on it. Above the table, two large windows let in natural light and provide a view of the city outside. A white floor lamp is placed on the floor next to the sofa.'\n"
-                f"    response: 3\n\n"
-                f"4) **Therapy-based Recommendation**: \n"
-                f"    user_input = '스트레스 해소에 좋은 디퓨저를 추천해주세요'\n"
-                f"    response: 4\n\n"
-                f"4-1) **Therapy-based Recommendation (When image_caption exists but user_input mentions therapy-related intent)**:\n"
-                f"    user_input = '에너지를 높여줄 향을 추천해줘'\n"
-                f"    image_caption = 'The image shows a cityscape with people walking on the street. The buildings have bright billboards, and there is a bustling crowd in the area.'\n"
-                f"    response: 4\n\n"
-                f"### Intention: (1) General Recommendation, (2) Fashion Recommendation, (3) Interior Description-based Recommendation, (4) Therapy-based Recommendation\n\n"
-            )
+            
+            if language == "english":
+                type_prompt = (
+                    f"Please divide the perfume/diffuser recommendations based on the following criteria:\n\n"
+                    f"1. **General Recommendation (1)**: Recommend a fragrance based on the user's preferred scent.\n"
+                    f"   - If `image_caption` exists but `image_caption` is not strictly related to fashion or interior design, it should still be considered a general recommendation.\n\n"
+                    f"2. **Fashion-based Recommendation (2)**: Recommend a fragrance that matches the style of clothes the person is wearing. This should be based on the image description of the outfit. If the image_caption describes mostly the person and their outfit, it should return 2.\n"
+                    f"3. **Interior Description-based Recommendation (3)**: Recommend a fragrance based on the image description of the room or space. If the image_caption describes mostly the space or interior, it should return 3.\n"
+                    f"4. **Therapy-based Recommendation (4)**: Recommend a fragrance when user_input mentions therapy-related intent based on the user's mood or emotional state. Categories include:\n"
+                    f"    - 스트레스 감소 (Stress Relief)\n"
+                    f"    - 행복 (Happiness)\n"
+                    f"    - 리프레시 (Refreshment)\n"
+                    f"    - 수면 (Sleep)\n"
+                    f"    - 집중 (Focus)\n"
+                    f"    - 에너지 (Energy)\n\n"
+                    f"   - If `image_caption` exists but the `user_input` explicitly mentions something related to one of the six therapy categories, it should still be classified as therapy-based.\n\n"
+                    f"### Examples)\n"
+                    f"1) **General Recommendation**: \n"
+                    f"    user_input = '상큼한 향이 나는 향수를 추천해줘'\n"
+                    f"    response: 1\n\n"
+                    f"1-1) **General Recommendation (When image_caption exists but is not about fashion or interior design)**: \n"
+                    f"    user_input = '달콤한 향이 나는 향수를 추천해줘'\n"
+                    f"    image_caption = 'The image shows a dog sitting in a park. The grass is green, and the sky is clear. There are trees in the background, and the dog looks happy while playing with a ball.'\n"
+                    f"    response: 1\n\n"
+                    f"2) **Fashion-based Recommendation**: \n"
+                    f"    user_input = '오늘 입은 옷에 어울리는 향수가 필요해'\n"
+                    f"    image_caption = 'The image shows a young man walking on a street. He is wearing a grey coat with a black and white checkered pattern, a navy blue shirt, beige trousers, and brown shoes. He has short dark hair and is looking off to the side with a serious expression on his face. The street is lined with buildings and there are cars parked on the side. The sky is overcast and the overall mood of the image is casual and relaxed.'\n"
+                    f"    response: 2\n\n"
+                    f"3) **Interior Description-based Recommendation**: \n"
+                    f"    user_input = '시트러스 향이 나는 향수를 추천해주세요.'\n"
+                    f"    image_caption = 'The image shows a modern living room with a large window on the right side. The room has white walls and wooden flooring. On the left side of the room, there is a gray sofa and a white coffee table with a black and white patterned rug in front of it. In the center of the image, there are six black chairs arranged around a wooden dining table. The table is set with a vase and other decorative objects on it. Above the table, two large windows let in natural light and provide a view of the city outside. A white floor lamp is placed on the floor next to the sofa.'\n"
+                    f"    response: 3\n\n"
+                    f"4) **Therapy-based Recommendation**: \n"
+                    f"    user_input = '스트레스 해소에 좋은 디퓨저를 추천해주세요'\n"
+                    f"    response: 4\n\n"
+                    f"4-1) **Therapy-based Recommendation (When image_caption exists but user_input mentions therapy-related intent)**:\n"
+                    f"    user_input = '에너지를 높여줄 향을 추천해줘'\n"
+                    f"    image_caption = 'The image shows a cityscape with people walking on the street. The buildings have bright billboards, and there is a bustling crowd in the area.'\n"
+                    f"    response: 4\n\n"
+                    f"### Intention: (1) General Recommendation, (2) Fashion Recommendation, (3) Interior Description-based Recommendation, (4) Therapy-based Recommendation\n\n"
+                )
+            else:
+                type_prompt = (
+                    f"Please divide the perfume/diffuser recommendations based on the following criteria:\n\n"
+                    f"1. **General Recommendation (1)**: Recommend a fragrance based on the user's preferred scent.\n"
+                    f"   - If `image_caption` exists but `image_caption` is not strictly related to fashion or interior design, it should still be considered a general recommendation.\n\n"
+                    f"2. **Fashion-based Recommendation (2)**: Recommend a fragrance that matches the style of clothes the person is wearing. This should be based on the image description of the outfit. If the image_caption describes mostly the person and their outfit, it should return 2.\n"
+                    f"3. **Interior Description-based Recommendation (3)**: Recommend a fragrance based on the image description of the room or space. If the image_caption describes mostly the space or interior, it should return 3.\n"
+                    f"4. **Therapy-based Recommendation (4)**: Recommend a fragrance when user_input mentions therapy-related intent based on the user's mood or emotional state. Categories include:\n"  
+                    f"    - Stress Relief\n"  
+                    f"    - Happiness\n"  
+                    f"    - Refreshment\n"  
+                    f"    - Sleep\n"  
+                    f"    - Focus\n"  
+                    f"    - Energy\n\n"  
+                    f"   - If `image_caption` exists but the `user_input` explicitly mentions something related to one of the six therapy categories, it should still be classified as therapy-based.\n\n"  
+                    f"### Examples)\n"  
+                    f"1) **General Recommendation**: \n"  
+                    f"    user_input = 'Recommend a perfume with a fresh scent.'\n"  
+                    f"    response: 1\n\n"  
+                    f"1-1) **General Recommendation (When image_caption exists but is not about fashion or interior design)**: \n"  
+                    f"    user_input = 'Recommend a perfume with a sweet scent.'\n"  
+                    f"    image_caption = 'The image shows a dog sitting in a park. The grass is green, and the sky is clear. There are trees in the background, and the dog looks happy while playing with a ball.'\n"  
+                    f"    response: 1\n\n"  
+                    f"2) **Fashion-based Recommendation**: \n"  
+                    f"    user_input = 'I need a perfume that matches the outfit I'm wearing today.'\n"  
+                    f"    image_caption = 'The image shows a young man walking on a street. He is wearing a grey coat with a black and white checkered pattern, a navy blue shirt, beige trousers, and brown shoes. He has short dark hair and is looking off to the side with a serious expression on his face. The street is lined with buildings and there are cars parked on the side. The sky is overcast and the overall mood of the image is casual and relaxed.'\n"  
+                    f"    response: 2\n\n"  
+                    f"3) **Interior Description-based Recommendation**: \n"  
+                    f"    user_input = 'Please recommend a citrus-scented perfume.'\n"  
+                    f"    image_caption = 'The image shows a modern living room with a large window on the right side. The room has white walls and wooden flooring. On the left side of the room, there is a gray sofa and a white coffee table with a black and white patterned rug in front of it. In the center of the image, there are six black chairs arranged around a wooden dining table. The table is set with a vase and other decorative objects on it. Above the table, two large windows let in natural light and provide a view of the city outside. A white floor lamp is placed on the floor next to the sofa.'\n"  
+                    f"    response: 3\n\n"  
+                    f"4) **Therapy-based Recommendation**: \n"  
+                    f"    user_input = 'Please recommend a diffuser that helps relieve stress.'\n"  
+                    f"    response: 4\n\n"  
+                    f"4-1) **Therapy-based Recommendation (When image_caption exists but user_input mentions therapy-related intent)**:\n"  
+                    f"    user_input = 'Recommend a scent that boosts energy.'\n"  
+                    f"    image_caption = 'The image shows a cityscape with people walking on the street. The buildings have bright billboards, and there is a bustling crowd in the area.'\n"  
+                    f"    response: 4\n\n"  
+                    f"### Intention: (1) General Recommendation, (2) Fashion Recommendation, (3) Interior Description-based Recommendation, (4) Therapy-based Recommendation\n\n")
 
             if user_input is not None:
                 type_prompt += f"### user_input: {user_input}\n"
@@ -376,14 +420,17 @@ class ProductService:
     def input_processor(self, state: ProductState) -> ProductState:
         user_input = state["user_input"]
         image_caption = state["image_caption"]
+        language = state["language"]
+
         logger.info(f"🔍 Input: {user_input}")
         logger.info(f"🔍 Image Caption: {image_caption}")
+        logger.info(f"🔍 Language: {language}")
         state["next_node"] = "keyword_extractor"
         return state
 
     def keyword_extractor(self, state: ProductState) -> ProductState:
         extracted_data = self.llm_service.extract_keywords_from_input(
-            state["user_input"], state["image_caption"]
+            state["user_input"], state["image_caption"], state["language"]
         )
         logger.info(f"🔍 추출된 데이터: {extracted_data}")
 
@@ -407,7 +454,7 @@ class ProductService:
             # LLM 서비스를 통한 직접 추천 생성
             try:
                 response = self.llm_service.generate_recommendation_response(
-                    state["user_input"], state["image_caption"], 
+                    state["user_input"], state["image_caption"], state["language"]
                 )
 
                 if response and isinstance(response, dict):
@@ -506,7 +553,7 @@ class ProductService:
             try:
                 response = (
                     self.llm_service.fashion_based_generate_recommendation_response(
-                        state["user_input"], state["image_caption"]
+                        state["user_input"], state["image_caption"], state["language"]
                     )
                 )
 
@@ -605,7 +652,7 @@ class ProductService:
 
             try:
                 response = self.llm_service.generate_interior_design_based_recommendation_response(
-                    state["image_caption"], state["user_input"]
+                    state["user_input"], state["image_caption"], state["language"]
                 )
 
                 if response and isinstance(response, dict):
@@ -657,11 +704,9 @@ class ProductService:
 
             try:
                 response = self.llm_service.generate_therapeutic_purpose_recommendation_response(
-                    state["user_input"], state["image_caption"]
+                    state["user_input"], state["image_caption"], state["language"]
                 )
 
-                # if response and isinstance(response, dict):
-                #     state = self._process_response(state, response)
                 if response and isinstance(response, dict):
                     recommendations = response.get("recommendations", [])
                     content = response.get("content", "")
@@ -704,39 +749,6 @@ class ProductService:
 
         return state
 
-    # def _process_response(self, state: ProductState, response: dict) -> ProductState:
-    #     """추천 결과를 처리하는 헬퍼 함수"""
-    #     recommendations = response.get("recommendations", [])
-    #     content = response.get("content", "")
-    #     line_id = response.get("line_id")
-
-    #     logger.info("✅ LLM 추천 생성 완료")
-
-    #     state["response"] = {
-    #         "status": "success",
-    #         "mode": "recommendation",
-    #         "recommendation": recommendations,
-    #         "content": content,
-    #         "line_id": line_id,
-    #         "recommendation_type": state["recommendation_type"]
-    #     }
-
-    #     # 이미지 생성 시도
-    #     try:
-    #         image_state = self.image_generator(state)
-    #         state["image_path"] = image_state.get("image_path")
-    #         if state["image_path"] and state["image_path"] != "failed":
-    #             logger.info(f"✅ 이미지 생성 성공: {state['image_path']}")
-    #             state["response"]["image_path"] = state["image_path"]
-    #         else:
-    #             logger.warning("⚠️ 이미지 생성 실패")
-    #     except Exception as img_err:
-    #         logger.error(f"❌ 이미지 생성 오류: {img_err}")
-    #         state["image_path"] = None
-
-    #     state["next_node"] = "end"
-    #     return state
-
     def text_translation(self, state: ProductState) -> ProductState:
         user_input = state["user_input"]
 
@@ -773,6 +785,8 @@ class ProductService:
             recommendations = response.get("recommendations") or []
             content = response.get("content", "")
 
+            language = state["language"]
+
             if not recommendations:
                 logger.warning(
                     "⚠️ response 객체 내 추천 결과가 없어 이미지를 생성할 수 없습니다"
@@ -789,12 +803,16 @@ class ProductService:
                 if content:
                     # Content 번역을 위한 state 생성
                     content_state = {"user_input": content}
-                    translated_content_state = self.text_translation(content_state)
-                    if translated_content_state.get("translated_input"):
-                        prompt_parts.append(
-                            translated_content_state["translated_input"]
-                        )
-                        logger.info("✅ Content 번역 완료")
+                    
+                    if language == "korean":
+                        translated_content_state = self.text_translation(content_state)
+                        if translated_content_state.get("translated_input"):
+                            prompt_parts.append(
+                                translated_content_state["translated_input"]
+                            )
+                            logger.info("✅ Content 번역 완료")
+                    else:
+                        prompt_parts.append(content)
 
                 # 각 추천 항목에 대해 영어로 번역
                 translated_recommendations = []
@@ -811,27 +829,31 @@ class ProductService:
                             f"Description: {reason}\nSituation: {situation}"
                         )
                         translation_state = {"user_input": translation_text}
-                        translated_state = self.text_translation(translation_state)
+                        
+                        if language == "korean":
+                            translated_state = self.text_translation(translation_state)
 
-                        if translated_state.get("translated_input"):
-                            translated_text = translated_state["translated_input"]
-                            parts = translated_text.split("\n")
+                            if translated_state.get("translated_input"):
+                                translated_text = translated_state["translated_input"]
+                        
+                        parts = translated_text.split("\n")
 
-                            translated_rec = {
-                                "name": rec.get("name", ""),
-                                "brand": rec.get("brand", ""),
-                                "reason": (
-                                    parts[0].replace("Description:", "").strip()
-                                    if len(parts) > 0
-                                    else ""
-                                ),
-                                "situation": (
-                                    parts[1].replace("Situation:", "").strip()
-                                    if len(parts) > 1
-                                    else ""
-                                ),
-                            }
-                            translated_recommendations.append(translated_rec)
+                        translated_rec = {
+                            "name": rec.get("name", ""),
+                            "brand": rec.get("brand", ""),
+                            "reason": (
+                                parts[0].replace("Description:", "").strip()
+                                if len(parts) > 0
+                                else ""
+                            ),
+                            "situation": (
+                                parts[1].replace("Situation:", "").strip()
+                                if len(parts) > 1
+                                else ""
+                            ),
+                        }
+
+                        translated_recommendations.append(translated_rec)
 
                 # 번역된 정보로 프롬프트 구성
                 for rec in translated_recommendations:
@@ -909,6 +931,7 @@ class ProductService:
             user_id = state.get("user_id", "anonymous_user")
             user_input = state["user_input"]
             image_caption = state["image_caption"]
+            language = state["language"]
 
             # ✅ MongoDB에서 최근 대화 기록 가져오기 (최신 3개)
             chat_summary = self.mongo_service.get_chat_summary(user_id)  # 요약 가져오기
@@ -976,6 +999,7 @@ class ProductService:
 
             user_input = state["user_input"]
             image_caption = state["image_caption"]
+            language = state["language"]
 
             template = self.prompt_loader.get_prompt("chat")
             
@@ -1024,7 +1048,7 @@ class ProductService:
 
         return state
 
-    def run(self, user_input: Optional[str] = None, image_caption: Optional[str] = None) -> dict:
+    def run(self, user_input: Optional[str] = None, image_caption: Optional[str] = None, language: Optional[str] = None) -> dict:
         """그래프 실행 및 결과 반환"""
         try:
             if user_input is not None:
@@ -1033,10 +1057,14 @@ class ProductService:
             if image_caption is not None:
                 logger.info(f"🔄 이미지 캡션: {image_caption}")
 
+            if language is not None:
+                logger.info(f"🔄 언어: {language}")
+
             # 초기 상태 설정
             initial_state = {
                 "user_input": user_input,
                 "image_caption": image_caption,
+                "language": language,
                 "processed_input": None,
                 "next_node": None,
                 "recommendations": None,
